@@ -33,5 +33,8 @@ namespace Reservation.Models
 
         [Required]
         public bool AirConditioning { get; set; }
+
+        [Required]
+        public RoomType Type { get; set; }
     }
 }
