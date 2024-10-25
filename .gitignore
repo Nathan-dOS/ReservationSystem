@@ -18,6 +18,7 @@ ReservationSystem/Reservation/obj/
 /Reservation/obj/Debug/net8.0/Reservation.pdb
 /Reservation/obj/Debug/net8.0/Reservation.sourcelink.json
 <<<<<<< HEAD
+<<<<<<< HEAD
 /Reservation/appsettings.json
 /Reservation/obj/Debug/net8.0/staticwebassets.build.json
 /Reservation/obj/project.assets.json
@@ -35,3 +36,14 @@ ReservationSystem/Reservation/obj/
 /Reservation/obj/Debug/net8.0/Reservat.F9C48C63.Up2Date
 /Reservation/obj/Debug/net8.0/Reservation.csproj.AssemblyReference.cache
 /Reservation/obj/Debug/net8.0/Reservation.MvcApplicationPartsAssemblyInfo.cache
+=======
+/Reservation/appsettings.json
+>>>>>>> 60f57b04a5b702ba95a77328cb1d0385922fdc58
+/Reservation/obj/Debug/net8.0/Reservation.AssemblyInfo.cs
+/Reservation/Migrations
+/Reservation/obj/Debug/net8.0/scopedcss/bundle/Reservation.styles.css
+/Reservation/obj/Debug/net8.0/scopedcss/projectbundle/Reservation.bundle.scp.css
+/Reservation/obj/Debug/net8.0/scopedcss/Views/Shared
+/Reservation/obj/Debug/net8.0/staticwebassets
+/Reservation/obj/Debug/net8.0
+/Reservation/obj
