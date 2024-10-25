@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Reservation.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Models
@@ -6,16 +6,35 @@ namespace Reservation.Models
     public class User
     {
         [Key]
-        public required int Id { get; set; }
-        public required string Name { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public required string Type { get; set; }
-        public required string CRM { get; set; }
-        public required string OAB { get; set; }
-        public required string CadastroNacional { get; set; }
-        [ForeignKey("Address")]
-        public string? AddressId { get; set; }
+        [Required]
+        public int Id { get; set; }
 
+        [StringLength(11)]
+        public string CPF { get; set; }
+
+        [Required]
+        public PersonType Type { get; set; }
+
+        [StringLength(10)]
+        public string? CRM { get; set; } // Opcional, controle externo de formato
+
+        [StringLength(10)]
+        public string? OAB { get; set; } // Opcional, controle externo de formato
+
+        [Required]
+        [StringLength(60)]
+        public string Nome { get; set; }
+
+        [Required]
+        [StringLength(15)]
+        public string Telefone { get; set; }
+
+        [Required]
+        [StringLength(60)]
+        public string Password { get; set; } // Armazena hash da senha
+
+        [Required]
+        [StringLength(100)]
+        public string Address { get; set; }
     }
 }
