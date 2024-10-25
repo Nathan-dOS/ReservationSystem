@@ -18,3 +18,8 @@ ReservationSystem/Reservation/obj/
 /Reservation/obj/Debug/net8.0/Reservation.pdb
 /Reservation/obj/Debug/net8.0/Reservation.sourcelink.json
 /Reservation/appsettings.json
+/Reservation/obj/Debug/net8.0/staticwebassets.build.json
+/Reservation/obj/project.assets.json
+/Reservation/obj/project.nuget.cache
+/Reservation/obj/Reservation.csproj.nuget.dgspec.json
+/Reservation/obj/Debug/net8.0/Reservation.assets.cache

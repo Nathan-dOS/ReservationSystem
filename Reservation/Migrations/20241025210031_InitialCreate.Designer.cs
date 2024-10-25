@@ -12,7 +12,7 @@ using Reservation.Data;
 namespace Reservation.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241025185438_InitialCreate")]
+    [Migration("20241025210031_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,11 +27,11 @@ namespace Reservation.Migrations
 
             modelBuilder.Entity("Reservation.Models.Equipment", b =>
                 {
-                    b.Property<long>("IdEquipment")
+                    b.Property<int>("IdEquipment")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdEquipment"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEquipment"));
 
                     b.Property<string>("EquipmentName")
                         .IsRequired()
@@ -99,11 +99,11 @@ namespace Reservation.Migrations
 
             modelBuilder.Entity("Reservation.Models.Room", b =>
                 {
-                    b.Property<long>("IdRoom")
+                    b.Property<int>("IdRoom")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdRoom"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRoom"));
 
                     b.Property<bool>("AirConditioning")
                         .HasColumnType("bit");

@@ -15,7 +15,7 @@ namespace Reservation.Migrations
                 name: "Equipments",
                 columns: table => new
                 {
-                    IdEquipment = table.Column<long>(type: "bigint", nullable: false)
+                    IdEquipment = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EquipmentName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -52,7 +52,7 @@ namespace Reservation.Migrations
                 name: "Rooms",
                 columns: table => new
                 {
-                    IdRoom = table.Column<long>(type: "bigint", nullable: false)
+                    IdRoom = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),

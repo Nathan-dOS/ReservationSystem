@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Reservation.Models;
 
 namespace Reservation.Data
 {
@@ -8,12 +9,16 @@ namespace Reservation.Data
         {
         }
 
-        public DbSet<Reservation.Models.AdministrativeManager> AdministrativeManagers { get; set; }
-        public DbSet<Reservation.Models.GeneralManager> GeneralManagers { get; set; }
-        public DbSet<Reservation.Models.User> Users { get; set; }
-        public DbSet<Reservation.Models.Reserve> Reserves { get; set; }
-        public DbSet<Reservation.Models.Room> Rooms { get; set; }
-        public DbSet<Reservation.Models.Equipment> Equipments { get; set; }
+        public DbSet<AdministrativeManager> AdministrativeManagers { get; set; }
+        public DbSet<GeneralManager> GeneralManagers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Reserve> Reserves { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Equipment> Equipments { get; set; }
 
     }
+
+
 }
+
+
