@@ -12,11 +12,6 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower() == "seeddata")
-{
-    //await Seed.SeedUsersAndRolesAsync(app);
-    Seed.SeedData(app);
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
