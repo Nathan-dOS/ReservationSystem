@@ -7,7 +7,7 @@ namespace Reservation.Models
     public class Equipment
     {
         [Key]
-        public uint IdEquipment { get; set; }
+        public int IdEquipment { get; set; }
 
         [Required]
         [MaxLength(100)]

@@ -7,7 +7,7 @@ namespace Reservation.Models
     public class Room
     {
         [Key]
-        public uint IdRoom { get; set; }
+        public int IdRoom { get; set; }
 
         [MaxLength(10)]
         [Required]
