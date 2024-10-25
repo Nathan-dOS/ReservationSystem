@@ -1,4 +1,4 @@
-﻿namespace Reservation.Data
+﻿namespace Reservation.Data.Enum
 {
     public enum PersonType
     {
