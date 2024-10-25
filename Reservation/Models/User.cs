@@ -1,4 +1,4 @@
-﻿using Reservation.Data;
+﻿using Reservation.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Models

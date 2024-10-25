@@ -11,7 +11,7 @@ namespace Reservation.Models
         public required string UserId { get; set; }
         [ForeignKey("Room")]
         public required string RoomId { get; set; }
-        [ForeignKey("Equipement")]
+        [ForeignKey("Equipment")]
         public required string EquipementId { get; set; }
         public required DateTime Date { get; set; }
         public required TimeOnly Start { get; set; }

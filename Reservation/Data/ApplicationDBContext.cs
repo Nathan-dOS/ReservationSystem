@@ -13,7 +13,7 @@ namespace Reservation.Data
         public DbSet<Reservation.Models.User> Users { get; set; }
         public DbSet<Reservation.Models.Reserve> Reserves { get; set; }
         public DbSet<Reservation.Models.Room> Rooms { get; set; }
-        public DbSet<Reservation.Models.Equipement> Equipements { get; set; }
+        public DbSet<Reservation.Models.Equipment> Equipments { get; set; }
 
     }
 }
