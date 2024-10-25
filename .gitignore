@@ -17,9 +17,21 @@ ReservationSystem/Reservation/obj/
 /Reservation/obj/Debug/net8.0/Reservation.genruntimeconfig.cache
 /Reservation/obj/Debug/net8.0/Reservation.pdb
 /Reservation/obj/Debug/net8.0/Reservation.sourcelink.json
+<<<<<<< HEAD
 /Reservation/appsettings.json
 /Reservation/obj/Debug/net8.0/staticwebassets.build.json
 /Reservation/obj/project.assets.json
 /Reservation/obj/project.nuget.cache
 /Reservation/obj/Reservation.csproj.nuget.dgspec.json
 /Reservation/obj/Debug/net8.0/Reservation.assets.cache
+=======
+/Reservation/appsettings.json
+>>>>>>> 60f57b04a5b702ba95a77328cb1d0385922fdc58
+/Reservation/obj/Debug/net8.0/Reservation.AssemblyInfo.cs
+/Reservation/obj/Debug/net8.0/Reservation.RazorAssemblyInfo.cs
+/Reservation/obj/Debug/net8.0/staticwebassets.development.json
+/Reservation/obj/Debug/net8.0/staticwebassets.pack.json
+/Reservation/obj/Reservation.csproj.nuget.g.props
+/Reservation/obj/Debug/net8.0/Reservat.F9C48C63.Up2Date
+/Reservation/obj/Debug/net8.0/Reservation.csproj.AssemblyReference.cache
+/Reservation/obj/Debug/net8.0/Reservation.MvcApplicationPartsAssemblyInfo.cache
