@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reservation.Data;
+using Reservation.Models;
 
 namespace Reservation.Controllers
 {
@@ -17,6 +18,13 @@ namespace Reservation.Controllers
             var rooms = _context.Rooms.ToList();
 
             return View(rooms);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            Room roomID = _context.Rooms.FirstOrDefault(c => c.IdRoom == id);
+
+            return View(roomID);
         }
     }
 }
