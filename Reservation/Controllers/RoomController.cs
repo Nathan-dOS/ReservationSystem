@@ -26,5 +26,23 @@ namespace Reservation.Controllers
 
             return View(roomID);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Room room)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(room);
+            }
+            _context.Add(room);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+
+        }
     }
 }
