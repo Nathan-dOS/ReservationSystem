@@ -1,0 +1,46 @@
+﻿@model Room
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">
+        Room
+        <small>Secondary Text</small>
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-8">
+            <!-- <img class="img-fluid" src="" alt=""> -->
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Room</h3>
+            <p>Price: @Model.Price</p>
+            <p>Type: @Model.Type</p>
+            <h3 class="my-3">Plus Info</h3>
+            <ul>
+                <li>Status: @Model.Status</li>
+                <li>Capacity: @Model.Capacity</li>
+                <li>Internet @Model.Internet</li>
+                <li>Air Conditioning: @Model.AirConditioning</li>
+                <li>SecurityCamera: @Model.SecurityCamera</li>
+                <li>Size: @Model.Size</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+    <!-- Related Projects Row -->
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->

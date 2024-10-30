@@ -1,0 +1,76 @@
+﻿@model Room
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Number" for="roomNumber">Room Number</label>
+        <input asp-for="Number" type="text" class="form-control" id="roomNumber" maxlength="10" placeholder="Enter room number" required>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Capacity" for="capacity">Capacity</label>
+        <input asp-for="Capacity" type="number" class="form-control" id="capacity" placeholder="Enter capacity">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Size" for="size">Size (m²)</label>
+        <input asp-for="Size" type="number" class="form-control" id="size" step="0.01" placeholder="Enter size">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" asp-items="@Html.(GetEnumSelectList<RoomStatus>())" for="status">Status</label>
+        <select class="form-control" id="status" required>
+            <!-- Opções de status para RoomStatus -->
+            <option value="Available">Available</option>
+            <option value="Occupied">Occupied</option>
+            <option value="Maintenance">Maintenance</option>
+            <!-- Outras opções de RoomStatus conforme necessário -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" for="price">Price</label>
+        <input asp-for="Price" type="number" class="form-control" id="price" step="0.01" placeholder="Enter price" required>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhotoAlbum" for="photoAlbum">Photo Album</label>
+        <input asp-for="PhotoAlbum" type="text" class="form-control" id="photoAlbum" maxlength="255" placeholder="Enter photo album path">
+    </div>
+
+    <div class="form-check">
+        <input asp-for="Internet" type="checkbox" class="form-check-input" id="internet">
+        <label asp-for="Internet"  class="form-check-label" for="internet">Internet</label>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="SecurityCamera" type="checkbox" class="form-check-input" id="securityCamera">
+        <label asp-for="SecurityCamera" class="form-check-label" for="securityCamera">Security Camera</label>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="AirConditioning" type="checkbox" class="form-check-input" id="airConditioning">
+        <label asp-for="AirConditioning" class="form-check-label" for="airConditioning">Air Conditioning</label>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type" asp-items="@Html.(GetEnumSelectList<RoomType>())" for="type">Room Type</label>
+        <select class="form-control" id="type" required>
+            <option value="MeetingRoom">Meeting Room</option>
+            <option value="Auditorium">Auditorium</option>
+            <option value="LawOffice">Law Office</option>
+            <option value="StudyRoom">Study Room</option>
+            <option value="MedicalOffice">Medical Office</option>
+            <option value="WaitingRoom">Waiting Room</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
