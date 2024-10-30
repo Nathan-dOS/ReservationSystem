@@ -1,10 +1,13 @@
 using Reservation.Data;
 using Microsoft.EntityFrameworkCore;
+using Reservation.Interfaces;
+using Reservation.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));

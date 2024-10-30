@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reservation.Data;
+using Reservation.Interfaces;
 using Reservation.Models;
 
 namespace Reservation.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IRoomRepository _roomRepository;
 
-        public RoomController(ApplicationDBContext context)
+        public RoomController(IRoomRepository roomRepository)
         {
-            _context = context;
+            _roomRepository = roomRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var rooms = _context.Rooms.ToList();
+           IEnumerable<Room> rooms = await _roomRepository.GetAllRooms();
 
             return View(rooms);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Room roomID = _context.Rooms.FirstOrDefault(c => c.IdRoom == id);
+            Room roomID = await _roomRepository.GetByIdAsync(id);
 
             return View(roomID);
         }
@@ -32,14 +33,13 @@ namespace Reservation.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Room room)
+        public IActionResult Create(Room room)
         {
             if (!ModelState.IsValid)
             {
                 return View(room);
             }
-            _context.Add(room);
-            _context.SaveChanges();
+            _roomRepository.Add(room);
 
             return RedirectToAction("Index");
 
