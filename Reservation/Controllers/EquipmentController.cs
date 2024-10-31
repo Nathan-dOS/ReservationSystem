@@ -16,12 +16,30 @@ namespace Reservation.Controllers
         }
         public async Task<IActionResult> Index()
         {
+
             IEnumerable<Equipment> equipments = await _equipmentRepository.GetAllEquipments();
 
             return View(equipments);
+        }
 
-
+        public IActionResult Create()
+        {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Create(Equipment equipment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            _equipmentRepository.Add(equipment);
+
+            return RedirectToAction("Index");
+
+        }
+
     }
 }
