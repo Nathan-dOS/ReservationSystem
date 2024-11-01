@@ -16,16 +16,16 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Status">Status</label>
-        <select asp-for="Status" asp-items="@Html.GetEnumSelectList<EquipmentStatus>()" class="form-control" required>
+        <label asp-for="EquipmentStatus">Status</label>
+        <select asp-for="EquipmentStatus" asp-items="@Html.GetEnumSelectList<EnumEquipmentStatus>()" class="form-control" required>
             <option value="">Select status</option>
 
         </select>
     </div>
 
     <div class="form-group">
-        <label asp-for="Price">Price</label>
-        <input asp-for="Price" type="number" class="form-control" id="price" step="0.01" placeholder="Enter price" required>
+        <label asp-for="EquipmentPrice">Price</label>
+        <input asp-for="EquipmentPrice" type="number" class="form-control" id="price" step="0.01" placeholder="Enter price" required>
     </div>
 
     <div class="form-group">

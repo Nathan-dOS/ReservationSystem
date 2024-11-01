@@ -27,7 +27,7 @@
                         <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">
                         <div class="card-body">
                             <p class="card-text"> Equipamento: @item.EquipmentName</p>
-                            <p class="card-text"> Preço: @item.Price</p>
+                            <p class="card-text"> Preço: @item.EquipmentPrice</p>
                             <p class="card-text"> Quantidade: @item.QuantityAvailable</p>
 
                             
@@ -36,7 +36,7 @@
                                    @*  <a asp-controller="Room" asp-action="Detail" asp-route-id="@item.IdRoom" type="button" class="btn btn-sm btn-outline-secondary">View</a>
                                     <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> *@
                                 </div>
-                                <small class="text-muted"> Status: @item.Status</small>
+                                <small class="text-muted"> Status: @item.EquipmentStatus</small>
                             </div>
                         </div>
                     </div>

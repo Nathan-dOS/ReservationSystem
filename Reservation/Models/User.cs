@@ -1,33 +1,35 @@
-﻿using Reservation.Data.Enum;
+﻿using Microsoft.EntityFrameworkCore;
+using Reservation.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Models
 {
+    [Index(nameof(CPF), nameof(CRMNumber), nameof(OABNumber), IsUnique = true)]
     public class User
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [StringLength(11)]
         public string CPF { get; set; }
 
         [Required]
-        public PersonType Type { get; set; }
+        public EnumUserType UserType { get; set; }
 
         [StringLength(10)]
-        public string? CRM { get; set; } // Opcional, controle externo de formato
+        public string? CRMNumber { get; set; } // Opcional, controle externo de formato
 
         [StringLength(10)]
-        public string? OAB { get; set; } // Opcional, controle externo de formato
+        public string? OABNumber { get; set; } // Opcional, controle externo de formato
 
         [Required]
         [StringLength(60)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(15)]
-        public string Telefone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(60)]

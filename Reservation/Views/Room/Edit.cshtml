@@ -11,8 +11,8 @@
 
 <form method="post" asp-action="Edit">
     <div class="form-group">
-        <label asp-for="Number" for="roomNumber">Room Number</label>
-        <input asp-for="Number" type="text" class="form-control" id="roomNumber" maxlength="10" placeholder="Enter room number" required>
+        <label asp-for="RoomNumber" for="roomNumber">Room Number</label>
+        <input asp-for="RoomNumber" type="text" class="form-control" id="roomNumber" maxlength="10" placeholder="Enter room number" required>
     </div>
 
     <div class="form-group">
@@ -21,12 +21,12 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Size" for="size">Size (m²)</label>
-        <input asp-for="Size" type="number" class="form-control" id="size" step="0.01" placeholder="Enter size">
+        <label asp-for="SizeInSquareMeters" for="size">Size (m²)</label>
+        <input asp-for="SizeInSquareMeters" type="number" class="form-control" id="size" step="0.01" placeholder="Enter size">
     </div>
 
     <div class="form-group">
-        <label asp-for="Status" asp-items="@Html.(GetEnumSelectList<RoomStatus>())" for="status">Status</label>
+        <label asp-for="RoomStatus" asp-items="@Html.(GetEnumSelectList<EnumRoomStatus>())" for="status">Status</label>
         <select class="form-control" id="status" required>
             <!-- Opções de status para RoomStatus -->
             <option value="Available">Available</option>
@@ -37,8 +37,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Price" for="price">Price</label>
-        <input asp-for="Price" type="number" class="form-control" id="price" step="0.01" placeholder="Enter price" required>
+        <label asp-for="RoomPrice" for="price">Price</label>
+        <input asp-for="RoomPrice" type="number" class="form-control" id="price" step="0.01" placeholder="Enter price" required>
     </div>
 
     <div class="form-group">
@@ -47,22 +47,22 @@
     </div>
 
     <div class="form-check">
-        <input asp-for="Internet" type="checkbox" class="form-check-input" id="internet">
-        <label asp-for="Internet"  class="form-check-label" for="internet">Internet</label>
+        <input asp-for="HasInternet" type="checkbox" class="form-check-input" id="internet">
+        <label asp-for="HasInternet" class="form-check-label" for="internet">Internet</label>
     </div>
 
     <div class="form-check">
-        <input asp-for="SecurityCamera" type="checkbox" class="form-check-input" id="securityCamera">
-        <label asp-for="SecurityCamera" class="form-check-label" for="securityCamera">Security Camera</label>
+        <input asp-for="HasSecurityCamera" type="checkbox" class="form-check-input" id="securityCamera">
+        <label asp-for="HasSecurityCamera" class="form-check-label" for="securityCamera">Security Camera</label>
     </div>
 
     <div class="form-check">
-        <input asp-for="AirConditioning" type="checkbox" class="form-check-input" id="airConditioning">
-        <label asp-for="AirConditioning" class="form-check-label" for="airConditioning">Air Conditioning</label>
+        <input asp-for="HasAirConditioning" type="checkbox" class="form-check-input" id="airConditioning">
+        <label asp-for="HasAirConditioning" class="form-check-label" for="airConditioning">Air Conditioning</label>
     </div>
 
     <div class="form-group">
-        <label asp-for="Type" asp-items="@Html.(GetEnumSelectList<RoomType>())" for="type">Room Type</label>
+        <label asp-for="RoomType" asp-items="@Html.(GetEnumSelectList<RoomType>())" for="type">Room Type</label>
         <select class="form-control" id="type" required>
             <option value="MeetingRoom">Meeting Room</option>
             <option value="Auditorium">Auditorium</option>

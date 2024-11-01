@@ -5,29 +5,27 @@ namespace Reservation.ViewModel
 {
     public class EditRoomViewModel
     {
-        public int IdRoom { get; set; }
+        public int RoomId { get; set; }
 
-        public string Number { get; set; }
+        public string RoomNumber { get; set; }
 
         public int Capacity { get; set; }
 
-        public float Size { get; set; }
+        public float SizeInSquareMeters { get; set; }
 
-        public RoomStatus Status { get; set; }
-        
-        public float Price { get; set; }
+        public EnumRoomStatus RoomStatus { get; set; }
+ 
+        public float RoomPrice { get; set; }
 
         public string PhotoAlbum { get; set; }  // Caminho do álbum de fotos
 
-        public bool Internet { get; set; }
+        public bool HasInternet { get; set; }
 
-        public bool SecurityCamera { get; set; }
+        public bool HasSecurityCamera { get; set; }
 
-        [Required]
-        public bool AirConditioning { get; set; }
+        public bool HasAirConditioning { get; set; }
 
-        [Required]
-        public RoomType Type { get; set; }
+        public EnumRoomType RoomType { get; set; }
     }
 }
 

@@ -58,17 +58,17 @@ namespace Reservation.Controllers
 
             var roomVM = new EditRoomViewModel
             {
-                IdRoom = room.IdRoom,
-                Number = room.Number,
+                RoomId = room.RoomId,
+                RoomNumber = room.RoomNumber,
                 Capacity = room.Capacity,
-                Size = room.Size,
-                Internet = room.Internet,
-                Status = room.Status,
-                Price = room.Price,
+                SizeInSquareMeters = room.SizeInSquareMeters,
+                HasInternet = room.HasInternet,
+                RoomStatus = room.RoomStatus,
+                RoomPrice = room.RoomPrice,
                 PhotoAlbum = room.PhotoAlbum,
-                SecurityCamera = room.SecurityCamera,
-                AirConditioning = room.AirConditioning,
-                Type = room.Type
+                HasSecurityCamera = room.HasSecurityCamera,
+                HasAirConditioning = room.HasAirConditioning,
+                RoomType = room.RoomType
             };
 
             return View(roomVM);
@@ -85,17 +85,17 @@ namespace Reservation.Controllers
 
             var room = new Room
             {
-                IdRoom = id,
-                Number = roomVM.Number,
+                RoomId = id,
+                RoomNumber = roomVM.RoomNumber,
                 Capacity = roomVM.Capacity,
-                Size = roomVM.Size,
-                Internet = roomVM.Internet,
-                Status = roomVM.Status,
-                Price = roomVM.Price,
+                SizeInSquareMeters = roomVM.SizeInSquareMeters,
+                HasInternet = roomVM.HasInternet,
+                RoomStatus = roomVM.RoomStatus,
+                RoomPrice = roomVM.RoomPrice,
                 PhotoAlbum = roomVM.PhotoAlbum,
-                SecurityCamera = roomVM.SecurityCamera,
-                AirConditioning = roomVM.AirConditioning,
-                Type = roomVM.Type
+                HasSecurityCamera = roomVM.HasSecurityCamera,
+                HasAirConditioning = roomVM.HasAirConditioning,
+                RoomType = roomVM.RoomType
             };
 
             _roomRepository.Update(room);

@@ -1,6 +1,6 @@
 ﻿namespace Reservation.Data.Enum
 {
-    public enum RoomStatus
+    public enum EnumEquipmentStatus
     {
         Available,
         Occupied,

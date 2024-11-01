@@ -23,16 +23,16 @@
 
         <div class="col-md-4">
             <h3 class="my-3">Room</h3>
-            <p>Price: @Model.Price</p>
-            <p>Type: @Model.Type</p>
+            <p>Price: @Model.RoomPrice</p>
+            <p>Type: @Model.RoomType</p>
             <h3 class="my-3">Plus Info</h3>
             <ul>
-                <li>Status: @Model.Status</li>
+                <li>Status: @Model.RoomStatus</li>
                 <li>Capacity: @Model.Capacity</li>
-                <li>Internet @Model.Internet</li>
-                <li>Air Conditioning: @Model.AirConditioning</li>
-                <li>SecurityCamera: @Model.SecurityCamera</li>
-                <li>Size: @Model.Size</li>
+                <li>Internet @Model.HasInternet</li>
+                <li>Air Conditioning: @Model.HasAirConditioning</li>
+                <li>SecurityCamera: @Model.HasSecurityCamera</li>
+                <li>Size: @Model.SizeInSquareMeters</li>
             </ul>
         </div>
 

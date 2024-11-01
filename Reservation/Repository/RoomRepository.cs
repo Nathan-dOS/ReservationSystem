@@ -40,7 +40,7 @@ namespace Reservation.Repository
 
         public async Task<Room> GetByIdAsync(int id)
         {
-            return await _context.Rooms.FirstOrDefaultAsync(i => i.IdRoom == id);
+            return await _context.Rooms.FirstOrDefaultAsync(i => i.RoomId == id);
         }
          
         public bool Save()

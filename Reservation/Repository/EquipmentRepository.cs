@@ -20,7 +20,7 @@ namespace Reservation.Repository
         }
         public async Task<Equipment> GetEquipmentById(int id)
         {
-            return await _context.Equipments.FirstOrDefaultAsync(c => c.IdEquipment == id);
+            return await _context.Equipments.FirstOrDefaultAsync(c => c.EquipmentId == id);
         }
         public bool Save()
         {

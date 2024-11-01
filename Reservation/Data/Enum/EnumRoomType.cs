@@ -1,6 +1,6 @@
 ﻿namespace Reservation.Data.Enum
 {
-    public enum RoomType
+    public enum EnumRoomType
     {
         MeetingRoom,
         Auditorium,

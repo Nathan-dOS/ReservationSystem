@@ -7,17 +7,17 @@ namespace Reservation.Models
     public class Equipment
     {
         [Key]
-        public int IdEquipment { get; set; }
+        public int EquipmentId { get; set; }
 
         [Required]
         [MaxLength(100)]
         public string EquipmentName { get; set; }
 
         [Required]
-        public EquipmentStatus Status { get; set; }
+        public EnumEquipmentStatus EquipmentStatus { get; set; }
 
         [Required]
-        public float Price { get; set; }
+        public float EquipmentPrice { get; set; }
 
         [Required]
         public int QuantityAvailable { get; set; }

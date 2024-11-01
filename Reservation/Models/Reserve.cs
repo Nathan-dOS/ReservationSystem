@@ -6,18 +6,18 @@ namespace Reservation.Models
     public class Reserve
     {
         [Key]
-        public required int Id { get; set; }
+        public required int ReserveId { get; set; }
         [ForeignKey("User")]
-        public required string UserId { get; set; }
+        public required int UserId { get; set; }
         [ForeignKey("Room")]
-        public required string RoomId { get; set; }
+        public required int RoomId { get; set; }
         [ForeignKey("Equipment")]
-        public required string EquipementId { get; set; }
-        public required DateTime Date { get; set; }
-        public required TimeOnly Start { get; set; }
-        public required TimeOnly End { get; set; }
-        public required string Status { get; set; }
+        public required int? EquipementId { get; set; }
+        public required DateTime ReserveDate { get; set; }
+        public required TimeOnly ReserveStart { get; set; }
+        public required TimeOnly ReserveEnd { get; set; }
+        public required string ReserveStatus { get; set; }
         public required float RentPrice { get; set; }
-        public required string Photos { get; set; }
+        public required string ReservePhotos { get; set; }
     }
 }

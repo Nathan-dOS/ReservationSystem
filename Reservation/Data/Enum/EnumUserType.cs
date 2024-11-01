@@ -1,6 +1,6 @@
 ﻿namespace Reservation.Data.Enum
 {
-    public enum PersonType
+    public enum EnumUserType
     {
         client,
         admin,
