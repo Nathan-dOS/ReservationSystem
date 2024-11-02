@@ -17,6 +17,16 @@ namespace Reservation.Data
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.PhotoAlbum)
+                .WithOne(i => i.Room)
+                .HasForeignKey(i => i.RoomId);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 
 

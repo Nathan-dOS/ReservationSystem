@@ -36,16 +36,4 @@ namespace Reservation.Models
         [Required]
         public EnumRoomType RoomType { get; set; }
     }
-
-    public class RoomImage
-    {
-        [Key]
-        public int ImageId { get; set; }
-
-        [Required]
-        public byte[] ImageData { get; set; }  
-
-        public int RoomId { get; set; }  
-        public Room Room { get; set; }
-    }
 }

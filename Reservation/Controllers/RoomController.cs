@@ -52,7 +52,6 @@ namespace Reservation.Controllers
                 RoomType = roomVM.RoomType
             };
 
-            // Adiciona as imagens à lista PhotoAlbum do Room
             if (roomVM.RoomImages != null && roomVM.RoomImages.Any())
             {
                 foreach (var file in roomVM.RoomImages)
@@ -89,8 +88,7 @@ namespace Reservation.Controllers
                 HasInternet = room.HasInternet,
                 RoomStatus = room.RoomStatus,
                 RoomPrice = room.RoomPrice,
-                // Convert RoomImage list to a list of IFormFile
-                RoomImages = new List<IFormFile>(),
+                ExistingImages = room.PhotoAlbum.Select(img => img.ImageData).ToList(),
                 HasSecurityCamera = room.HasSecurityCamera,
                 HasAirConditioning = room.HasAirConditioning,
                 RoomType = room.RoomType
@@ -111,7 +109,6 @@ namespace Reservation.Controllers
             var room = await _roomRepository.GetByIdAsync(id);
             if (room == null) return View("Error");
 
-            // Atualiza as propriedades do Room com os valores do ViewModel
             room.RoomNumber = roomVM.RoomNumber;
             room.Capacity = roomVM.Capacity;
             room.SizeInSquareMeters = roomVM.SizeInSquareMeters;
@@ -122,7 +119,6 @@ namespace Reservation.Controllers
             room.HasAirConditioning = roomVM.HasAirConditioning;
             room.RoomType = roomVM.RoomType;
 
-            // Gerencia as imagens do PhotoAlbum
             if (roomVM.RoomImages != null && roomVM.RoomImages.Any())
             {
                 foreach (var file in roomVM.RoomImages)

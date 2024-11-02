@@ -16,9 +16,10 @@ namespace Reservation.Repository
 
         public bool Add(Room room)
         {
-            _context.Add(room);
+            _context.Rooms.Add(room);
             return Save();
         }
+
 
         public bool Update(Room room) 
         {
@@ -34,15 +35,19 @@ namespace Reservation.Repository
 
         public async Task<IEnumerable<Room>> GetAllRooms()
         {
-            return await _context.Rooms.ToListAsync();
-
+            return await _context.Rooms
+                .Include(r => r.PhotoAlbum) 
+                .ToListAsync();
         }
 
         public async Task<Room> GetByIdAsync(int id)
         {
-            return await _context.Rooms.FirstOrDefaultAsync(i => i.RoomId == id);
+            return await _context.Rooms
+                .Include(r => r.PhotoAlbum) 
+                .FirstOrDefaultAsync(i => i.RoomId == id);
         }
-         
+
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
