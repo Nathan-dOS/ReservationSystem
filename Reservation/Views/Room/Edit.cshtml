@@ -1,5 +1,5 @@
 ﻿@using Reservation.ViewModel
-@model EditRoomViewModel
+@model RoomViewModel
 
 
 @*
@@ -42,9 +42,20 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="PhotoAlbum" for="photoAlbum">Photo Album</label>
-        <input asp-for="PhotoAlbum" type="text" class="form-control" id="photoAlbum" maxlength="255" placeholder="Enter photo album path">
+        <label for="images">Upload de Imagens</label>
+        <input asp-for="RoomImages" type="file" class="form-control" id="images" multiple />
     </div>
+
+    @if (Model.ExistingImages != null && Model.ExistingImages.Any())
+    {
+        <div>
+            <h5>Imagens Atuais:</h5>
+            @foreach (var image in Model.ExistingImages)
+            {
+                <img src="data:image;base64,@(Convert.ToBase64String(image))" class="img-thumbnail" alt="Room Image" width="150" height="150" />
+            }
+        </div>
+    }
 
     <div class="form-check">
         <input asp-for="HasInternet" type="checkbox" class="form-check-input" id="internet">

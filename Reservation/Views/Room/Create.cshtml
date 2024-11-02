@@ -1,4 +1,5 @@
-﻿@model Room
+﻿@using Reservation.ViewModel
+@model RoomViewModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -40,8 +41,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="PhotoAlbum" for="photoAlbum">Photo Album</label>
-        <input asp-for="PhotoAlbum" type="text" class="form-control" id="photoAlbum" maxlength="255" placeholder="Enter photo album path">
+        <label for="images">Upload de Imagens</label>
+        <input asp-for="RoomImages" type="file" class="form-control" id="images" multiple />
     </div>
 
     <div class="form-check">
