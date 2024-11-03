@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.ViewModel
 {
-    public class EditRoomViewModel
+    public class RoomViewModel
     {
         public int RoomId { get; set; }
 
@@ -17,7 +17,8 @@ namespace Reservation.ViewModel
  
         public float RoomPrice { get; set; }
 
-        public string PhotoAlbum { get; set; }  // Caminho do álbum de fotos
+        public List<IFormFile> RoomImages { get; set; } = new List<IFormFile>();
+        public List<byte[]> ExistingImages { get; set; } = new List<byte[]>();
 
         public bool HasInternet { get; set; }
 

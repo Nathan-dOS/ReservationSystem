@@ -22,8 +22,7 @@ namespace Reservation.Models
         [Required]
         public float RoomPrice { get; set; }
 
-        [MaxLength(255)]
-        public string PhotoAlbum { get; set; }  // Caminho do álbum de fotos
+        public List<RoomImage> PhotoAlbum { get; set; } = new List<RoomImage>();
 
         [Required]
         public bool HasInternet { get; set; }
