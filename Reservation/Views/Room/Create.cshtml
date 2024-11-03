@@ -8,7 +8,7 @@
 }
 
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="RoomNumber" for="roomNumber">Room Number</label>
         <input asp-for="RoomNumber" type="text" class="form-control" id="roomNumber" maxlength="10" placeholder="Enter room number" required>
