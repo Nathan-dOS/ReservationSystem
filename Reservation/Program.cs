@@ -2,6 +2,9 @@ using Reservation.Data;
 using Microsoft.EntityFrameworkCore;
 using Reservation.Interfaces;
 using Reservation.Repository;
+using Reservation.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,13 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
+
 
 var app = builder.Build();
 

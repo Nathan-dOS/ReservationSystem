@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Reservation.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Models
 {
     [Index(nameof(CPF), nameof(CRMNumber), nameof(OABNumber), IsUnique = true)]
-    public class User
+    public class User : IdentityUser
     {
         [Key]
         [Required]
