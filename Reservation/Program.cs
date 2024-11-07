@@ -24,6 +24,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie();
 
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+});
+
+
 var app = builder.Build();
 
 

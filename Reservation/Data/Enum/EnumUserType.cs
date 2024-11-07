@@ -2,7 +2,7 @@
 {
     public enum EnumUserType
     {
-        client,
+        user,
         admin,
         general
     }

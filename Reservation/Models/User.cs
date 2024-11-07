@@ -26,7 +26,7 @@ namespace Reservation.Models
 
         [Required]
         [StringLength(60)]
-        public string Name { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(15)]
