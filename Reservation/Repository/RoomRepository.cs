@@ -36,14 +36,14 @@ namespace Reservation.Repository
         public async Task<IEnumerable<Room>> GetAllRooms()
         {
             return await _context.Rooms
-                .Include(r => r.PhotoAlbum) 
+                .Include(r => r.PhotoAlbum) // inclui a lista de imagens
                 .ToListAsync();
         }
 
         public async Task<Room> GetByIdAsync(int id)
         {
             return await _context.Rooms
-                .Include(r => r.PhotoAlbum) 
+                .Include(r => r.PhotoAlbum) // inclui a lista de imagens
                 .FirstOrDefaultAsync(i => i.RoomId == id);
         }
 
