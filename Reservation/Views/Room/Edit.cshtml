@@ -1,5 +1,5 @@
 ﻿@using Reservation.ViewModel
-@model RoomViewModel
+@model EditRoomViewModel
 
 
 @*
@@ -50,9 +50,13 @@
     {
         <div>
             <h5>Imagens Atuais:</h5>
-            @foreach (var image in Model.ExistingImages)
+            @for (int i = 0; i < Model.ExistingImages.Count; i++)// percorre todas as imagens existentes
             {
-                <img src="data:image;base64,@(Convert.ToBase64String(image))" class="img-thumbnail" alt="Room Image" @*width="150" height="150"*@ />
+                var imageBase64 = Convert.ToBase64String(Model.ExistingImages[i]);
+                <div class="image-container">
+                    <img src="data:image;base64,@imageBase64" class="img-thumbnail" alt="Room Image" />
+                    <input type="checkbox" name="DeleteImages" value="@i" /> Deletar <!-- cria uma checkbox para deletar imagem desejada-->
+                </div>
             }
         </div>
     }
