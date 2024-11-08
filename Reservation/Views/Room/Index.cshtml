@@ -24,16 +24,20 @@
         {
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
-                        <img class="card-img-top"
-                             src="@(item.PhotoAlbum.Any() ? $"data:image;base64,{Convert.ToBase64String(item.PhotoAlbum.First().ImageData)}" : "https://via.placeholder.com/150")"
-                             alt="Imagem da sala">
+                        <div>
+                            <a asp-controller="Room" asp-action="Detail" asp-route-id="@item.RoomId"><!-- details direto ao clicar na imagem -->
+                                <img class="card-img-top" 
+                                    src="@(item.PhotoAlbum.Any() ? $"data:image;base64,{Convert.ToBase64String(item.PhotoAlbum.First().ImageData)}" : "https://via.placeholder.com/150")"
+                                    alt="Imagem da sala">
+                            </a>
+                        </div>
+                        
                         <div class="card-body">
                             <p class="card-text"> Numero: @item.RoomNumber</p>
                             <p class="card-text"> Status: @item.RoomStatus</p>
                             <p class="card-text"> Preço: @item.RoomPrice</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a  asp-controller="Room" asp-action="Detail" asp-route-id="@item.RoomId" type="button" class="btn btn-sm btn-outline-secondary">View</a> 
                                     <a asp-controller="Room" asp-action="Edit" asp-route-id="@item.RoomId" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
                                 </div>
                                 <small class="text-muted"> Tamanho: @item.SizeInSquareMeters</small>

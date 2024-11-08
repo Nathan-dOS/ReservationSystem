@@ -35,7 +35,7 @@ namespace Reservation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RoomViewModel roomVM)
+        public async Task<IActionResult> Create(CreateRoomViewModel roomVM)
         {
             if (!ModelState.IsValid) return View(roomVM);
 
@@ -52,16 +52,16 @@ namespace Reservation.Controllers
                 RoomType = roomVM.RoomType
             };
 
-            if (roomVM.RoomImages != null && roomVM.RoomImages.Any())
+            if (roomVM.RoomImages != null && roomVM.RoomImages.Any())// se houver imagens as adiciona a tabela
             {
                 foreach (var file in roomVM.RoomImages)
                 {
                     if (file.Length > 0)
                     {
-                        using var ms = new MemoryStream();
-                        await file.CopyToAsync(ms);
-                        var image = new RoomImage { ImageData = ms.ToArray() };
-                        room.PhotoAlbum.Add(image);
+                        using var ms = new MemoryStream();// cria um novo MemoryStream
+                        await file.CopyToAsync(ms);// copia o arquivo para o MemoryStream
+                        var image = new RoomImage { ImageData = ms.ToArray() };// cria um novo objeto RoomImage e armazena o array de bytes
+                        room.PhotoAlbum.Add(image);// adiciona a imagem a lista de imagens do quarto
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace Reservation.Controllers
                 return View("Error");
             }
 
-            var roomVM = new RoomViewModel
+            var roomVM = new EditRoomViewModel
             {
                 RoomId = room.RoomId,
                 RoomNumber = room.RoomNumber,
@@ -88,7 +88,7 @@ namespace Reservation.Controllers
                 HasInternet = room.HasInternet,
                 RoomStatus = room.RoomStatus,
                 RoomPrice = room.RoomPrice,
-                ExistingImages = room.PhotoAlbum.Select(img => img.ImageData).ToList(),
+                ExistingImages = room.PhotoAlbum.Select(img => img.ImageData).ToList(),// lista de imagens ja armazenadas
                 HasSecurityCamera = room.HasSecurityCamera,
                 HasAirConditioning = room.HasAirConditioning,
                 RoomType = room.RoomType
@@ -98,7 +98,7 @@ namespace Reservation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, RoomViewModel roomVM)
+        public async Task<IActionResult> Edit(int id, EditRoomViewModel roomVM)
         {
             if (!ModelState.IsValid)
             {
@@ -119,7 +119,18 @@ namespace Reservation.Controllers
             room.HasAirConditioning = roomVM.HasAirConditioning;
             room.RoomType = roomVM.RoomType;
 
-            if (roomVM.RoomImages != null && roomVM.RoomImages.Any())
+            if (roomVM.DeleteImages != null && roomVM.DeleteImages.Any())// se houver imagens a serem deletadas as remove da tabela
+            {
+                foreach (var index in roomVM.DeleteImages.OrderByDescending(i => i))
+                {
+                    if (index >= 0 && index < room.PhotoAlbum.Count)
+                    {
+                        room.PhotoAlbum.RemoveAt(index);
+                    }
+                }
+            }
+
+            if (roomVM.RoomImages != null && roomVM.RoomImages.Any()) // se houver imagens as adiciona a tabela
             {
                 foreach (var file in roomVM.RoomImages)
                 {

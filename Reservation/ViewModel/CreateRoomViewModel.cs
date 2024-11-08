@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.ViewModel
 {
-    public class RoomViewModel
+    public class CreateRoomViewModel
     {
         public int RoomId { get; set; }
 
@@ -14,11 +14,9 @@ namespace Reservation.ViewModel
         public float SizeInSquareMeters { get; set; }
 
         public EnumRoomStatus RoomStatus { get; set; }
- 
-        public float RoomPrice { get; set; }
 
-        public List<IFormFile> RoomImages { get; set; } = new List<IFormFile>();
-        public List<byte[]> ExistingImages { get; set; } = new List<byte[]>();
+        public float RoomPrice { get; set; }
+        public List<IFormFile> RoomImages { get; set; } = new List<IFormFile>(); // IFormFile para fazer upload de novas imagens
 
         public bool HasInternet { get; set; }
 
@@ -29,4 +27,3 @@ namespace Reservation.ViewModel
         public EnumRoomType RoomType { get; set; }
     }
 }
-
