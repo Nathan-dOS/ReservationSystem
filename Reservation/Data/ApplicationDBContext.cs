@@ -10,8 +10,6 @@ namespace Reservation.Data
         {
         }
 
-        public DbSet<AdministrativeManager> AdministrativeManagers { get; set; }
-        public DbSet<GeneralManager> GeneralManagers { get; set; }
         public DbSet<Reserve> Reserves { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }

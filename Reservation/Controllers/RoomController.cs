@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Reservation.Data;
 using Reservation.Interfaces;
 using Reservation.Models;
@@ -17,18 +18,20 @@ namespace Reservation.Controllers
             _roomRepository = roomRepository;
         }
 
+        [Authorize] // Precisa esta logado para acessar ROOM
         public async Task<IActionResult> Index()
         {
             IEnumerable<Room> rooms = await _roomRepository.GetAllRooms();
             return View(rooms);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
             Room roomID = await _roomRepository.GetByIdAsync(id);
             return View(roomID);
         }
 
+        [Authorize(Roles = "admin,general")] // Precisa ser Admin ou general 
         public IActionResult Create()
         {
             return View();
@@ -71,6 +74,7 @@ namespace Reservation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin,general")] //Precisa ser admin ou general
         public async Task<IActionResult> Edit(int id)
         {
             var room = await _roomRepository.GetByIdAsync(id);

@@ -1,5 +1,6 @@
-﻿﻿@using Reservation.ViewModel
+﻿@using Reservation.ViewModel
 @model RegisterViewModel
+@using Reservation.Data.Enum
 
 @{
     ViewData["Title"] = "Sign up";
@@ -28,11 +29,43 @@
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CPF" class="control-label"></label>
+                        <input asp-for="CPF" class="form-control" />
+                        <span asp-validation-for="CPF" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="UserType" class="control-label"></label>
+                        <select asp-for="UserType" class="form-control" asp-items="Html.GetEnumSelectList<EnumUserType>()"></select>
+                        <span asp-validation-for="UserType" class="text-danger"></span>
+                    </div>
+
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="ConfirmPassword" class="control-label"></label>
                         <input asp-for="ConfirmPassword" class="form-control" />

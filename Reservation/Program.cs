@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    options.User.RequireUniqueEmail = true;
 });
 
 

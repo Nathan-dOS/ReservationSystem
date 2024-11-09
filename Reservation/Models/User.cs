@@ -5,15 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Models
 {
-    [Index(nameof(CPF), nameof(CRMNumber), nameof(OABNumber), IsUnique = true)]
+    [Index(nameof(CPF), nameof(CRMNumber), nameof(OABNumber), nameof(Email), IsUnique = true)] // Essas tabelas nao podem repetir o mesmo dado
     public class User : IdentityUser
     {
-        [Key]
-        [Required]
-        public int UserId { get; set; }
-
         [StringLength(11)]
+        [Required]
         public string CPF { get; set; }
+        [Required]
+        public override string Email {get; set; }
 
         [Required]
         public EnumUserType UserType { get; set; }
@@ -25,19 +24,19 @@ namespace Reservation.Models
         public string? OABNumber { get; set; } // Opcional, controle externo de formato
 
         [Required]
-        [StringLength(60)]
-        public string UserName { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
 
         [Required]
         [StringLength(15)]
-        public string PhoneNumber { get; set; }
-
-        [Required]
-        [StringLength(60)]
-        public string Password { get; set; } // Armazena hash da senha
+        public override string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100)]
         public string Address { get; set; }
+
+        public string? AssignedBuilding { get; set; }
+        public DateOnly? EntryDate { get; set; }
+
     }
 }
