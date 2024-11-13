@@ -14,9 +14,6 @@ namespace Reservation.Models
         [Required]
         public override string Email {get; set; }
 
-        [Required]
-        public EnumUserType UserType { get; set; }
-
         [StringLength(10)]
         public string? CRMNumber { get; set; } // Opcional, controle externo de formato
 

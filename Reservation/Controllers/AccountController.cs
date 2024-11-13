@@ -82,7 +82,6 @@ namespace Reservation.Controllers
                 Address = registerViewModel.Address,
                 PhoneNumber = registerViewModel.PhoneNumber,
                 CPF = registerViewModel.CPF,
-                UserType = registerViewModel.UserType
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
