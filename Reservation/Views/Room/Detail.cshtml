@@ -44,6 +44,8 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only"></span>
                 </a>
+
+
             </div>
         </div>
 
@@ -59,7 +61,11 @@
                 <li>Ar Condicionado: @(Model.HasAirConditioning ? "Sim" : "Não")</li>
                 <li>Câmera de Segurança: @(Model.HasSecurityCamera ? "Sim" : "Não")</li>
                 <li>Tamanho: @Model.SizeInSquareMeters m²</li>
+
+                
+
             </ul>
+            <a asp-controller="Reserve" asp-action="Create" asp-route-id="@Model.RoomId">Reservar</a>
         </div>
     </div>
 </div>

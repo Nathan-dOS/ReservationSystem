@@ -1,0 +1,20 @@
+﻿@using Reservation.ViewModel
+@model EditReportViewModel
+
+<h2>Edit Report</h2>
+
+<form asp-action="Edit" method="post">
+    <!-- Outros campos do formulário -->
+
+    <div>
+        <h4>Arquivos:</h4>
+        @foreach (var file in Model.ExistingFiles)
+        {
+            <div>
+                <a asp-action="DownloadFile" asp-route-fileId="@file.ReportFileId" class="btn btn-primary">Download</a>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+</form>
