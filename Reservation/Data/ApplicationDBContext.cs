@@ -14,6 +14,8 @@ namespace Reservation.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<ReportFile> ReportFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +23,11 @@ namespace Reservation.Data
                 .HasMany(r => r.PhotoAlbum)
                 .WithOne(i => i.Room)
                 .HasForeignKey(i => i.RoomId);
+
+            modelBuilder.Entity<Report>()
+                .HasMany(r => r.ReportArchives)
+                .WithOne(i => i.Report)
+                .HasForeignKey(i => i.ReportId);
 
             base.OnModelCreating(modelBuilder);
         }

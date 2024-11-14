@@ -41,7 +41,7 @@
                             <p class="card-text"> Status: @item.RoomStatus</p>
                             <p class="card-text"> Preço: @item.RoomPrice</p> 
                             <div class="d-flex justify-content-between align-items-center">
-                                @* Verificação se ta logado e é admin ou generald*@
+                                @* Verificação se ta logado e é admin ou general*@
                                 @if (User.Identity.IsAuthenticated && (User.IsInRole("general") || User.IsInRole("admin")))
                                 {
                                     <div class="btn-group">
