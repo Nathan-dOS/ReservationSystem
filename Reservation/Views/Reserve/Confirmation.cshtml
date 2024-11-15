@@ -1,0 +1,15 @@
+﻿@* Views/Reserve/Confirmacao.cshtml *@
+@{
+    ViewData["Title"] = "Confirmação de Reserva";
+}
+
+<div class="container">
+    <h2 class="my-4">Reserva realizada com sucesso!</h2>
+    <p>O que você gostaria de fazer agora?</p>
+
+    <div class="d-flex gap-3 mt-4">
+        <a asp-controller="Reserve" asp-action="Historico" class="btn btn-primary">Ver Histórico</a>
+
+        <a asp-controller="Room" asp-action="Index" class="btn btn-secondary">Voltar para Salas</a>
+    </div>
+</div>

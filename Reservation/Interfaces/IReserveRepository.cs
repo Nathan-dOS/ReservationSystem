@@ -8,7 +8,7 @@ public interface IReserveRepository
     Task<Reserve> GetReserveByIdAsync(int reserveId);
     Task<IEnumerable<Reserve>> GetReservesByUserIdAsync(string userId);
     Task<IEnumerable<Reserve>> GetReservesByRoomIdAsync(int roomId);
-    Task<Reserve> GetReserveByRoomAndDateAsync(int roomId, DateTime reserveDate, TimeOnly reserveStart, TimeOnly reserveEnd);
+    Task<Reserve> GetReserveByRoomAndDateAsync(int roomId, DateOnly reserveDate, TimeOnly reserveStart, TimeOnly reserveEnd);
     bool AddReserve(Reserve reserve);
     bool UpdateReserve(Reserve reserve);
     bool DeleteReserve(Reserve reserve);
