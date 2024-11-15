@@ -18,7 +18,7 @@ namespace Reservation.Controllers
         }
 
         [Authorize]
-        public IActionResult Create(int? roomId)
+        public IActionResult Create(int roomId)
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
@@ -34,7 +34,7 @@ namespace Reservation.Controllers
 
             var reserveVM = new CreateReserveViewModel
             {
-                RoomId = roomId.Value,
+                RoomId = roomId,
                 UserId = userId,
             };
 
@@ -42,7 +42,7 @@ namespace Reservation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RoomDetailViewModel? roomDetail)
+        public async Task<IActionResult> Create(RoomDetailViewModel roomDetail)
         {
 
             if (!ModelState.IsValid)
@@ -54,14 +54,6 @@ namespace Reservation.Controllers
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
                     Console.WriteLine(error.ErrorMessage);
-                }
-
-                foreach (var error in ModelState)
-                {
-                    if (error.Value.Errors.Count > 0)
-                    {
-                        Console.WriteLine($"Erro no campo {error.Key}: {string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage))}");
-                    }
                 }
 
 
