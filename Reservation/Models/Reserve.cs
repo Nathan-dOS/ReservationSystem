@@ -13,7 +13,7 @@ namespace Reservation.Models
         public required int RoomId { get; set; }
         [ForeignKey("Equipment")]
         public int? EquipementId { get; set; }
-        public required DateTime ReserveDate { get; set; }
+        public required DateOnly ReserveDate { get; set; }
         public required TimeOnly ReserveStart { get; set; }
         public required TimeOnly ReserveEnd { get; set; }
         public required string ReserveStatus { get; set; }

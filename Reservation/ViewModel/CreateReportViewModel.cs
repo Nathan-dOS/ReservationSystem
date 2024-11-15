@@ -11,7 +11,7 @@ namespace Reservation.ViewModel
 
         public bool ReportBanStatus { get; set; }
 
-        public DateTime ReportDate { get; set; }
+        public DateOnly ReportDate { get; set; }
         public List<IFormFile> ReportFiles { get; set; } = new List<IFormFile>(); // IFormFile para fazer upload de novas imagens
         public string ReportCreatedBy { get; set; }
 

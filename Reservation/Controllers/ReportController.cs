@@ -65,7 +65,7 @@ namespace Reservation.Controllers
                 UserId = userId, // Set the required UserId property
                 ReportTitle = reportVM.ReportTitle,
                 ReportObservation = reportVM.ReportObservation,
-                ReportDate = DateTime.Now,
+                ReportDate = DateOnly.FromDateTime(DateTime.Now),
                 ReportCreatedBy = userEmail,
                 ReportBanStatus = reportVM.ReportBanStatus
             };
@@ -101,7 +101,7 @@ namespace Reservation.Controllers
             {
                 ReportTitle = report.ReportTitle,
                 ReportObservation = report.ReportObservation,
-                ReportDate = DateTime.Now,
+                ReportDate = DateOnly.FromDateTime(DateTime.Now),
                 ReportCreatedBy = report.ReportCreatedBy,
                 ReportBanStatus = report.ReportBanStatus,
                 ReportId = report.ReportId,

@@ -26,7 +26,7 @@ namespace Reservation.Repository
 
 
 
-        public async Task<Reserve> GetReserveByRoomAndDateAsync(int roomId, DateTime reserveDate, TimeOnly reserveStart, TimeOnly reserveEnd)
+        public async Task<Reserve> GetReserveByRoomAndDateAsync(int roomId, DateOnly reserveDate, TimeOnly reserveStart, TimeOnly reserveEnd)
 
         {
             return await _context.Reserves.Where(r => r.RoomId == roomId && r.ReserveDate == reserveDate)

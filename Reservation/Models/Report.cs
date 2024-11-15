@@ -14,7 +14,7 @@ namespace Reservation.Models
         public string ReportObservation { get; set; }
         public List<ReportFile> ReportArchives { get; set; } = new List<ReportFile>();
         public bool ReportBanStatus { get; set; }
-        public DateTime ReportDate { get; set; }
+        public DateOnly ReportDate { get; set; }
         public string ReportCreatedBy { get; set; }
     }
 }

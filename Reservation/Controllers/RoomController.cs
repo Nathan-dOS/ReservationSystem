@@ -27,8 +27,24 @@ namespace Reservation.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
-            Room roomID = await _roomRepository.GetByIdAsync(id);
-            return View(roomID);
+            var room = await _roomRepository.GetByIdAsync(id);
+            if (room == null)
+            {
+                return View("Error");
+            }
+
+            var model = new RoomDetailViewModel
+            {
+                Room = room,
+                CreateReserveViewModel = new CreateReserveViewModel
+                {
+                    RoomId = room.RoomId,
+                    UserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                }
+            };
+
+
+            return View(model);
         }
 
         [Authorize(Roles = "admin,general")] // Precisa ser Admin ou general 
