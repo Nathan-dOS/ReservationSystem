@@ -77,7 +77,23 @@ namespace Reservation.Controllers
                 // Exibe a página de detalhes com os erros de validação
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
+            // Definindo limite de horario inicio e final
+            var openingTime = new TimeOnly(8, 0);
+            var closingTime = new TimeOnly(20, 0);
+            // Verifica se o horario nao ultrapassa o horario comercial
+            if (roomDetail.CreateReserveViewModel.ReserveStart < openingTime ||
+            roomDetail.CreateReserveViewModel.ReserveEnd > closingTime)
+            {
+                TempData["ErrorMessage"] = "Os horários de reserva devem estar entre 08:00 e 20:00.";
+                return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
+            }
+            // Garante que o inicio é anterior ao horario do fim
+            if (roomDetail.CreateReserveViewModel.ReserveStart >= roomDetail.CreateReserveViewModel.ReserveEnd)
+            {
+                TempData["ErrorMessage"] = "O horario de inicio deve ser anterior ao horario do final. ";
+                return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
 
+            }
 
             var existingReserve = await _reserveRepository.GetReserveByRoomAndDateAsync(
              roomDetail.CreateReserveViewModel.RoomId, roomDetail.CreateReserveViewModel.ReserveDate,

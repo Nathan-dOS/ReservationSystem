@@ -97,21 +97,22 @@
     
     <div>
         <label for="ReserveDate">Data da Reserva:</label>
-        <input type="date" asp-for="CreateReserveViewModel.ReserveDate" class="form-control" required />
+        <input type="date" asp-for="CreateReserveViewModel.ReserveDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+
         <span asp-validation-for="CreateReserveViewModel.ReserveDate" class="text-danger"></span>
     </div>
 
     
     <div>
         <label for="ReserveStart">Hora de Início:</label>
-        <input type="time" id="ReserveStatus" asp-for="CreateReserveViewModel.ReserveStart" class="form-control" required />
+        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" value="08:00" class="form-control"required />
         <span asp-validation-for="CreateReserveViewModel.ReserveStart" class="text-danger"></span>
     </div>
 
     
     <div>
         <label for="ReserveEnd">Hora de Término:</label>
-        <input type="time" id="ReserveEnd"  asp-for="CreateReserveViewModel.ReserveEnd" class="form-control" required />
+        <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" value="09:00" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
     </div>
 
@@ -131,6 +132,7 @@
 </form>
 
 
+
 @section Scripts {
 
     @{
@@ -139,3 +141,50 @@
 
     }
 }
+
+
+
+     @*Tentei limitar as opções do time apenas para os horarios disponiveis
+        Nao ta dando certo. Gerei codigo aqui para caso usuario coloque qualquer horario DIFERENTE de 08 e 20 ele vai colocar um valor padrão.... Dps olhamos isso
+     *@
+    @*  <script>
+    // Função para ajustar o horário se estiver fora do intervalo permitido
+    function adjustTime(input, minTime, maxTime) {
+        const value = input.value;
+        if (!value) return; // Se o campo estiver vazio, não faz nada
+
+        const [hours, minutes] = value.split(":").map(Number);
+        const timeInMinutes = hours * 60 + minutes;
+
+        const [minHours, minMinutes] = minTime.split(":").map(Number);
+        const minTimeInMinutes = minHours * 60 + minMinutes;
+
+        const [maxHours, maxMinutes] = maxTime.split(":").map(Number);
+        const maxTimeInMinutes = maxHours * 60 + maxMinutes;
+
+        if (timeInMinutes < minTimeInMinutes) {
+            input.value = minTime; // Ajusta para o mínimo permitido
+        } else if (timeInMinutes > maxTimeInMinutes) {
+            input.value = maxTime; // Ajusta para o máximo permitido
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const reserveStart = document.getElementById("ReserveStart");
+        const reserveEnd = document.getElementById("ReserveEnd");
+
+        // Valores padrão para horários permitidos
+        const minTimeStandard = "08:00";
+        const maxTimeStandard = "09:00";
+
+        // Ajusta o horário automaticamente ao sair do campo
+        reserveStart.addEventListener("change", function () {
+            adjustTime(reserveStart, minTimeStandard, maxTimeStandard);
+        });
+
+        reserveEnd.addEventListener("change", function () {
+            adjustTime(reserveEnd, minTimeStandard, maxTimeStandard);
+        });
+    }); *@
+ 
+    </script>
