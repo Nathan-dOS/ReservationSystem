@@ -45,6 +45,8 @@ namespace Reservation.Controllers
         public async Task<IActionResult> Create(RoomDetailViewModel roomDetail)
         {
 
+            
+
             if (!ModelState.IsValid)
             {
                 // Se o modelo não for válido, obteremos os detalhes da sala e passaremos para a view novamente
@@ -62,29 +64,31 @@ namespace Reservation.Controllers
                     return View("Error"); // Se a sala não existir, mostra um erro
                 }
 
+       
+
                 // Passa os detalhes da sala junto com o modelo de reserva de volta para a View de detalhes
                 var roomDetailViewModel = new RoomDetailViewModel
                 {
                     Room = room,
-                    CreateReserveViewModel = roomDetail.CreateReserveViewModel
+                    CreateReserveViewModel = roomDetail.CreateReserveViewModel,
+                   
                 };
 
                 // Exibe a página de detalhes com os erros de validação
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
-            var existingReserve = await _reserveRepository.GetReserveByRoomAndDateAsync(
-                roomDetail.CreateReserveViewModel.RoomId, roomDetail.CreateReserveViewModel.ReserveDate,
-                roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd);
 
-            if (existingReserve != null)
+            var existingReserve = await _reserveRepository.GetReserveByRoomAndDateAsync(
+             roomDetail.CreateReserveViewModel.RoomId, roomDetail.CreateReserveViewModel.ReserveDate,
+             roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd);
+
+            if (existingReserve != null) // Modifiquei aqui, inclui o TempData ao inves do AddModelErro. (Até funcionava, mas nao tava exibindo msg pro usuario)
             {
-                ModelState.AddModelError("CreateReserveViewModel.ReserveDate", "Já existe uma reserva para esta sala neste horário.");
-                return View("Details", new RoomDetailViewModel
-                {
-                    Room = await _roomRepository.GetByIdAsync(roomDetail.CreateReserveViewModel.RoomId),
-                    CreateReserveViewModel = roomDetail.CreateReserveViewModel
-                });
+
+                // ModelState.AddModelError("CreateReserveViewModel.ReserveDate", "Já existe uma reserva para esta sala neste horário.");
+                TempData["ErrorMessage"] = "Já existe uma reserva para esta sala neste horário.";
+                return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
             var reserve = new Reserve

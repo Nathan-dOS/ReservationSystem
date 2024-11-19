@@ -6,5 +6,6 @@ namespace Reservation.ViewModel
     {
         public Room? Room { get; set; }
         public CreateReserveViewModel CreateReserveViewModel { get; set; }
+
     }
 }
