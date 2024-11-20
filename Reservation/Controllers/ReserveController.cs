@@ -95,6 +95,20 @@ namespace Reservation.Controllers
 
             }
 
+            DateOnly TodayDate = DateOnly.FromDateTime(DateTime.Now);
+
+
+            if(roomDetail.CreateReserveViewModel.ReserveDate < TodayDate)
+            {
+                TempData["ErrorMessage"] = "Selecione um dia válido";
+                return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
+
+
+            }
+         
+
+
+
             var existingReserve = await _reserveRepository.GetReserveByRoomAndDateAsync(
              roomDetail.CreateReserveViewModel.RoomId, roomDetail.CreateReserveViewModel.ReserveDate,
              roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd);
