@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Reservation.Interfaces;
 using Reservation.Models;
 using Reservation.ViewModel;
+using System.Security.Claims;
 
 namespace Reservation.Controllers
 {
@@ -124,7 +125,36 @@ namespace Reservation.Controllers
 
         public IActionResult Confirmation()
         {
+
+         
+
             return View();
+        }
+
+        public async Task<IActionResult> History()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["ErrorMessage"] = "Usuário não autenticado.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var reservations = await _reserveRepository.GetReservesByUserIdAsync(userId);
+
+            var historyViewModel = reservations.Select(r => new ReserveHistoryViewModel
+            {
+                ReserveId = r.ReserveId,
+                UserId = r.UserId,
+                EquipementId = r.EquipementId,
+                ReserveDate = r.ReserveDate,
+                ReserveStart = r.ReserveStart,
+                ReserveEnd = r.ReserveEnd,
+                RentPrice = r.RentPrice,
+                ReserveStatus = r.ReserveStatus.ToString()
+            });
+
+            return View(historyViewModel);
         }
 
     }
