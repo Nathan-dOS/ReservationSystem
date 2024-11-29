@@ -10,10 +10,12 @@ namespace Reservation.Controllers
     {
         private readonly IReserveRepository _reserveRepository;
         private readonly IRoomRepository _roomRepository;
-        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository)
+        private readonly IReserveService _reserveService;
+        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository, IReserveService reserveService)
         {
             _reserveRepository = reserveRepository;
             _roomRepository = roomRepository;
+            _reserveService = reserveService;
 
         }
 
@@ -44,9 +46,6 @@ namespace Reservation.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RoomDetailViewModel roomDetail)
         {
-
-            
-
             if (!ModelState.IsValid)
             {
                 // Se o modelo não for válido, obteremos os detalhes da sala e passaremos para a view novamente
@@ -63,7 +62,7 @@ namespace Reservation.Controllers
                 {
                     return View("Error"); // Se a sala não existir, mostra um erro
                 }
-
+                
        
 
                 // Passa os detalhes da sala junto com o modelo de reserva de volta para a View de detalhes
@@ -77,41 +76,35 @@ namespace Reservation.Controllers
                 // Exibe a página de detalhes com os erros de validação
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
-            // Definindo limite de horario inicio e final
-            var openingTime = new TimeOnly(8, 0);
-            var closingTime = new TimeOnly(20, 0);
-            // Verifica se o horario nao ultrapassa o horario comercial
-            if (roomDetail.CreateReserveViewModel.ReserveStart < openingTime ||
-            roomDetail.CreateReserveViewModel.ReserveEnd > closingTime)
+
+
+
+            if(!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
             {
                 TempData["ErrorMessage"] = "Os horários de reserva devem estar entre 08:00 e 20:00.";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
+
             }
-            // Garante que o inicio é anterior ao horario do fim
-            if (roomDetail.CreateReserveViewModel.ReserveStart >= roomDetail.CreateReserveViewModel.ReserveEnd)
+
+
+            if(!_reserveService.IsValidReserveTime(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
             {
                 TempData["ErrorMessage"] = "O horario de inicio deve ser anterior ao horario do final. ";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
 
             }
 
-            DateOnly TodayDate = DateOnly.FromDateTime(DateTime.Now);
 
-
-            if(roomDetail.CreateReserveViewModel.ReserveDate < TodayDate)
+            if(!_reserveService.IsValidReserveDate(roomDetail.CreateReserveViewModel.ReserveDate))
             {
+
                 TempData["ErrorMessage"] = "Selecione um dia válido";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
 
-
             }
-         
 
 
-
-            var existingReserve = await _reserveRepository.GetReserveByRoomAndDateAsync(
-             roomDetail.CreateReserveViewModel.RoomId, roomDetail.CreateReserveViewModel.ReserveDate,
-             roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd);
+            var existingReserve = await _reserveService.CheckExistingReservation(roomDetail.CreateReserveViewModel);
 
             if (existingReserve != null) // Modifiquei aqui, inclui o TempData ao inves do AddModelErro. (Até funcionava, mas nao tava exibindo msg pro usuario)
             {
@@ -121,19 +114,9 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
-            var reserve = new Reserve
-            {
-                RoomId = roomDetail.CreateReserveViewModel.RoomId,
-                UserId = roomDetail.CreateReserveViewModel.UserId,
-                ReserveDate = roomDetail.CreateReserveViewModel.ReserveDate,
-                ReserveStart = roomDetail.CreateReserveViewModel.ReserveStart,
-                ReserveEnd = roomDetail.CreateReserveViewModel.ReserveEnd,
-                ReserveStatus = roomDetail.CreateReserveViewModel.ReserveStatus,
-                RentPrice = roomDetail.CreateReserveViewModel.RentPrice,
-            };
+            _reserveService.CreateReservation(roomDetail.CreateReserveViewModel);
 
-            _reserveRepository.AddReserve(reserve);
-            
+           
             return RedirectToAction("Confirmation", "Reserve");
 
 
