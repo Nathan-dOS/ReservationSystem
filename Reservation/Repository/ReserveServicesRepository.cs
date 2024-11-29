@@ -45,8 +45,20 @@ namespace Reservation.Repository
             );
         }
 
-        public bool CreateReservation(CreateReserveViewModel reserveModel)
+
+        public float CalculatePriceByHours(TimeOnly start, TimeOnly end, float rentPrice)
         {
+            double totalTime = (end - start).TotalHours;
+
+            return  (float)(Math.Round(totalTime * rentPrice, 2));
+
+
+        }
+
+
+        public bool CreateReservation(CreateReserveViewModel reserveModel, float totalPriceByHours)
+        { 
+
             var reserve = new Reserve
             {
                 RoomId = reserveModel.RoomId,
@@ -55,7 +67,7 @@ namespace Reservation.Repository
                 ReserveStart = reserveModel.ReserveStart,
                 ReserveEnd = reserveModel.ReserveEnd,
                 ReserveStatus = reserveModel.ReserveStatus,
-                RentPrice = reserveModel.RentPrice,
+                RentPrice = totalPriceByHours,
             };
 
             return _reserveRepository.AddReserve(reserve);

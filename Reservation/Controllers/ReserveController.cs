@@ -115,7 +115,11 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
-            _reserveService.CreateReservation(roomDetail.CreateReserveViewModel);
+             float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
+                roomDetail.CreateReserveViewModel.RentPrice);
+
+            // CHEIRO DE GAMBIARRA ESSE TOTALPRICE, DEPOIS ALTERAR
+            _reserveService.CreateReservation(roomDetail.CreateReserveViewModel, totalPriceByHours);
 
            
             return RedirectToAction("Confirmation", "Reserve");

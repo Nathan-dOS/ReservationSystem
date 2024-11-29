@@ -9,6 +9,7 @@ namespace Reservation.Interfaces
         bool IsValidReserveTime(TimeOnly start, TimeOnly end);
         bool IsValidReserveDate(DateOnly reserveDate);
         Task<Reserve?> CheckExistingReservation(CreateReserveViewModel reserveModel);
-        bool CreateReservation(CreateReserveViewModel reserveModel);
+        bool CreateReservation(CreateReserveViewModel reserveModel, float totalPriceByHours);
+        float CalculatePriceByHours(TimeOnly start, TimeOnly end, float RentPrice);
     }
 }
