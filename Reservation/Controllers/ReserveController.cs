@@ -78,6 +78,8 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
+            // Criei um reserveService para lidar com possíveis calculos/erros/validações que nao exigem buscar no banco de dados (No qual apenas o ReserveRepository faz essa função).
+            // Para fazer, implementei uma interface e criei um reserveService onde contem todos as operaçõeos
 
 
             if(!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
@@ -115,10 +117,11 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
+           
              float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
                 roomDetail.CreateReserveViewModel.RentPrice);
 
-            // CHEIRO DE GAMBIARRA ESSE TOTALPRICE, DEPOIS ALTERAR
+            // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
             _reserveService.CreateReservation(roomDetail.CreateReserveViewModel, totalPriceByHours);
 
            
