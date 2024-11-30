@@ -10,57 +10,118 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Reservation</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="Index">Rooms</a>
-                        </li>
-                        @if (!User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            
-                        }
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                            </li>
 
-                            @if (User.IsInRole("general") || User.IsInRole("admin"))
-                            {
+    </header>
+    <div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
+        <div class="offcanvas-header">
+            <h6 class="offcanvas-title d-none d-sm-block" id="offcanvasTitle">Reserva de Salas</h6>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+        </div>
+        <div class="offcanvas-body px-0">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+                <!-- Home -->
+                <li class="nav-item" style="justify-content: center">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fs-5 bi-house"></i>
+                        <span class="ms-1 d-none d-sm-inline" style="justify-content: center">Home</span>
+                    </a>
+                </li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item d-flex justify-content-around align-items-center">
+                        <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-truncate">
+                            <i class="fs-5 bi-speedometer2"></i>
+                            <span class="ms-1 d-none d-sm-inline">Conta</span>
+                        </a>
+                        <!-- Conta -->
+
+                        <div class="collapse" id="submenu1">
+                            <ul class="nav flex-column ms-3">
+
+
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Relatórios</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserManagment" asp-action="Index">Usuarios</a>
+                                    <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </li><!-- Log out -->
 
+                                <li class="nav-item">
+                                    <a asp-controller="Reserve" asp-action="History" class="nav-link text-truncate" >
+                                        <span>Histórico</span><!-- Histórico -->
+                                    </a>
                                 </li>
-                            }
+
+                            </ul>
+                        </div>
+
+                    </li>
+                }
+                <!-- Salas -->
+                    <li class="nav-item">
+                    <a class="nav-link text-truncate" asp-area="" asp-controller="Room" asp-action="Index">
+                            <i class="fs-5 bi-table"></i>
+                            <span class="ms-1 d-none d-sm-inline">Salas</span>
+                        </a>
+                    </li>
+                
+
+                    @if (User.Identity.IsAuthenticated){
+                        @if (User.IsInRole("general") || User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-truncate" asp-area="" asp-controller="Report" asp-action="Index">
+                                    <i class="fs-5 bi-grid"></i>
+                                    <span class="ms-1 d-none d-sm-inline">Relatórios</span>
+                                </a>
+                            </li><!-- Relatórios -->
+
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
+                                    <i class="fs-5 bi-people"></i>
+                                    <span class="ms-1 d-none d-sm-inline">Usuários</span>
+                                </a>
+
+                            </li><!-- Usuários -->
                         }
+                    }
+                </ul>
+            </div>
+        </div>
 
-                    </ul>
+        <!-- Container Principal -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col min-vh-100 py-3">
+                    <!-- Botão Toggler -->
+                <button class="menu-button" onclick="toggleMenu()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" role="button" >
+                    
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </button>
+                    <!-- Conteúdo -->
+                    <div>
+                        <div class="container">
+                            <main role="main" class="pb-3">
+                                @RenderBody()
+                            </main>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </div>
+
+    
+    
 
     <footer class="border-top footer text-muted">
         <div class="container">
