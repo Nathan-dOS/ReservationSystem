@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Reservation.Data;
 using Reservation.Interfaces;
 using Reservation.Models;
+using Reservation.Repository;
 using Reservation.ViewModel;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,10 +13,12 @@ namespace Reservation.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IReserveRepository _reserveRepository;
 
-        public RoomController(IRoomRepository roomRepository)
+        public RoomController(IRoomRepository roomRepository, IReserveRepository reserveRepository)
         {
             _roomRepository = roomRepository;
+            _reserveRepository = reserveRepository;
         }
 
         [Authorize] // Precisa esta logado para acessar ROOM
@@ -25,13 +28,22 @@ namespace Reservation.Controllers
             return View(rooms);
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Detail(int id)
+        public async Task<IActionResult> Detail(int id, DateOnly? selectedDate)
         {
             var room = await _roomRepository.GetByIdAsync(id);
             if (room == null)
             {
                 return View("Error");
             }
+            var reservations = await _reserveRepository.GetReservesByRoomIdAsync(id);
+
+            if (selectedDate.HasValue)
+            {
+                reservations = reservations
+                    .Where(r => r.ReserveDate == selectedDate.Value)
+                    .ToList();
+            }
+
 
             var model = new RoomDetailViewModel
             {
@@ -40,7 +52,9 @@ namespace Reservation.Controllers
                 {
                     RoomId = room.RoomId,
                     UserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                }
+                },
+                Reservations = reservations,
+                SelectedDate = selectedDate
             };
 
 

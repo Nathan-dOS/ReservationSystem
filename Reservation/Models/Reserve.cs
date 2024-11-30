@@ -18,5 +18,6 @@ namespace Reservation.Models
         public required TimeOnly ReserveEnd { get; set; }
         public required string ReserveStatus { get; set; }
         public required float RentPrice { get; set; }
+        public Room Room { get; set; }
     }
 }

@@ -29,6 +29,12 @@ namespace Reservation.Data
                 .WithOne(i => i.Report)
                 .HasForeignKey(i => i.ReportId);
 
+            modelBuilder.Entity<Reserve>()
+                .HasOne(r => r.Room)
+                .WithMany(rm => rm.Reservations)
+                .HasForeignKey(r => r.RoomId);
+
+
             base.OnModelCreating(modelBuilder);
         }
 

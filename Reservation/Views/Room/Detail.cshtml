@@ -87,14 +87,29 @@
     </div>
 }
 
+@*
+*@
+<form asp-action="Detail" asp-controller="Room" method="get">
+    <input type="hidden" name="id" value="@Model.Room.RoomId" />
+
+    <div>
+        <label for="SelectedDate">Filtrar por data:</label>
+        <input type="date" id="SelectedDate" name="selectedDate"
+               value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+
+    @if (!(Model.Reservations.Any() && Model.SelectedDate.HasValue))
+    {
+        <p>Não há horários reservados para esta sala na data selecionada.</p>
+    }
+
+    <button type="submit" class="btn btn-secondary mt-2">Filtrar</button>
+</form>
+<hr />
 <form asp-action="Create" asp-controller="Reserve" method="post">
     <input type="hidden" asp-for="CreateReserveViewModel.RoomId" value="@Model.Room.RoomId" />
-    <input type="hidden" asp-for="CreateReserveViewModel.UserId"  />
-    
+    <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
 
-
-
-    
     <div>
         <label for="ReserveDate">Data da Reserva:</label>
         <input type="date" asp-for="CreateReserveViewModel.ReserveDate" class="form-control" onkeydown="return false;" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
@@ -102,23 +117,37 @@
         <span asp-validation-for="CreateReserveViewModel.ReserveDate" class="text-danger"></span>
     </div>
 
-    
     <div>
         <label for="ReserveStart">Hora de Início:</label>
-        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" value="08:00"  class="form-control"required />
+        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" value="08:00" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveStart" class="text-danger"></span>
     </div>
 
-    
+
     <div>
         <label for="ReserveEnd">Hora de Término:</label>
         <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" value="09:00" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
     </div>
 
+    @if (Model.Reservations.Any() && Model.SelectedDate.HasValue)
+    {
+        <h4>Horários reservados para @Model.SelectedDate?.ToString("dd/MM/yyyy"):</h4>
+        <ul>
+            @foreach (var reservation in Model.Reservations)
+            {
+                <li>
+                    @reservation.ReserveStart.ToString("HH:mm") até
+                    @reservation.ReserveEnd.ToString("HH:mm")
+                </li>
+            }
+        </ul>
+    }
+
+
     <div>
         <label for="ReserveStatus">Status da Reserva:</label>
-        <input type="text"  asp-for="CreateReserveViewModel.ReserveStatus" class="form-control" required />
+        <input type="text" asp-for="CreateReserveViewModel.ReserveStatus" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveStatus" class="text-danger"></span>
     </div>
 
@@ -130,6 +159,11 @@
 
     <button type="submit" class="btn btn-primary mt-3">Reservar Sala</button>
 </form>
+
+
+
+
+
 
 
 

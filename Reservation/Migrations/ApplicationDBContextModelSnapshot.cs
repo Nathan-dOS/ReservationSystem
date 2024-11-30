@@ -260,6 +260,8 @@ namespace Reservation.Migrations
 
                     b.HasKey("ReserveId");
 
+                    b.HasIndex("RoomId");
+
                     b.ToTable("Reserves");
                 });
 
@@ -490,6 +492,17 @@ namespace Reservation.Migrations
                     b.Navigation("Report");
                 });
 
+            modelBuilder.Entity("Reservation.Models.Reserve", b =>
+                {
+                    b.HasOne("Reservation.Models.Room", "Room")
+                        .WithMany("Reservations")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Reservation.Models.RoomImage", b =>
                 {
                     b.HasOne("Reservation.Models.Room", "Room")
@@ -509,6 +522,8 @@ namespace Reservation.Migrations
             modelBuilder.Entity("Reservation.Models.Room", b =>
                 {
                     b.Navigation("PhotoAlbum");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
