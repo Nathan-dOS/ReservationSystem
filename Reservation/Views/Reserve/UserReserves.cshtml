@@ -37,7 +37,9 @@ else
                     <td>@reserve.EquipementId</td>
                     <td>@reserve.RentPrice.ToString("C")</td>
                     <td>@reserve.ReserveStatus</td>
+                    <td> <a  class="btn btn-danger" asp-action="Cancel" asp-route-id="@reserve.ReserveId"> Cancelar </a> </td>
                 </tr>
+
             }
         </tbody>
     </table>

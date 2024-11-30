@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Reservation.Data.Enum;
 using Reservation.Interfaces;
 using Reservation.Models;
 using Reservation.ViewModel;
@@ -83,7 +84,7 @@ namespace Reservation.Services
                 ReserveDate = reserveModel.ReserveDate,
                 ReserveStart = reserveModel.ReserveStart,
                 ReserveEnd = reserveModel.ReserveEnd,
-                ReserveStatus = reserveModel.ReserveStatus,
+                ReserveStatus = EnumReserveStatus.Validated,
                 RentPrice = totalPriceByHours,
             };
 

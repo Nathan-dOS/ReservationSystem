@@ -144,13 +144,6 @@
         </ul>
     }
 
-
-    <div>
-        <label for="ReserveStatus">Status da Reserva:</label>
-        <input type="text" asp-for="CreateReserveViewModel.ReserveStatus" class="form-control" required />
-        <span asp-validation-for="CreateReserveViewModel.ReserveStatus" class="text-danger"></span>
-    </div>
-
     <div>
         <label for="RentPrice">Preço do Aluguel:</label>
         <input type="number" id="RentPrice" step="0.01" value="@Model.Room.RoomPrice" asp-for="CreateReserveViewModel.RentPrice" class="form-control" required readonly />

@@ -175,18 +175,29 @@ namespace Reservation.Controllers
             return View(historyViewModel);
         }
 
-        public async Task<IActionResult> CancelReserve(int id)
+        public async Task<IActionResult> Cancel(int id)
         {
-            var reserveID = await _reserveRepository.GetReserveByIdAsync(id);
+            var reserve = await _reserveRepository.GetReserveByIdAsync(id);
 
-            if (reserveID == null)
+            if (reserve == null)
             {
                 TempData["ErrorMessage"] = "Reserva Inválida";
-                return RedirectToAction("MyReserves", "UserManagment");
+                return RedirectToAction("UserReserves", "Reserve");
 
             }
 
-            return View(reserveID);
+            try
+            {
+                reserve.ReserveStatus = Data.Enum.EnumReserveStatus.Canceled;
+                await _reserveRepository.UpdateReserveAsync(reserve);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Nao foi possivel deletar a reserva";
+                return RedirectToAction("UserReserves", "Reserve");
+            }
+
+            return RedirectToAction("UserReserves", "Reserve");
         }
 
 
@@ -207,6 +218,8 @@ namespace Reservation.Controllers
 
 
         }
+
+ 
     }
 
 }

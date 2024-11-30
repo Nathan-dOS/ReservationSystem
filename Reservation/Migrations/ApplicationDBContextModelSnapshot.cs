@@ -247,9 +247,8 @@ namespace Reservation.Migrations
                     b.Property<TimeOnly>("ReserveStart")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ReserveStatus")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ReserveStatus")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("INTEGER");

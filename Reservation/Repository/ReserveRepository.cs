@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Reservation.Data;
+using Reservation.Data.Enum;
 using Reservation.Interfaces;
 using Reservation.Models;
 
@@ -42,7 +43,7 @@ namespace Reservation.Repository
 
             return await _context.Reserves
                 .Where(r => r.UserId == userId &&
-                            (r.ReserveStatus == "Pendente")  &&
+                            (r.ReserveStatus == EnumReserveStatus.Validated)  &&
                             (r.ReserveDate >= currentDate ||
                              (r.ReserveDate == currentDate && r.ReserveEnd > currentTime)))
                 .OrderBy(r => r.ReserveDate)
@@ -54,6 +55,12 @@ namespace Reservation.Repository
         public async Task<IEnumerable<Reserve>> GetReservesByRoomIdAsync(int roomId)
         {
             return await _context.Reserves.Where(r => r.RoomId == roomId).ToListAsync();
+        }
+
+        public async Task<bool> UpdateReserveAsync(Reserve reserve)
+        {
+            _context.Reserves.Update(reserve);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public bool AddReserve(Reserve reserve)
