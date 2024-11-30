@@ -11,7 +11,7 @@ namespace Reservation.Models
         [ForeignKey("User")]
         public required string UserId { get; set; }
         public string ReportTitle { get; set; }
-        public string ReportObservation { get; set; }
+        public string? ReportObservation { get; set; }
         public List<ReportFile> ReportArchives { get; set; } = new List<ReportFile>();
         public bool ReportBanStatus { get; set; }
         public DateOnly ReportDate { get; set; }

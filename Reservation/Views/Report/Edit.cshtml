@@ -1,7 +1,13 @@
 ﻿@using Reservation.ViewModel
 @model EditReportViewModel
 
-<h2>Edit Report</h2>
+<h2>@Model.ReportTitle</h2>
+
+<h6>@Model.ReportDate</h6>
+
+<h5>Autor: @Model.ReportCreatedBy</h5>
+
+
 
 <form asp-action="Edit" method="post">
     <!-- Outros campos do formulário -->
@@ -10,11 +16,31 @@
         <h4>Arquivos:</h4>
         @foreach (var file in Model.ExistingFiles)
         {
-            <div>
-                <a asp-action="DownloadFile" asp-route-fileId="@file.ReportFileId" class="btn btn-primary">Download</a>
+            <div style="display: flex; justify-content: left">
+
+                <div>
+                    <a asp-action="DownloadFile" asp-route-fileId="@file.ReportFileId" class="btn btn-primary">Download</a>
+                </div>
+
+                <div style="margin-left: 5px; padding: 0; align-items: flex-end">
+                    <p>@file.ReportFileName</p>
+                </div>
             </div>
         }
     </div>
 
-    <button type="submit" class="btn btn-success">Salvar</button>
+    <p>@Model.ReportObservation</p>
+
+    @if (User.IsInRole("general")){
+
+        @if (!Model.ReportBanStatus){
+            <div class="form-check form-switch">
+                <input asp-for="ReportBanStatus" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label asp-for="ReportBanStatus" class="form-check-label" for="flexSwitchCheckDefault">Resolvido</label>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-success">Salvar</button>
+
+    }
 </form>

@@ -7,6 +7,7 @@ namespace Reservation.Models
     {
         [Key]
         public int ReportFileId { get; set; }
+        public string ReportFileName { get; set; } // Nome do arquivo
 
         [Required]
         public byte[] ReportFileData { get; set; } // Dados do arquivo BLOB

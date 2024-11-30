@@ -78,7 +78,7 @@ namespace Reservation.Controllers
                     {
                         using var ms = new MemoryStream(); // create a new MemoryStream
                         await file.CopyToAsync(ms); // copy the file to the MemoryStream
-                        var archive = new ReportFile { ReportFileData = ms.ToArray() }; // create a new ReportImage object and store the byte array
+                        var archive = new ReportFile { ReportFileData = ms.ToArray(), ReportFileName = file.FileName }; // create a new ReportImage object and store the byte array
                         report.ReportArchives.Add(archive); // add the image to the report's photo album
                     }
                 }
@@ -103,7 +103,7 @@ namespace Reservation.Controllers
                 ReportObservation = report.ReportObservation,
                 ReportDate = DateOnly.FromDateTime(DateTime.Now),
                 ReportCreatedBy = report.ReportCreatedBy,
-                ReportBanStatus = report.ReportBanStatus,
+                ReportBanStatus = !report.ReportBanStatus,
                 ReportId = report.ReportId,
                 ExistingFiles = report.ReportArchives.ToList() // Lista de arquivos armazenados
             };
@@ -123,7 +123,7 @@ namespace Reservation.Controllers
             var report = await _reportRepository.GetByIdAsync(id);
             if (report == null) return View("Error");
 
-            report.ReportBanStatus = reportVM.ReportBanStatus;
+            report.ReportBanStatus = !reportVM.ReportBanStatus;
 
 
             _reportRepository.Update(report);
