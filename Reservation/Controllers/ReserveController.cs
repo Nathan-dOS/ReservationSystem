@@ -23,6 +23,7 @@ namespace Reservation.Controllers
         [Authorize]
         public IActionResult Create(int roomId)
         {
+
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
             if (userId == null)
@@ -63,8 +64,9 @@ namespace Reservation.Controllers
                 {
                     return View("Error"); // Se a sala não existir, mostra um erro
                 }
-                
-       
+
+
+                var user = roomDetail.CreateReserveViewModel.UserId;
 
                 // Passa os detalhes da sala junto com o modelo de reserva de volta para a View de detalhes
                 var roomDetailViewModel = new RoomDetailViewModel
@@ -81,6 +83,12 @@ namespace Reservation.Controllers
             // Criei um reserveService para lidar com possíveis calculos/erros/validações que nao exigem buscar no banco de dados (No qual apenas o ReserveRepository faz essa função).
             // Para fazer, implementei uma interface e criei um reserveService onde contem todos as operaçõeos
 
+
+            if(await _reserveService.IsUserBanned(roomDetail.CreateReserveViewModel.UserId))
+            {
+                TempData["ErrorMessage"] = "Você está banido de fazer reserva por enquanto";
+                return RedirectToAction("BanView", "UserManagment");
+            }   
 
             if(!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
             {

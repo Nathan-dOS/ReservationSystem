@@ -33,6 +33,9 @@ namespace Reservation.Models
         public string Address { get; set; }
 
         public string? AssignedBuilding { get; set; }
+        public bool IsBanned { get; set; } = false;
+        public DateTime? BannedUntil { get; set; }
+
         public DateOnly? EntryDate { get; set; }
 
     }

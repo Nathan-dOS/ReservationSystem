@@ -12,6 +12,7 @@ namespace Reservation.ViewModel
         public string? OABNumber { get; set; } 
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
+        public bool IsBanned { get; set; }
 
     }
 }

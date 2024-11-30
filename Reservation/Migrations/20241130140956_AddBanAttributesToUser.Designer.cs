@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Data;
 
@@ -10,9 +11,11 @@ using Reservation.Data;
 namespace Reservation.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241130140956_AddBanAttributesToUser")]
+    partial class AddBanAttributesToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
@@ -336,7 +339,7 @@ namespace Reservation.Migrations
                     b.Property<string>("AssignedBuilding")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("BannedUntil")
+                    b.Property<DateTime?>("BannedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CPF")

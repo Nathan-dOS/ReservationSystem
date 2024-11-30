@@ -10,6 +10,8 @@ namespace Reservation.Interfaces
         Task<IEnumerable<User>> GetAllUsers();
 
         Task<List<UserManagmentViewModel>> GetAllUsersWithRolesAsync();
+
+        Task<User> GetUserByIdAsync(string UserID);
     
 
     }

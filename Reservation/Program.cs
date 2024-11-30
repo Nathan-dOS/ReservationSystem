@@ -5,6 +5,7 @@ using Reservation.Repository;
 using Reservation.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Reservation.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IReserveRepository, ReserveRepository>();
 builder.Services.AddScoped<IReserveService, ReserveServicesRepository>();
 builder.Services.AddScoped<IUserManagmenteRepository, UserManagmentRepository>();
+
+
+builder.Services.AddHostedService<BanCleanupService>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
