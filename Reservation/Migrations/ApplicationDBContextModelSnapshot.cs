@@ -264,6 +264,42 @@ namespace Reservation.Migrations
                     b.ToTable("Reserves");
                 });
 
+            modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
+                {
+                    b.Property<int>("HistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("ReserveDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly>("ReserveEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReserveId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<TimeOnly>("ReserveStart")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReserveStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("HistoryId");
+
+                    b.ToTable("ReserveHistories");
+                });
+
             modelBuilder.Entity("Reservation.Models.Room", b =>
                 {
                     b.Property<int>("RoomId")

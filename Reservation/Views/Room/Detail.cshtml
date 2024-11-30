@@ -98,7 +98,7 @@
                value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
     </div>
 
-    @if (!(Model.Reservations.Any() && Model.SelectedDate.HasValue))
+    @if (!(Model.Reservations.Any() && Model.SelectedDate.HasValue ))
     {
         <p>Não há horários reservados para esta sala na data selecionada.</p>
     }

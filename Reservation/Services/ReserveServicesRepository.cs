@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reservation.Data.Enum;
 using Reservation.Interfaces;
 using Reservation.Models;
+using Reservation.Repository;
 using Reservation.ViewModel;
 
 namespace Reservation.Services
@@ -11,16 +14,17 @@ namespace Reservation.Services
         private readonly IRoomRepository _roomRepository;
         private readonly IReserveRepository _reserveRepository;
         private readonly UserManager<User> _userManagment;
+        private readonly IReserveHistoryRepository _reserveHistory;
 
-        public ReserveServicesRepository(IRoomRepository roomRepository, IReserveRepository reserveRepository, UserManager<User> userManagment)
+        public ReserveServicesRepository(IRoomRepository roomRepository, IReserveRepository reserveRepository, UserManager<User> userManagment, IReserveHistoryRepository reserveHistory)
         {
             _roomRepository = roomRepository;
             _reserveRepository = reserveRepository;
             _userManagment = userManagment;
-
+            _reserveHistory = reserveHistory;
         }
 
-        public async Task<bool> IsUserBanned (string UserID)
+        public async Task<bool> IsUserBanned(string UserID)
         {
             var user = await _userManagment.FindByIdAsync(UserID);
 
@@ -30,7 +34,7 @@ namespace Reservation.Services
             }
 
             return false;
-            
+
 
         }
 
@@ -88,8 +92,51 @@ namespace Reservation.Services
                 RentPrice = totalPriceByHours,
             };
 
-            return _reserveRepository.AddReserve(reserve);
+            bool succeed = _reserveRepository.AddReserve(reserve);
 
+            if (succeed)
+            {
+                // Adicionar a reserva ao histórico simultanemanete. Tive que usar assim pq nao tava gerando o ID da reserva
+                var history = new ReserveHistory
+                {
+                    ReserveId = reserve.ReserveId, // O ID gerado está disponível aqui
+                    UserId = reserve.UserId,
+                    RoomId = reserve.RoomId,
+                    ReserveDate = reserve.ReserveDate,
+                    ReserveStart = reserve.ReserveStart,
+                    ReserveEnd = reserve.ReserveEnd,
+                    ReserveStatus = reserve.ReserveStatus,
+                    ModifiedAt = DateTime.UtcNow // Adicione a data em que o histórico foi registrado
+                };
+
+                return _reserveHistory.AddHistory(history);
+
+
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
+        public bool AddReserveToHistoryAsync(Reserve reserve)
+        {
+            var history = new ReserveHistory
+            {
+                ReserveId = reserve.ReserveId,
+                UserId = reserve.UserId,
+                RoomId = reserve.RoomId,
+                ReserveDate = reserve.ReserveDate,
+                ReserveStart = reserve.ReserveStart,
+                ReserveEnd = reserve.ReserveEnd,
+                ReserveStatus = reserve.ReserveStatus,
+                ModifiedAt = DateTime.UtcNow
+            };
+
+            return _reserveHistory.AddHistory(history);
+            
         }
     }
 }
