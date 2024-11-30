@@ -52,6 +52,66 @@ namespace Reservation.Controllers
             return View();
         }
 
-      
+        public async Task<IActionResult> PromoteToGeneralManager(string userID)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userID);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Usuario nao encontrado";
+                return RedirectToAction("Index");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if(roles.Contains("general") || roles.Contains("admin"))
+            {
+                TempData["ErrorMessage"] = "Usuario já é gerente ou admin";
+                return RedirectToAction("Index");
+
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, "general");
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Usuário promovido a Gerente Geral com sucesso.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Falha ao promover o usuário.";
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
+        public async Task<IActionResult> RemoveGeneralManager(string userID)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userID);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Usuario nao encontrado";
+                return RedirectToAction("Index");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("general"))
+            {
+                var result = await _userManager.RemoveFromRoleAsync(user, "general");
+
+                if(result.Succeeded)
+                {
+                    TempData["ErrorMessage"] = "Usuario removido de Gerente";
+                }
+
+            }
+            return RedirectToAction("Index");
+
+        }
+
+
     }
 }
