@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Reservation.Data.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reservation.Models
@@ -16,7 +17,7 @@ namespace Reservation.Models
         public required DateOnly ReserveDate { get; set; }
         public required TimeOnly ReserveStart { get; set; }
         public required TimeOnly ReserveEnd { get; set; }
-        public required string ReserveStatus { get; set; }
+        public required EnumReserveStatus ReserveStatus { get; set; }
         public required float RentPrice { get; set; }
         public Room Room { get; set; }
     }
