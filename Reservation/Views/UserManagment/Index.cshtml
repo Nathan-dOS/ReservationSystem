@@ -1,0 +1,38 @@
+﻿@model List<Reservation.ViewModel.UserManagmentViewModel>
+
+<h1>User Management</h1>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int index = 1;
+            foreach (var user in Model)
+            {
+                <tr>
+                    <th scope="row">@index</th>
+                    <td>@user.CPF</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@string.Join(", ", user.Roles)</td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">Nenhum usuário encontrado</td>
+            </tr>
+        }
+    </tbody>
+</table>
