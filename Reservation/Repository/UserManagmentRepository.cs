@@ -27,6 +27,8 @@ namespace Reservation.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == UserID);
         }
 
+     
+
 
         public async Task<List<UserManagmentViewModel>> GetAllUsersWithRolesAsync()
         {
