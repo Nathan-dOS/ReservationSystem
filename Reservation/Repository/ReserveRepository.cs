@@ -37,7 +37,7 @@ namespace Reservation.Repository
 
         public async Task<IEnumerable<Reserve>> GetReservesByRoomIdAsync(int roomId)
         {
-            return await _context.Reserves.Where(c => c.Equals(roomId)).ToListAsync();
+            return await _context.Reserves.Where(r => r.RoomId == roomId).ToListAsync();
         }
 
         public bool AddReserve(Reserve reserve)

@@ -35,5 +35,6 @@ namespace Reservation.Models
 
         [Required]
         public EnumRoomType RoomType { get; set; }
+        public ICollection<Reserve> Reservations { get; set; }
     }
 }
