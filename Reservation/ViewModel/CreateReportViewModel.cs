@@ -8,12 +8,8 @@ namespace Reservation.ViewModel
 
         public string ReportTitle { get; set; }
         public string ReportObservation { get; set; }
-
         public bool ReportBanStatus { get; set; }
-
-        public DateOnly ReportDate { get; set; }
         public List<IFormFile> ReportFiles { get; set; } = new List<IFormFile>(); // IFormFile para fazer upload de novas imagens
-        public string ReportCreatedBy { get; set; }
 
     }
 }
