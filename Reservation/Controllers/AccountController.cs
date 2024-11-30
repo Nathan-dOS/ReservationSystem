@@ -44,7 +44,7 @@ namespace Reservation.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Room");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 // Password is incorrect

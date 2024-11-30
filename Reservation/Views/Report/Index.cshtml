@@ -5,58 +5,30 @@
     <a asp-controller="Report" asp-action="Create" class="btn btn-primary my-2">Criar Relatório</a>
 
     <h2>Seus Relatórios</h2>
+}
 
     @if(Model.Count() == 0)
     {
-        <p>Você ainda não criou nenhum relatório.</p>
+        <p>Não existe nenhum relatório</p>
     }
     else
     {
         <div class="list-group">
             @foreach (var report in Model)
             {
-                <div style="@(report.ReportBanStatus ? "background-color: lightcoral;" : "")">
-                    <a class="list-group-item list-group-item-action active" aria-current="true" asp-controller="Report" asp-action="Edit" asp-route-id="@report.ReportId">
-                        <div class="d-flex w-100 justify-content-between">
+                <div style="border: 1px solid; cursor: pointer; margin-bottom: 5px">
+                    <a class="list-group-item list-group-item-action" aria-current="true" asp-controller="Report" asp-action="Edit" asp-route-id="@report.ReportId" style="@(report.ReportBanStatus ? "background-color: lightcoral;" : "")">
+                        <div class="d-flex w-100 justify-content-between" >
                             <h5 class="mb-1">@report.ReportTitle</h5>
-                            <small>@report.ReportDate.ToString("dd/MM/yyyy")</small>@* Mostra a data da de criação do relatorio *@
+                            <small>@report.ReportDate.ToString("dd/MM/yyyy")</small>
+                            
                         </div>
-                        <p class="mb-1">@(report.ReportObservation.Length > 25 ? report.ReportObservation.Substring(0, 25) + "..." : report.ReportObservation)</p>@* Limita a observacao para apenas 25 caracteres *@
+                        <p class="mb-1">@(report.ReportObservation?.Length > 25 ? report.ReportObservation.Substring(0, 25) + "..." : report.ReportObservation)</p>
+                        <small>@(User.IsInRole("general") ? report.ReportCreatedBy : "")</small>
                     </a>
                 </div>
             }
         </div>
+
     }
-}
-else if (User.IsInRole("general"))
-{
-    
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small>3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small>And some small print.</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-body-secondary">3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small class="text-body-secondary">And some muted small print.</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-body-secondary">3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small class="text-body-secondary">And some muted small print.</small>
-        </a>
-    </div>
-    
-    
-}
+

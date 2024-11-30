@@ -187,7 +187,6 @@ namespace Reservation.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReportObservation")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReportTitle")
@@ -212,6 +211,10 @@ namespace Reservation.Migrations
                     b.Property<byte[]>("ReportFileData")
                         .IsRequired()
                         .HasColumnType("BLOB");
+
+                    b.Property<string>("ReportFileName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ReportId")
                         .HasColumnType("INTEGER");
