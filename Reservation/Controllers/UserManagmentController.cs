@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Interfaces;
 using Reservation.Models;
@@ -20,6 +21,7 @@ namespace Reservation.Controllers
             _userRepository = userRepository;
             _userManager = userManager;
         }
+        [Authorize(Roles = "admin,general")]
         public async Task<IActionResult> Index()
         {
             var users = await _userRepository.GetAllUsersWithRolesAsync();
@@ -52,7 +54,7 @@ namespace Reservation.Controllers
             return View();
         }
 
-        public async Task<IActionResult> PromoteToGeneralManager(string userID)
+        public async Task<IActionResult> PromoteToAdmin(string userID)
         {
             var user = await _userRepository.GetUserByIdAsync(userID);
 
@@ -64,29 +66,29 @@ namespace Reservation.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if(roles.Contains("general") || roles.Contains("admin"))
+            if(roles.Contains("admin"))
             {
                 TempData["ErrorMessage"] = "Usuario já é gerente ou admin";
                 return RedirectToAction("Index");
 
             }
 
-            var result = await _userManager.AddToRoleAsync(user, "general");
+            var result = await _userManager.AddToRoleAsync(user, "admin");
 
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = "Usuário promovido a Gerente Geral com sucesso.";
+                TempData["SuccessMessage"] = "Usuário promovido a Admin do prédio com sucesso.";
             }
             else
             {
-                TempData["ErrorMessage"] = "Falha ao promover o usuário.";
+                TempData["ErrorMessage"] = "Falha ao promover o usuário para Admin.";
             }
 
             return RedirectToAction("Index");
 
         }
 
-        public async Task<IActionResult> RemoveGeneralManager(string userID)
+        public async Task<IActionResult> RemoveAdmin(string userID)
         {
             var user = await _userRepository.GetUserByIdAsync(userID);
 
@@ -98,13 +100,13 @@ namespace Reservation.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if (roles.Contains("general"))
+            if (roles.Contains("admin"))
             {
-                var result = await _userManager.RemoveFromRoleAsync(user, "general");
+                var result = await _userManager.RemoveFromRoleAsync(user, "admin");
 
                 if(result.Succeeded)
                 {
-                    TempData["ErrorMessage"] = "Usuario removido de Gerente";
+                    TempData["ErrorMessage"] = "Usuario removido como admin";
                 }
 
             }
@@ -112,6 +114,7 @@ namespace Reservation.Controllers
 
         }
 
+       
 
     }
 }

@@ -35,6 +35,22 @@ namespace Reservation.Repository
 
         }
 
+        public async Task<IEnumerable<Reserve>> GetReserveWhereStatusIsValidAsync(string userId)
+        {
+            var currentDate = DateOnly.FromDateTime(DateTime.Now.Date);
+            var currentTime = TimeOnly.FromDateTime(DateTime.Now);
+
+            return await _context.Reserves
+                .Where(r => r.UserId == userId &&
+                            (r.ReserveStatus == "Pendente")  &&
+                            (r.ReserveDate >= currentDate ||
+                             (r.ReserveDate == currentDate && r.ReserveEnd > currentTime)))
+                .OrderBy(r => r.ReserveDate)
+                .ThenBy(r => r.ReserveStart)
+                .Include(r => r.Room)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Reserve>> GetReservesByRoomIdAsync(int roomId)
         {
             return await _context.Reserves.Where(r => r.RoomId == roomId).ToListAsync();

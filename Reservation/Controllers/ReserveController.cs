@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Interfaces;
 using Reservation.Models;
+using Reservation.Repository;
 using Reservation.ViewModel;
 using System.Security.Claims;
 
@@ -73,10 +75,11 @@ namespace Reservation.Controllers
                 {
                     Room = room,
                     CreateReserveViewModel = roomDetail.CreateReserveViewModel,
-                   
+
                 };
 
                 // Exibe a página de detalhes com os erros de validação
+                TempData["ErrorMessage"] = "Model State Invalido";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
@@ -84,13 +87,13 @@ namespace Reservation.Controllers
             // Para fazer, implementei uma interface e criei um reserveService onde contem todos as operaçõeos
 
 
-            if(await _reserveService.IsUserBanned(roomDetail.CreateReserveViewModel.UserId))
+            if (await _reserveService.IsUserBanned(roomDetail.CreateReserveViewModel.UserId))
             {
                 TempData["ErrorMessage"] = "Você está banido de fazer reserva por enquanto";
                 return RedirectToAction("BanView", "UserManagment");
-            }   
+            }
 
-            if(!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
+            if (!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
             {
                 TempData["ErrorMessage"] = "Os horários de reserva devem estar entre 08:00 e 20:00.";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
@@ -98,7 +101,7 @@ namespace Reservation.Controllers
             }
 
 
-            if(!_reserveService.IsValidReserveTime(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
+            if (!_reserveService.IsValidReserveTime(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
             {
                 TempData["ErrorMessage"] = "O horario de inicio deve ser anterior ao horario do final. ";
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
@@ -106,7 +109,7 @@ namespace Reservation.Controllers
             }
 
 
-            if(!_reserveService.IsValidReserveDate(roomDetail.CreateReserveViewModel.ReserveDate))
+            if (!_reserveService.IsValidReserveDate(roomDetail.CreateReserveViewModel.ReserveDate))
             {
 
                 TempData["ErrorMessage"] = "Selecione um dia válido";
@@ -125,14 +128,14 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
-           
-             float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
-                roomDetail.CreateReserveViewModel.RentPrice);
+
+            float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
+               roomDetail.CreateReserveViewModel.RentPrice);
 
             // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
             _reserveService.CreateReservation(roomDetail.CreateReserveViewModel, totalPriceByHours);
 
-           
+
             return RedirectToAction("Confirmation", "Reserve");
 
 
@@ -141,7 +144,7 @@ namespace Reservation.Controllers
         public IActionResult Confirmation()
         {
 
-         
+
 
             return View();
         }
@@ -172,5 +175,38 @@ namespace Reservation.Controllers
             return View(historyViewModel);
         }
 
+        public async Task<IActionResult> CancelReserve(int id)
+        {
+            var reserveID = await _reserveRepository.GetReserveByIdAsync(id);
+
+            if (reserveID == null)
+            {
+                TempData["ErrorMessage"] = "Reserva Inválida";
+                return RedirectToAction("MyReserves", "UserManagment");
+
+            }
+
+            return View(reserveID);
+        }
+
+
+        public async Task<IActionResult> UserReserves()
+        {
+            var userID = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
+
+            if (userID == null)
+            {
+                TempData["ErrorMessage"] = "Usuario Inválido";
+                RedirectToAction("Index");
+            }
+
+            var reserveByUser = await _reserveRepository.GetReserveWhereStatusIsValidAsync(userID);
+
+            return View(reserveByUser);
+           
+
+
+        }
     }
+
 }

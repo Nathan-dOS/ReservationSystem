@@ -26,6 +26,7 @@
             <th scope="col">Nome</th>
             <th scope="col">Email</th>
             <th scope="col">Roles</th>
+            <th scope="col">Opções</th>
         </tr>
     </thead>
     <tbody>
@@ -42,25 +43,25 @@
                     <td>@user.Email</td>
                     <td>@string.Join(", ", user.Roles)</td>
 
-                    @if (user.IsBanned == false)
+                    @if (user.IsBanned == false && !user.Roles.Contains("general") && !user.Roles.Contains("admin"))
                     {
                     <td>
                             <a class="btn btn-danger" asp-action="BanUser" asp-route-userId="@user.UserId">Banir</a>
 
                     </td>
 
-                    @if(!user.Roles.Contains("general"))
+                    @if(!user.Roles.Contains("general") && !user.Roles.Contains("admin"))
                         {
                             <td>
-                                <a class="btn btn-danger" asp-action="PromoteToGeneralManager" asp-route-userId="@user.UserId">Promover</a>
+                                <a class="btn btn-danger" asp-action="PromoteToAdmin" asp-route-userId="@user.UserId">Promover</a>
                             </td>
                         }
                     }
 
-                    @if (user.Roles.Contains("general"))
+                    @if (user.Roles.Contains("admin"))
                     {
                         <td>
-                            <a class="btn btn-danger" asp-action="RemoveGeneralManager" asp-route-userId="@user.UserId">Demitir</a>
+                            <a class="btn btn-danger" asp-action="RemoveAdmin" asp-route-userId="@user.UserId">Demitir</a>
                         </td>
                     }
                 </tr>

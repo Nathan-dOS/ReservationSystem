@@ -1,0 +1,44 @@
+﻿@using Reservation.ViewModel
+
+@model IEnumerable<Reserve>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@if (!Model.Any())
+{
+    <p>Você ainda não realizou nenhuma reserva.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Sala</th>
+                <th>Data</th>
+                <th>Início</th>
+                <th>Término</th>
+                <th>Equipamento</th>
+                <th>Preço</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reserve in Model)
+            {
+                <tr>
+                    <td>@reserve.ReserveId</td>
+                    <td>@reserve.Room.RoomNumber</td>
+                    <td>@reserve.ReserveDate.ToShortDateString()</td>
+                    <td>@reserve.ReserveStart</td>
+                    <td>@reserve.ReserveEnd</td>
+                    <td>@reserve.EquipementId</td>
+                    <td>@reserve.RentPrice.ToString("C")</td>
+                    <td>@reserve.ReserveStatus</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
