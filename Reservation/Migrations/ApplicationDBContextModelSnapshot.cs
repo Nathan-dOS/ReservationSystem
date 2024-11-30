@@ -170,6 +170,59 @@ namespace Reservation.Migrations
                     b.ToTable("Equipments");
                 });
 
+            modelBuilder.Entity("Reservation.Models.Report", b =>
+                {
+                    b.Property<int>("ReportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ReportBanStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReportCreatedBy")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("ReportDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReportObservation")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReportTitle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReportId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("Reservation.Models.ReportFile", b =>
+                {
+                    b.Property<int>("ReportFileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("ReportFileData")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<int>("ReportId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ReportFileId");
+
+                    b.HasIndex("ReportId");
+
+                    b.ToTable("ReportFiles");
+                });
+
             modelBuilder.Entity("Reservation.Models.Reserve", b =>
                 {
                     b.Property<int>("ReserveId")
@@ -182,7 +235,7 @@ namespace Reservation.Migrations
                     b.Property<float>("RentPrice")
                         .HasColumnType("REAL");
 
-                    b.Property<DateTime>("ReserveDate")
+                    b.Property<DateOnly>("ReserveDate")
                         .HasColumnType("TEXT");
 
                     b.Property<TimeOnly>("ReserveEnd")
@@ -417,6 +470,17 @@ namespace Reservation.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Reservation.Models.ReportFile", b =>
+                {
+                    b.HasOne("Reservation.Models.Report", "Report")
+                        .WithMany("ReportArchives")
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
             modelBuilder.Entity("Reservation.Models.RoomImage", b =>
                 {
                     b.HasOne("Reservation.Models.Room", "Room")
@@ -426,6 +490,11 @@ namespace Reservation.Migrations
                         .IsRequired();
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Reservation.Models.Report", b =>
+                {
+                    b.Navigation("ReportArchives");
                 });
 
             modelBuilder.Entity("Reservation.Models.Room", b =>
