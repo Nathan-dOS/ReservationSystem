@@ -14,11 +14,15 @@ namespace Reservation.Controllers
     {
         private readonly IRoomRepository _roomRepository;
         private readonly IReserveRepository _reserveRepository;
+        private readonly IRoomServices _roomServices;
+        private readonly IEquipmentRepository _equipmentRepository;
 
-        public RoomController(IRoomRepository roomRepository, IReserveRepository reserveRepository)
+        public RoomController(IRoomRepository roomRepository, IReserveRepository reserveRepository, IRoomServices roomServices, IEquipmentRepository equipmentRepository)
         {
             _roomRepository = roomRepository;
             _reserveRepository = reserveRepository;
+            _roomServices = roomServices;
+            _equipmentRepository = equipmentRepository;
         }
 
         [Authorize] // Precisa esta logado para acessar ROOM
@@ -55,6 +59,12 @@ namespace Reservation.Controllers
                     .ToList();
             }
 
+            var roomEquipment = _roomServices.GetRoomEquipment(room.RoomType);
+            
+            var equipments = await _equipmentRepository.GetAllEquipments();
+
+            roomEquipment = await _equipmentRepository.GetEquipmentsPriceAsync(roomEquipment);
+
 
             var model = new RoomDetailViewModel
             {
@@ -65,7 +75,9 @@ namespace Reservation.Controllers
                     UserId = userID,
                 },
                 Reservations = reservations,
-                SelectedDate = selectedDate
+                SelectedDate = selectedDate,
+                RoomEquipments = roomEquipment,
+                Equipments = equipments
             };
 
           
