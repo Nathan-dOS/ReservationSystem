@@ -2,6 +2,7 @@
 using Reservation.Data;
 using Reservation.Interfaces;
 using Reservation.Models;
+using Reservation.ViewModel;
 
 namespace Reservation.Repository
 {
@@ -13,6 +14,31 @@ namespace Reservation.Repository
         {
             _context = context;
         }
+
+        public async Task<List<EquipmentViewModel>> GetEquipmentsPriceAsync(List<EquipmentViewModel> equipments)
+        {
+            var result = new List<EquipmentViewModel>();
+
+            foreach (var item in equipments)
+            {
+                // Busca o equipamento pelo nome no banco de dados
+                var equipmentInDb = await _context.Equipments.FirstOrDefaultAsync(c => c.EquipmentName == item.EquipmentName);
+
+                // Adiciona o equipamento com preço atualizado à lista de resultados
+                result.Add(new EquipmentViewModel
+                {
+                    EquipmentId = equipmentInDb.EquipmentId,
+                    EquipmentName = item.EquipmentName,
+                    EquipmentQuantity = item.EquipmentQuantity,
+                    EquipmentPrice = equipmentInDb.EquipmentPrice
+                });
+            }
+
+            return result;
+        }
+
+
+
 
         public async Task<IEnumerable<Equipment>> GetAllEquipments()
         {

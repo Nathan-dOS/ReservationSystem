@@ -8,6 +8,8 @@ namespace Reservation.ViewModel
         public IEnumerable<Reserve>? Reservations { get; set; }
         public CreateReserveViewModel CreateReserveViewModel { get; set; }
         public DateOnly? SelectedDate { get; set; }
+        public required List<EquipmentViewModel> RoomEquipments { get; set; }
+        public IEnumerable<Equipment>? Equipments { get; set; }
 
     }
 }

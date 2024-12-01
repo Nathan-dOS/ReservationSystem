@@ -15,13 +15,7 @@
         <input asp-for="EquipmentName" type="text" class="form-control" id="equipmentName" maxlength="100" placeholder="Enter equipment name" required>
     </div>
 
-    <div class="form-group">
-        <label asp-for="EquipmentStatus">Status</label>
-        <select asp-for="EquipmentStatus" asp-items="@Html.GetEnumSelectList<EnumEquipmentStatus>()" class="form-control" required>
-            <option value="">Select status</option>
-
-        </select>
-    </div>
+    
 
     <div class="form-group">
         <label asp-for="EquipmentPrice">Price</label>

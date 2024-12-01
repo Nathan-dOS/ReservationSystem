@@ -14,13 +14,11 @@ namespace Reservation.Models
         public string EquipmentName { get; set; }
 
         [Required]
-        public EnumEquipmentStatus EquipmentStatus { get; set; }
-
-        [Required]
         public float EquipmentPrice { get; set; }
 
         [Required]
         public int QuantityAvailable { get; set; }
+        public ICollection<ReserveEquipment>? ReserveEquipments { get; set; } // Relação muitos-para-muitos com Reserve através de ReserveEquipment
 
     }
 }

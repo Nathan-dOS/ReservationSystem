@@ -16,7 +16,7 @@ namespace Reservation.Data
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportFile> ReportFiles { get; set; }
-
+        public DbSet<ReserveEquipment> ReserveEquipments { get; set; }
         public DbSet<ReserveHistory> ReserveHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +35,16 @@ namespace Reservation.Data
                 .HasOne(r => r.Room)
                 .WithMany(rm => rm.Reservations)
                 .HasForeignKey(r => r.RoomId);
+
+            modelBuilder.Entity<ReserveEquipment>()
+                .HasOne(re => re.Reserve)
+                .WithMany(r => r.ReserveEquipments)
+                .HasForeignKey(re => re.ReserveId);
+
+            modelBuilder.Entity<ReserveEquipment>()
+                .HasOne(re => re.Equipment)
+                .WithMany(e => e.ReserveEquipments)
+                .HasForeignKey(re => re.EquipmentId);
 
 
             base.OnModelCreating(modelBuilder);

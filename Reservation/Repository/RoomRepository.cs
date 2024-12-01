@@ -2,6 +2,7 @@
 using Reservation.Data;
 using Reservation.Interfaces;
 using Reservation.Models;
+using Reservation.ViewModel;
 using SQLitePCL;
 namespace Reservation.Repository
 {
@@ -13,6 +14,7 @@ namespace Reservation.Repository
         {
             _context = context;
         }
+
 
         public bool Add(Room room)
         {

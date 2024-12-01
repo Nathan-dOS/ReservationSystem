@@ -12,6 +12,13 @@
     <li><strong>Horário:</strong> @Model.CreateReserveViewModel.ReserveStart - @Model.CreateReserveViewModel.ReserveEnd</li>
     <li><strong>Preço Total:</strong> @Model.CreateReserveViewModel.RentPrice</li>
 </ul>
+<ul>
+    @foreach (var equipment in Model.RoomEquipments)
+    {
+        <li><strong>@equipment.EquipmentName :</strong> @equipment.EquipmentQuantity | @equipment.EquipmentPrice cada</li>
+        
+    }
+</ul>
 
 <form asp-action="Confirm" asp-controller="Reserve" method="post">
     <input type="hidden" asp-for="CreateReserveViewModel.RoomId" />
@@ -20,6 +27,8 @@
     <input type="hidden" asp-for="CreateReserveViewModel.ReserveStart" />
     <input type="hidden" asp-for="CreateReserveViewModel.ReserveEnd" />
     <input type="hidden" asp-for="CreateReserveViewModel.RentPrice" />
+    <input type="hidden" asp-for="RoomEquipments" />
+    
 
     <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
     <a asp-action="Detail" asp-controller="Room" asp-route-id="@Model.Room.RoomId" class="btn btn-secondary">Voltar</a>

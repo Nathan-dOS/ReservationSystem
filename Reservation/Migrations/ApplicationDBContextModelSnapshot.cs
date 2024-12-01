@@ -159,9 +159,6 @@ namespace Reservation.Migrations
                     b.Property<float>("EquipmentPrice")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("EquipmentStatus")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("QuantityAvailable")
                         .HasColumnType("INTEGER");
 
@@ -232,9 +229,6 @@ namespace Reservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("EquipementId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<float>("RentPrice")
                         .HasColumnType("REAL");
 
@@ -262,6 +256,30 @@ namespace Reservation.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Reserves");
+                });
+
+            modelBuilder.Entity("Reservation.Models.ReserveEquipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ReserveId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("ReserveId");
+
+                    b.ToTable("ReserveEquipments");
                 });
 
             modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
@@ -543,6 +561,25 @@ namespace Reservation.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("Reservation.Models.ReserveEquipment", b =>
+                {
+                    b.HasOne("Reservation.Models.Equipment", "Equipment")
+                        .WithMany("ReserveEquipments")
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Reservation.Models.Reserve", "Reserve")
+                        .WithMany("ReserveEquipments")
+                        .HasForeignKey("ReserveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("Reserve");
+                });
+
             modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
                 {
                     b.HasOne("Reservation.Models.Room", "Room")
@@ -565,9 +602,19 @@ namespace Reservation.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("Reservation.Models.Equipment", b =>
+                {
+                    b.Navigation("ReserveEquipments");
+                });
+
             modelBuilder.Entity("Reservation.Models.Report", b =>
                 {
                     b.Navigation("ReportArchives");
+                });
+
+            modelBuilder.Entity("Reservation.Models.Reserve", b =>
+                {
+                    b.Navigation("ReserveEquipments");
                 });
 
             modelBuilder.Entity("Reservation.Models.Room", b =>
