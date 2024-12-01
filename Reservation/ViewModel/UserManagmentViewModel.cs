@@ -4,6 +4,7 @@ namespace Reservation.ViewModel
 {
     public class UserManagmentViewModel
     {
+ 
         public string UserId { get; set; }
         public List<string> Roles { get; set; }
         public string CPF { get; set; }
@@ -13,6 +14,8 @@ namespace Reservation.ViewModel
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsBanned { get; set; }
+
+        public List<string> RolesUserLogged {  get; set; }
 
     }
 }

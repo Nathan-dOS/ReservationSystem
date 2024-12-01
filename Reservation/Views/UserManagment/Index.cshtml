@@ -21,7 +21,6 @@
     <thead class="thead-light">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">UserId</th>
             <th scope="col">CPF</th>
             <th scope="col">Nome</th>
             <th scope="col">Email</th>
@@ -37,33 +36,35 @@
             {
                 <tr>
                     <th scope="row">@index</th>
-                    <td>@user.UserId</td>
                     <td>@user.CPF</td>
                     <td>@user.Name</td>
                     <td>@user.Email</td>
                     <td>@string.Join(", ", user.Roles)</td>
 
-                    @if (user.IsBanned == false && !user.Roles.Contains("general") && !user.Roles.Contains("admin"))
+                    @if (user.IsBanned == false && !user.Roles.Contains("general") && !user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general"))
                     {
-                    <td>
+                        <td>
                             <a class="btn btn-danger" asp-action="BanUser" asp-route-userId="@user.UserId">Banir</a>
 
-                    </td>
+                        </td>
+                    }
 
-                    @if(!user.Roles.Contains("general") && !user.Roles.Contains("admin"))
+                    @if(!user.Roles.Contains("general") && !user.Roles.Contains("admin")  && (user.RolesUserLogged.Contains("general") || user.RolesUserLogged.Contains("admin")))
                         {
                             <td>
                                 <a class="btn btn-danger" asp-action="PromoteToAdmin" asp-route-userId="@user.UserId">Promover</a>
-                            </td>
-                        }
-                    }
 
-                    @if (user.Roles.Contains("admin"))
+                            </td>
+                  
+                        }
+
+                    @if (user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general") )
                     {
                         <td>
                             <a class="btn btn-danger" asp-action="RemoveAdmin" asp-route-userId="@user.UserId">Demitir</a>
                         </td>
                     }
+
                 </tr>
 
                    

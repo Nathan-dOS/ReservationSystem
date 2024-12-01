@@ -18,7 +18,7 @@ namespace Reservation.Services
                 using (var scope = _scopeFactory.CreateScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-                    var now = DateTime.UtcNow;
+                    var now = DateTime.Now;
 
                     var usersToUnban = dbContext.Users
                         .Where(u => u.IsBanned && u.BannedUntil.HasValue && u.BannedUntil.Value <= now)
@@ -36,7 +36,7 @@ namespace Reservation.Services
                     }
                 }
 
-                // Intervalo entre verificações (ex.: a cada 5 minutos)
+                // Intervalo entre verificações (ex.: a cada 2 minutos)
                 await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
             }
         }

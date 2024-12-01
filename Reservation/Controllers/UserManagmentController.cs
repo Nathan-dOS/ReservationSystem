@@ -21,16 +21,46 @@ namespace Reservation.Controllers
             _userRepository = userRepository;
             _userManager = userManager;
         }
-        [Authorize(Roles = "admin,general")]
+        [Authorize(Roles = "admin, general")]
         public async Task<IActionResult> Index()
         {
             var users = await _userRepository.GetAllUsersWithRolesAsync();
+            var UserLogged = await _userManager.GetUserAsync(User);
 
-            return View(users);
+            if (UserLogged == null) 
+            {
+                TempData["ErrorMessage"] = "Usuario nao esta logado ";
+                return RedirectToAction("Index");
+
+            }
+
+            var rolesOfUserLogged = await _userManager.GetRolesAsync(UserLogged);
+
+            var userRoles = new List<UserManagmentViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userRoles.Add(new UserManagmentViewModel
+                {
+                    UserId = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    CPF = user.CPF,
+                    PhoneNumber = user.PhoneNumber,
+                    OABNumber = user.OABNumber,
+                    CRMNumber = user.CRMNumber,
+                    IsBanned = user.IsBanned,
+                    Roles = roles.ToList(),
+                    RolesUserLogged = rolesOfUserLogged.ToList(),
+                });
+            }
+
+            return View(userRoles);
         }
         // Metodo de banir usuario
         public async Task<IActionResult> BanUser(string userID)
-        { 
+        {
             var user = await _userRepository.GetUserByIdAsync(userID);
 
             if (user == null)
@@ -40,7 +70,7 @@ namespace Reservation.Controllers
             }
 
             user.IsBanned = true;
-            user.BannedUntil = DateTime.UtcNow.AddMinutes(1); // 1 Minuto de ban
+            user.BannedUntil = DateTime.Now.AddMinutes(1); // 1 Minuto de ban
             await _userManager.UpdateAsync(user); // Update User
 
             TempData["SuccessMessage"] = "Usuario banido por " + user.BannedUntil + "Minutes";
@@ -74,6 +104,11 @@ namespace Reservation.Controllers
 
             }
 
+            if(roles.Contains("user"))
+            {
+                await _userManager.RemoveFromRoleAsync(user, "user");
+            }
+
             // Adiciona como Admin
             var result = await _userManager.AddToRoleAsync(user, "admin");
 
@@ -92,8 +127,19 @@ namespace Reservation.Controllers
 
         
         public async Task<IActionResult> RemoveAdmin(string userID)
-        { // Pega usuario
+        {
+            //Usuario logado
+            var userLogged = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Pega ID do usario pra banir
             var user = await _userRepository.GetUserByIdAsync(userID);
+
+            if (userLogged == userID)
+            {
+                TempData["ErrorMessage"] = "Voce não pode se demitir";
+                return RedirectToAction("Index");
+            }
+
 
             if (user == null)
             {
@@ -107,8 +153,14 @@ namespace Reservation.Controllers
             { // Remove Da tabela roles
                 var result = await _userManager.RemoveFromRoleAsync(user, "admin");
 
+                if(!roles.Contains("user"))
+                {
+                    await _userManager.AddToRoleAsync(user, "user");
+                }
+
                 if(result.Succeeded)
                 {
+
                     TempData["ErrorMessage"] = "Usuario removido como admin";
                 }
 

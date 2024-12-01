@@ -30,29 +30,10 @@ namespace Reservation.Repository
      
 
 
-        public async Task<List<UserManagmentViewModel>> GetAllUsersWithRolesAsync()
+        public async Task<List<User>> GetAllUsersWithRolesAsync()
         {
-            var users = await _dbContext.Users.ToListAsync();
-            var userRoles = new List<UserManagmentViewModel>();
+            return await _dbContext.Users.ToListAsync();
 
-            foreach (var user in users)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                userRoles.Add(new UserManagmentViewModel
-                {
-                    UserId = user.Id,
-                    Name = user.Name,
-                    Email = user.Email,
-                    CPF = user.CPF,
-                    PhoneNumber = user.PhoneNumber,
-                    OABNumber = user.OABNumber,
-                    CRMNumber = user.CRMNumber,
-                    IsBanned = user.IsBanned,
-                    Roles = roles.ToList()
-                });
-            }
-
-            return userRoles;
         }
     }
 
