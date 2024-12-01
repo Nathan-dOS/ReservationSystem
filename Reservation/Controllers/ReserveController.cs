@@ -133,22 +133,79 @@ namespace Reservation.Controllers
                roomDetail.CreateReserveViewModel.RentPrice);
 
             // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
-            _reserveService.CreateReservation(roomDetail.CreateReserveViewModel, totalPriceByHours);
 
+            roomDetail.CreateReserveViewModel.RentPrice = totalPriceByHours;
+
+
+
+            var serializedModel = System.Text.Json.JsonSerializer.Serialize(roomDetail);
+            Response.Cookies.Append("ReserveData", serializedModel);
 
             return RedirectToAction("Confirmation", "Reserve");
 
-
         }
+
 
         public IActionResult Confirmation()
         {
+            // Recupera os dados do cookie
+            Request.Cookies.TryGetValue("ReserveData", out var serializedModel);
 
+            if (string.IsNullOrEmpty(serializedModel))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
+            // Desserializa o JSON para o objeto
+            var reserveVM = System.Text.Json.JsonSerializer.Deserialize<RoomDetailViewModel>(serializedModel);
 
-            return View();
+            if (reserveVM == null || reserveVM.CreateReserveViewModel == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Certifique-se de que os detalhes da sala estão preenchidos
+            if (reserveVM.Room == null)
+            {
+                reserveVM.Room = _roomRepository.GetByIdAsync(reserveVM.CreateReserveViewModel.RoomId).Result;
+
+                if (reserveVM.Room == null)
+                {
+                    return View("Error");
+                }
+            }
+
+            return View(reserveVM);
         }
 
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Confirm(RoomDetailViewModel reserveVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Erro ao confirmar a reserva. Por favor, tente novamente.";
+                return RedirectToAction("Confirmation", "Reserve", reserveVM);
+            }
+
+            // Validações finais antes de salvar
+            if (await _reserveService.IsUserBanned(reserveVM.CreateReserveViewModel.UserId) ||
+                !_reserveService.IsValidReserveTime(reserveVM.CreateReserveViewModel.ReserveStart, reserveVM.CreateReserveViewModel.ReserveEnd))
+            {
+                TempData["ErrorMessage"] = "Não foi possível confirmar a reserva.";
+                return RedirectToAction("Confirmation", "Reserve", reserveVM);
+            }
+
+            // Calcula o preço total e salva a reserva
+            _reserveService.CreateReservation(reserveVM.CreateReserveViewModel, reserveVM.CreateReserveViewModel.RentPrice);
+
+            // Redireciona para a página de sucesso (Index em Room)
+            TempData["SuccessMessage"] = "Reserva confirmada com sucesso!";
+            return RedirectToAction("Index", "Room");
+        }
 
         public async Task<IActionResult> Cancel(int id)
         {

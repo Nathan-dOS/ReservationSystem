@@ -1,15 +1,26 @@
-﻿@* Views/Reserve/Confirmacao.cshtml *@
-@{
-    ViewData["Title"] = "Confirmação de Reserva";
-}
+﻿@using Reservation.ViewModel
+@model RoomDetailViewModel
 
-<div class="container">
-    <h2 class="my-4">Reserva realizada com sucesso!</h2>
-    <p>O que você gostaria de fazer agora?</p>
 
-    <div class="d-flex gap-3 mt-4">
-        <a asp-controller="Reserve" asp-action="History" class="btn btn-primary">Ver Histórico</a>
+<h2>Confirmação de Reserva</h2>
 
-        <a asp-controller="Room" asp-action="Index" class="btn btn-secondary">Voltar para Salas</a>
-    </div>
-</div>
+<p>Confirme os detalhes da sua reserva:</p>
+
+<ul>
+    <li><strong>Sala:</strong> @Model.Room.RoomNumber</li>
+    <li><strong>Data:</strong> @Model.CreateReserveViewModel.ReserveDate.ToString("dd/MM/yyyy")</li>
+    <li><strong>Horário:</strong> @Model.CreateReserveViewModel.ReserveStart - @Model.CreateReserveViewModel.ReserveEnd</li>
+    <li><strong>Preço Total:</strong> @Model.CreateReserveViewModel.RentPrice</li>
+</ul>
+
+<form asp-action="Confirm" asp-controller="Reserve" method="post">
+    <input type="hidden" asp-for="CreateReserveViewModel.RoomId" />
+    <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
+    <input type="hidden" asp-for="CreateReserveViewModel.ReserveDate" />
+    <input type="hidden" asp-for="CreateReserveViewModel.ReserveStart" />
+    <input type="hidden" asp-for="CreateReserveViewModel.ReserveEnd" />
+    <input type="hidden" asp-for="CreateReserveViewModel.RentPrice" />
+
+    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+    <a asp-action="Detail" asp-controller="Room" asp-route-id="@Model.Room.RoomId" class="btn btn-secondary">Voltar</a>
+</form>

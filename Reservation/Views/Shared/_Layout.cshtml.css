@@ -7,8 +7,30 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.menu-button {
+    position: fixed;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px; /* Altura total das barrinhas */
+    width: 30px; /* Largura das barrinhas */
+    padding: 0;
+}
+
+    .menu-button span {
+        display: block;
+        height: 4px; /* Altura de cada barrinha */
+        width: 100%; /* Largura igual ao botão */
+        background-color: black; /* Cor das barrinhas */
+        border-radius: 2px; /* Deixar as bordas arredondadas */
+    }
+
+
 a {
-  color: #0077cc;
+    color: #0077cc;
 }
 
 .btn-primary {
