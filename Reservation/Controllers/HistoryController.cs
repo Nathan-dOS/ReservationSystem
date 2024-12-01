@@ -15,7 +15,7 @@ namespace Reservation.Controllers
             _historyRepository = reserveHistory;
         }
 
-
+        
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -26,7 +26,8 @@ namespace Reservation.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var history = await _historyRepository.GetHistoryByUserID(userId);
+            // Pega historico pelo ID do usuario
+            var history = await _historyRepository.GetHistoryByUserIDAsync(userId);
 
            
             return View(history);

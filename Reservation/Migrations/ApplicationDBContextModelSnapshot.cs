@@ -273,6 +273,9 @@ namespace Reservation.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<float>("RentPrice")
+                        .HasColumnType("REAL");
+
                     b.Property<DateOnly>("ReserveDate")
                         .HasColumnType("TEXT");
 
@@ -296,6 +299,8 @@ namespace Reservation.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("HistoryId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("ReserveHistories");
                 });
@@ -531,6 +536,17 @@ namespace Reservation.Migrations
                 {
                     b.HasOne("Reservation.Models.Room", "Room")
                         .WithMany("Reservations")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
+                {
+                    b.HasOne("Reservation.Models.Room", "Room")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

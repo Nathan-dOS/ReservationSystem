@@ -31,7 +31,11 @@ namespace Reservation.Models
         public TimeOnly ReserveEnd { get; set; }
 
         [Required(ErrorMessage = "O status da reserva é obrigatório.")]
-        public EnumReserveStatus ReserveStatus { get; set; } // Status padrão: validada
+        public EnumReserveStatus ReserveStatus { get; set; }
+
+        public required float RentPrice { get; set; }
+
+        public Room  Room { get; set; }
 
         [Required]
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;

@@ -8,7 +8,7 @@ using Reservation.Repository;
 using Reservation.ViewModel;
 
 namespace Reservation.Services
-{
+{ // Classe criada para modularizar as funções do controller
     public class ReserveServicesRepository : IReserveService
     {
         private readonly IRoomRepository _roomRepository;
@@ -24,10 +24,11 @@ namespace Reservation.Services
             _reserveHistory = reserveHistory;
         }
 
+        // Metodo para avaliar se usuario esta banido
         public async Task<bool> IsUserBanned(string UserID)
         {
             var user = await _userManagment.FindByIdAsync(UserID);
-
+            // Verifica a flag banned
             if (user.IsBanned == true)
             {
                 return true;
@@ -38,8 +39,9 @@ namespace Reservation.Services
 
         }
 
+        
         public bool IsValidBusinessHours(TimeOnly start, TimeOnly end)
-        {
+        { // 08:00 e 20:00
             var openingTime = new TimeOnly(8, 0);
             var closingTime = new TimeOnly(20, 0);
             // Verifica se o horario nao ultrapassa o horario comercial
@@ -52,7 +54,7 @@ namespace Reservation.Services
         }
 
         public bool IsValidReserveTime(TimeOnly start, TimeOnly end)
-        {
+        { // Horario inicial precisa ser menor que horario final
             return start < end;
         }
 
@@ -67,7 +69,7 @@ namespace Reservation.Services
             );
         }
 
-
+        // Calculo de preço por hora
         public float CalculatePriceByHours(TimeOnly start, TimeOnly end, float rentPrice)
         {
             double totalTime = (end - start).TotalHours;
@@ -106,7 +108,8 @@ namespace Reservation.Services
                     ReserveStart = reserve.ReserveStart,
                     ReserveEnd = reserve.ReserveEnd,
                     ReserveStatus = reserve.ReserveStatus,
-                    ModifiedAt = DateTime.UtcNow // Adicione a data em que o histórico foi registrado
+                    RentPrice = reserve.RentPrice,
+                    ModifiedAt = DateTime.UtcNow 
                 };
 
                 return _reserveHistory.AddHistory(history);
@@ -121,6 +124,7 @@ namespace Reservation.Services
 
         }
 
+        // Metodo que adiciona historico
         public bool AddReserveToHistoryAsync(Reserve reserve)
         {
             var history = new ReserveHistory
@@ -130,6 +134,7 @@ namespace Reservation.Services
                 RoomId = reserve.RoomId,
                 ReserveDate = reserve.ReserveDate,
                 ReserveStart = reserve.ReserveStart,
+                RentPrice = reserve.RentPrice,
                 ReserveEnd = reserve.ReserveEnd,
                 ReserveStatus = reserve.ReserveStatus,
                 ModifiedAt = DateTime.UtcNow
@@ -137,6 +142,23 @@ namespace Reservation.Services
 
             return _reserveHistory.AddHistory(history);
             
+        }
+
+        // Atualiza o historico
+        public async Task<bool> UpdateStatusHistory(Reserve reserve)
+        {
+            // Pega o historico baseado no ID da reserva
+            var HistoryByReserveID = await _reserveHistory.GetHistoryByReserveIDAsync(reserve.ReserveId);
+
+            if (HistoryByReserveID != null)
+            {
+                HistoryByReserveID.ReserveStatus = EnumReserveStatus.Canceled; // Muda seu status
+                _reserveHistory.Update(HistoryByReserveID); 
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

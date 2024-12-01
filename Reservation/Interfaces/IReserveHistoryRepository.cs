@@ -9,6 +9,10 @@ namespace Reservation.Interfaces
 
         bool Save();
 
-        Task<IEnumerable<ReserveHistory>> GetHistoryByUserID(string userID);
+        Task<ReserveHistory> GetHistoryByReserveIDAsync(int reserveID);
+
+        Task<IEnumerable<ReserveHistory>> GetHistoryByUserIDAsync(string userID);
+
+        bool Update(ReserveHistory reserveHistory); 
     }
 }

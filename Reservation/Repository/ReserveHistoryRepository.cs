@@ -24,10 +24,20 @@ namespace Reservation.Repository
             return saved > 0 ? true : false;
         }
 
-        public async Task<IEnumerable<ReserveHistory>> GetHistoryByUserID(string userID)
+        public async Task<IEnumerable<ReserveHistory>> GetHistoryByUserIDAsync(string userID)
         {
-           return await _dbContext.ReserveHistories.Where(r => r.UserId ==  userID).ToListAsync();
+           return await _dbContext.ReserveHistories.Where(r => r.UserId ==  userID).Include(r => r.Room).ToListAsync();
         }
 
+        public async Task<ReserveHistory> GetHistoryByReserveIDAsync(int reserveID)
+        {
+            return await _dbContext.ReserveHistories.FirstOrDefaultAsync(r => r.ReserveId == reserveID);
+        }
+
+        public bool Update(ReserveHistory reserveHistory)
+        {
+            _dbContext.Update(reserveHistory);
+            return Save();
+        }
     }
 }

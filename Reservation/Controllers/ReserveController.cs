@@ -220,9 +220,9 @@ namespace Reservation.Controllers
 
             try
             {
-                reserve.ReserveStatus = Data.Enum.EnumReserveStatus.Canceled;
-                _reserveService.AddReserveToHistoryAsync(reserve);
-                _reserveRepository.DeleteReserve(reserve);
+                // Atualiza o Status da reserva no historico
+                await _reserveService.UpdateStatusHistory(reserve);
+                _reserveRepository.DeleteReserve(reserve); // Deleta a reserva
             }
             catch (Exception ex)
             {

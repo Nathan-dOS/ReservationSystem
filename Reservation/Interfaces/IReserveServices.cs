@@ -14,5 +14,7 @@ namespace Reservation.Interfaces
         float CalculatePriceByHours(TimeOnly start, TimeOnly end, float RentPrice);
 
         bool AddReserveToHistoryAsync(Reserve reserve);
+
+        Task<bool> UpdateStatusHistory(Reserve reserve);
     }
 }
