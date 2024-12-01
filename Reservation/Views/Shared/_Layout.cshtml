@@ -65,62 +65,70 @@
 
                     </li>
                 }
-                <!-- Salas -->
-                    <li class="nav-item">
+                
+                <li class="nav-item">
                     <a class="nav-link text-truncate" asp-area="" asp-controller="Room" asp-action="Index">
-                            <i class="fs-5 bi-table"></i>
-                            <span class="ms-1 d-none d-sm-inline">Salas</span>
-                        </a>
-                    </li>
+                        <i class="fs-5 bi-table"></i>
+                        <span class="ms-1 d-none d-sm-inline">Salas</span>
+                    </a>
+                </li><!-- Salas -->
                 
 
-                    @if (User.Identity.IsAuthenticated){
-                        @if (User.IsInRole("general") || User.IsInRole("admin"))
+                @if (User.Identity.IsAuthenticated){
+                    @if (User.IsInRole("general") || User.IsInRole("admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="Report" asp-action="Index">
-                                    <i class="fs-5 bi-grid"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Relatórios</span>
-                                </a>
-                            </li><!-- Relatórios -->
+                        <li class="nav-item">
+                            <a class="nav-link text-truncate" asp-area="" asp-controller="Report" asp-action="Index">
+                                <i class="fs-5 bi-grid"></i>
+                                <span class="ms-1 d-none d-sm-inline">Relatórios</span>
+                            </a>
+                        </li><!-- Relatórios -->
 
                             
-                            <li class="nav-item">
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
-                                    <i class="fs-5 bi-people"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Usuários</span>
-                                </a>
+                        <li class="nav-item">
+                            <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
+                                <i class="fs-5 bi-people"></i>
+                                <span class="ms-1 d-none d-sm-inline">Usuários</span>
+                            </a>
 
-                            </li><!-- Usuários -->
-                        }
+                        </li><!-- Usuários -->
+                        
+                    <li class="nav-item">
+                        <a class="nav-link text-truncate" asp-area="" asp-controller="Equipment" asp-action="Index">
+                            <i class="fs-5 bi-table"></i>
+                            <span class="ms-1 d-none d-sm-inline">Equipamentos</span>
+                        </a>
+                    </li><!-- Equipamentos -->
                     }
-                </ul>
-            </div>
+                }
+                
+            </ul>
         </div>
+    </div>
 
-        <!-- Container Principal -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col min-vh-100 py-3">
-                    <!-- Botão Toggler -->
+    <!-- Container Principal -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col min-vh-100 py-3">
+                <!-- Botão Toggler -->
                 <button class="menu-button" onclick="toggleMenu()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" role="button" >
                     
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
-                    </button>
-                    <!-- Conteúdo -->
-                    <div>
-                        <div class="container">
-                            <main role="main" class="pb-3">
-                                @RenderBody()
-                            </main>
-                        </div>
+                </button>
+                <!-- Conteúdo -->
+                <div>
+                    <div class="container">
+                        <main role="main" class="pb-3">
+                            @RenderBody()
+                        </main>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
     
     

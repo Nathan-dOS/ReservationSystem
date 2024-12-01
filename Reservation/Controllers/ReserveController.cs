@@ -75,6 +75,9 @@ namespace Reservation.Controllers
                 {
                     Room = room,
                     CreateReserveViewModel = roomDetail.CreateReserveViewModel,
+                    Reservations = await _reserveRepository.GetReservesByRoomIdAsync(roomDetail.CreateReserveViewModel.RoomId),
+                    RoomEquipments = roomDetail.RoomEquipments,
+                    
 
                 };
 
@@ -129,12 +132,33 @@ namespace Reservation.Controllers
             }
 
 
-            float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
+            float RentPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
                roomDetail.CreateReserveViewModel.RentPrice);
+
+            var selectedEquipments = roomDetail.RoomEquipments.Where(e => e.IsSelected && e.EquipmentQuantity > 0).ToList();
+
+
+            // Inicialize a variável totalRentPriceEquipments fora do foreach
+            float totalRentPriceEquipments = 0;
+
+            // Itere pelos equipamentos selecionados
+            foreach (var equipment in selectedEquipments)
+            {
+                if (equipment.EquipmentQuantity > 0)
+                {
+                    totalRentPriceEquipments += equipment.EquipmentPrice * equipment.EquipmentQuantity.Value;
+                }
+            }
+
+            // Calcule o preço total incluindo o aluguel base
+            float totalPrice = RentPriceByHours + totalRentPriceEquipments;
+
 
             // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
 
-            roomDetail.CreateReserveViewModel.RentPrice = totalPriceByHours;
+            roomDetail.CreateReserveViewModel.RentPrice = totalPrice;
+
+            roomDetail.RoomEquipments = selectedEquipments;
 
 
 
@@ -205,7 +229,7 @@ namespace Reservation.Controllers
             }
 
             // Calcula o preço total e salva a reserva
-            _reserveService.CreateReservation(reserveVM.CreateReserveViewModel, reserveVM.CreateReserveViewModel.RentPrice);
+            _reserveService.CreateReservation(reserveVM);
 
             // Redireciona para a página de sucesso (Index em Room)
             TempData["SuccessMessage"] = "Reserva confirmada com sucesso!";

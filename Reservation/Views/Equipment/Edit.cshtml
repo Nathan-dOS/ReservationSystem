@@ -1,0 +1,25 @@
+﻿@using Reservation.Data.Enum
+@using Reservation.ViewModel
+@model EditEquipmentViewModel
+
+
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="EquipmentName">Equipment Name</label>
+        <input asp-for="EquipmentName" value="@Model.EquipmentName" type="text" class="form-control" id="equipmentName" maxlength="100" required readonly>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="EquipmentPrice">Price</label>
+        <input asp-for="EquipmentPrice" value="@Model.EquipmentPrice" type="number" class="form-control" id="price" step="0.01"  required>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="QuantityAvailable">Quantity Available</label>
+        <input asp-for="QuantityAvailable" value="@Model.QuantityAvailable" type="number" class="form-control" id="quantityAvailable" required >
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

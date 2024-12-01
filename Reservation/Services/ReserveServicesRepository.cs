@@ -80,19 +80,37 @@ namespace Reservation.Services
         }
 
 
-        public bool CreateReservation(CreateReserveViewModel reserveModel, float totalPriceByHours)
+        public bool CreateReservation(RoomDetailViewModel reserveVM)
         {
 
             var reserve = new Reserve
             {
-                RoomId = reserveModel.RoomId,
-                UserId = reserveModel.UserId,
-                ReserveDate = reserveModel.ReserveDate,
-                ReserveStart = reserveModel.ReserveStart,
-                ReserveEnd = reserveModel.ReserveEnd,
+                RoomId = reserveVM.CreateReserveViewModel.RoomId,
+                UserId = reserveVM.CreateReserveViewModel.UserId,
+                ReserveDate = reserveVM.CreateReserveViewModel.ReserveDate,
+                ReserveStart = reserveVM.CreateReserveViewModel.ReserveStart,
+                ReserveEnd = reserveVM.CreateReserveViewModel.ReserveEnd,
                 ReserveStatus = EnumReserveStatus.Validated,
-                RentPrice = totalPriceByHours,
+                RentPrice = reserveVM.CreateReserveViewModel.RentPrice,
+                ReserveEquipments = new List<ReserveEquipment>()
             };
+
+            // Adiciona os equipamentos à reserva
+            foreach (var equipment in reserveVM.RoomEquipments)
+            {
+                // Verifica se a quantidade do equipamento é maior que 0, pois só deve adicionar equipamentos com quantidade > 0
+                if (equipment.EquipmentQuantity > 0)
+                {
+                    var reserveEquipment = new ReserveEquipment
+                    {
+                        EquipmentId = equipment.EquipmentId.Value, // Assume que EquipmentId não é nulo
+                        ReserveId = reserve.ReserveId, // O ID gerado está disponível aqui
+                        Quantity = equipment?.EquipmentQuantity ?? 0 // Assume que EquipmentQuantity não é nulo
+                    };
+
+                    reserve.ReserveEquipments.Add(reserveEquipment);
+                }
+            }
 
             bool succeed = _reserveRepository.AddReserve(reserve);
 
@@ -109,7 +127,8 @@ namespace Reservation.Services
                     ReserveEnd = reserve.ReserveEnd,
                     ReserveStatus = reserve.ReserveStatus,
                     RentPrice = reserve.RentPrice,
-                    ModifiedAt = DateTime.UtcNow 
+                    ModifiedAt = DateTime.UtcNow
+                    
                 };
 
                 return _reserveHistory.AddHistory(history);

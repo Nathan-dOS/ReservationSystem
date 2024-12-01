@@ -64,13 +64,13 @@
                 <li>Câmera de Segurança: @(Model.Room.HasSecurityCamera ? "Sim" : "Não")</li>
                 <li>Tamanho: @Model.Room.SizeInSquareMeters m²</li>
 
-                
+
 
             </ul>
             <a asp-controller="Reserve" asp-action="Create" asp-route-id="@Model.Room.RoomId">Reservar</a>
 
 
-            
+
 
         </div>
     </div>
@@ -95,7 +95,7 @@
     <div>
         <label for="SelectedDate">Filtrar por data:</label>
         <input type="date" id="SelectedDate" name="selectedDate"
-               value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
+        value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
     </div>
 
     @if (!(Model.Reservations.Any() && Model.SelectedDate.HasValue ))
@@ -143,6 +143,51 @@
             }
         </ul>
     }
+
+    @{
+        var equipments = Model.Equipments.ToList();
+    }
+
+    <h4>Equipamentos</h4>
+    <div>
+        @for (int i = 0; i < equipments.Count; i++)
+        {
+            var equipment = equipments[i];
+            var roomEquipment = Model.RoomEquipments.FirstOrDefault(re => re.EquipmentId == equipment.EquipmentId);
+            bool isRoomEquipment = roomEquipment != null;
+
+            <div class="equipment-item">
+                <!-- Checkbox para selecionar o equipamento -->
+                <input type="checkbox"
+                       id="equipment-@equipment.EquipmentId"
+                       name="RoomEquipments[@i].IsSelected"
+                       value="true"
+                @(isRoomEquipment ? "checked" : "") />
+                <input type="hidden" name="RoomEquipments[@i].IsSelected" value="false" />
+
+                <input type="hidden" name="RoomEquipments[@i].EquipmentId" value="@equipment.EquipmentId" />
+                <input type="hidden" name="RoomEquipments[@i].EquipmentName" value="@equipment.EquipmentName" />
+                <input type="hidden" name="RoomEquipments[@i].EquipmentPrice" value="@equipment.EquipmentPrice" />
+
+                <label for="equipment-@equipment.EquipmentId">@equipment.EquipmentName (Preço por unidade: @equipment.EquipmentPrice)</label>
+
+                <!-- Campo para editar a quantidade -->
+                <div class="quantity-control">
+                    <label for="quantity-@equipment.EquipmentId">Quantidade: </label>
+                    <input type="number"
+                           id="quantity-@equipment.EquipmentId"
+                           name="RoomEquipments[@i].EquipmentQuantity"
+                           value="@(isRoomEquipment ? roomEquipment.EquipmentQuantity.ToString() : "0")"
+                           min="0"
+                           class="form-control" />
+                </div>
+            </div>
+            <hr />
+        }
+    </div>
+
+
+
 
     <div>
         <label for="RentPrice">Preço do Aluguel:</label>

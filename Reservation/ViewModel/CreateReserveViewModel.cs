@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Reservation.Data.Enum;
 
 namespace Reservation.ViewModel
 {

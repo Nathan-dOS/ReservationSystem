@@ -1,4 +1,5 @@
 ﻿using Reservation.Models;
+using Reservation.ViewModel;
 
 namespace Reservation.Interfaces
 {
@@ -10,6 +11,7 @@ namespace Reservation.Interfaces
         bool Update(Equipment equipment);
         bool Add(Equipment equipment);
         bool Remove(Equipment equipment);
+        Task<List<EquipmentViewModel>> GetEquipmentsPriceAsync(List<EquipmentViewModel> equipments);
 
     }
 }
