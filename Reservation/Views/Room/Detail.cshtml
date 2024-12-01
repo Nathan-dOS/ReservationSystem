@@ -80,7 +80,7 @@
 <!-- Formulário de reserva -->
 <h3 class="my-3">Fazer Reserva</h3>
 
-@if (TempData["ErrorMessage"] != null)
+@if (TempData["ErrorMessage"] != null) // Exibe a mensagem de erro, se houver
 {
     <div class="alert alert-danger">
         @TempData["ErrorMessage"]
@@ -130,7 +130,7 @@
         <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
     </div>
 
-    @if (Model.Reservations.Any() && Model.SelectedDate.HasValue)
+    @if (Model.Reservations.Any() && Model.SelectedDate.HasValue) // Se houver reservas para a data selecionada, exibe os horários reservados
     {
         <h4>Horários reservados para @Model.SelectedDate?.ToString("dd/MM/yyyy"):</h4>
         <ul>
