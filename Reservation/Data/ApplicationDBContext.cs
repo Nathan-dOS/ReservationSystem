@@ -17,6 +17,8 @@ namespace Reservation.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportFile> ReportFiles { get; set; }
 
+        public DbSet<ReserveHistory> ReserveHistories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Room>()

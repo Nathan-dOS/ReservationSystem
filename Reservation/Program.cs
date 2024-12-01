@@ -17,6 +17,7 @@ builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IReserveRepository, ReserveRepository>();
 builder.Services.AddScoped<IReserveService, ReserveServicesRepository>();
 builder.Services.AddScoped<IUserManagmenteRepository, UserManagmentRepository>();
+builder.Services.AddScoped<IReserveHistoryRepository, ReserveHistoryRepository>();
 
 
 builder.Services.AddHostedService<BanCleanupService>();

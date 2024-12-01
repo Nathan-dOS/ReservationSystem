@@ -264,6 +264,47 @@ namespace Reservation.Migrations
                     b.ToTable("Reserves");
                 });
 
+            modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
+                {
+                    b.Property<int>("HistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<float>("RentPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateOnly>("ReserveDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly>("ReserveEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReserveId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<TimeOnly>("ReserveStart")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReserveStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("HistoryId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("ReserveHistories");
+                });
+
             modelBuilder.Entity("Reservation.Models.Room", b =>
                 {
                     b.Property<int>("RoomId")
@@ -495,6 +536,17 @@ namespace Reservation.Migrations
                 {
                     b.HasOne("Reservation.Models.Room", "Room")
                         .WithMany("Reservations")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Reservation.Models.ReserveHistory", b =>
+                {
+                    b.HasOne("Reservation.Models.Room", "Room")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -28,9 +28,9 @@ namespace Reservation.Controllers
 
             return View(users);
         }
-
+        // Metodo de banir usuario
         public async Task<IActionResult> BanUser(string userID)
-        {
+        { 
             var user = await _userRepository.GetUserByIdAsync(userID);
 
             if (user == null)
@@ -40,8 +40,8 @@ namespace Reservation.Controllers
             }
 
             user.IsBanned = true;
-            user.BannedUntil = DateTime.UtcNow.AddMinutes(1);
-            await _userManager.UpdateAsync(user);
+            user.BannedUntil = DateTime.UtcNow.AddMinutes(1); // 1 Minuto de ban
+            await _userManager.UpdateAsync(user); // Update User
 
             TempData["SuccessMessage"] = "Usuario banido por " + user.BannedUntil + "Minutes";
             
@@ -54,6 +54,7 @@ namespace Reservation.Controllers
             return View();
         }
 
+     
         public async Task<IActionResult> PromoteToAdmin(string userID)
         {
             var user = await _userRepository.GetUserByIdAsync(userID);
@@ -63,16 +64,17 @@ namespace Reservation.Controllers
                 TempData["ErrorMessage"] = "Usuario nao encontrado";
                 return RedirectToAction("Index");
             }
-
+            // Pega as roles do usuario
             var roles = await _userManager.GetRolesAsync(user);
 
             if(roles.Contains("admin"))
             {
-                TempData["ErrorMessage"] = "Usuario já é gerente ou admin";
+                TempData["ErrorMessage"] = "Usuario já é admin";
                 return RedirectToAction("Index");
 
             }
 
+            // Adiciona como Admin
             var result = await _userManager.AddToRoleAsync(user, "admin");
 
             if (result.Succeeded)
@@ -88,8 +90,9 @@ namespace Reservation.Controllers
 
         }
 
+        
         public async Task<IActionResult> RemoveAdmin(string userID)
-        {
+        { // Pega usuario
             var user = await _userRepository.GetUserByIdAsync(userID);
 
             if (user == null)
@@ -97,11 +100,11 @@ namespace Reservation.Controllers
                 TempData["ErrorMessage"] = "Usuario nao encontrado";
                 return RedirectToAction("Index");
             }
-
+            // Pega as roles
             var roles = await _userManager.GetRolesAsync(user);
 
             if (roles.Contains("admin"))
-            {
+            { // Remove Da tabela roles
                 var result = await _userManager.RemoveFromRoleAsync(user, "admin");
 
                 if(result.Succeeded)

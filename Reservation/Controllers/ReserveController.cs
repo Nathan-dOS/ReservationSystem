@@ -148,6 +148,8 @@ namespace Reservation.Controllers
             return RedirectToAction("Confirmation", "Reserve");
         }
 
+        }
+
 
         public IActionResult Confirmation()
         {
@@ -210,34 +212,6 @@ namespace Reservation.Controllers
             return RedirectToAction("Index", "Room");
         }
 
-
-
-        public async Task<IActionResult> History()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
-            if (string.IsNullOrEmpty(userId))
-            {
-                TempData["ErrorMessage"] = "Usuário não autenticado.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            var reservations = await _reserveRepository.GetReservesByUserIdAsync(userId);
-
-            var historyViewModel = reservations.Select(r => new ReserveHistoryViewModel
-            {
-                ReserveId = r.ReserveId,
-                UserId = r.UserId,
-                EquipementId = r.EquipementId,
-                ReserveDate = r.ReserveDate,
-                ReserveStart = r.ReserveStart,
-                ReserveEnd = r.ReserveEnd,
-                RentPrice = r.RentPrice,
-                ReserveStatus = r.ReserveStatus.ToString()
-            });
-
-            return View(historyViewModel);
-        }
-
         public async Task<IActionResult> Cancel(int id)
         {
             var reserve = await _reserveRepository.GetReserveByIdAsync(id);
@@ -251,8 +225,9 @@ namespace Reservation.Controllers
 
             try
             {
-                reserve.ReserveStatus = Data.Enum.EnumReserveStatus.Canceled;
-                await _reserveRepository.UpdateReserveAsync(reserve);
+                // Atualiza o Status da reserva no historico
+                await _reserveService.UpdateStatusHistory(reserve);
+                _reserveRepository.DeleteReserve(reserve); // Deleta a reserva
             }
             catch (Exception ex)
             {
@@ -281,6 +256,8 @@ namespace Reservation.Controllers
 
 
         }
+
+
 
  
     }
