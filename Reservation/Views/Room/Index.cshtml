@@ -6,6 +6,14 @@
 @{
 }
 
+@if (TempData["ErrorMessage"] != null) // Exibe a mensagem de erro, se houver
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">Album example</h1>
@@ -39,7 +47,9 @@
                         <div class="card-body">
                             <p class="card-text"> Numero: @item.RoomNumber</p>
                             <p class="card-text"> Status: @item.RoomStatus</p>
-                            <p class="card-text"> Preço: @item.RoomPrice</p> 
+                            <p class="card-text"> Preço: @item.RoomPrice</p>
+                            <p class="card-text"> Tipo: @item.RoomType</p>
+
                             <div class="d-flex justify-content-between align-items-center">
                                 @* Verificação se ta logado e é admin ou general*@
                                 @if (User.Identity.IsAuthenticated && (User.IsInRole("general") || User.IsInRole("admin")))

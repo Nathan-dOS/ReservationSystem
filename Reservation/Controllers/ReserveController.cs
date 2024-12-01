@@ -148,7 +148,7 @@ namespace Reservation.Controllers
             return RedirectToAction("Confirmation", "Reserve");
         }
 
-        }
+     
 
 
         public IActionResult Confirmation()

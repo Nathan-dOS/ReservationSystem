@@ -1,4 +1,5 @@
 ﻿@using Reservation.ViewModel
+@using Reservation.Data.Enum
 @model CreateRoomViewModel
 
 @*
@@ -25,14 +26,10 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="RoomStatus" asp-items="@Html.(GetEnumSelectList<EnumRoomStatus>())" for="status">Status</label>
-        <select class="form-control" id="status" required>
-            <!-- Opções de status para RoomStatus -->
-            <option value="Available">Available</option>
-            <option value="Occupied">Occupied</option>
-            <option value="Maintenance">Maintenance</option>
-            <!-- Outras opções de RoomStatus conforme necessário -->
+        <label asp-for="RoomStatus" for="status">Status</label>
+        <select asp-for="RoomStatus" asp-items="@Html.GetEnumSelectList<EnumRoomStatus>()" class="form-control" id="status" required>
         </select>
+        <span asp-validation-for="RoomStatus" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -61,16 +58,12 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="RoomType" asp-items="@Html.(GetEnumSelectList<EnumRoomType>())" for="type">Room Type</label>
-        <select class="form-control" id="type" required>
-            <option value="MeetingRoom">Meeting Room</option>
-            <option value="Auditorium">Auditorium</option>
-            <option value="LawOffice">Law Office</option>
-            <option value="StudyRoom">Study Room</option>
-            <option value="MedicalOffice">Medical Office</option>
-            <option value="WaitingRoom">Waiting Room</option>
+        <label asp-for="RoomType" class="control-label">Room Type</label>
+        <select asp-for="RoomType" asp-items="@Html.GetEnumSelectList<EnumRoomType>()" class="form-control">
         </select>
+        <span asp-validation-for="RoomType" class="text-danger"></span>
     </div>
+
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

@@ -27,14 +27,25 @@ namespace Reservation.Controllers
             IEnumerable<Room> rooms = await _roomRepository.GetAllRooms();
             return View(rooms);
         }
+
+
         [AllowAnonymous]
         public async Task<IActionResult> Detail(int id, DateOnly? selectedDate)// Esse parâmetro é para filtrar pela data selecionada
         {
             var room = await _roomRepository.GetByIdAsync(id);
+            var userID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
             if (room == null)
             {
                 return View("Error");
             }
+
+            if (room.RoomType == Data.Enum.EnumRoomType.LawOffice && !User.HasClaim(c => c.Type == "OABNumber"))
+            {
+                TempData["ErrorMessage"] = "Você não tem permissão para acessar salas de escritórios de advocacia.";
+                return RedirectToAction("Index", "Room");
+            }
+
             var reservations = await _reserveRepository.GetReservesByRoomIdAsync(id); // Busca todas as reservas daquela sala
 
             if (selectedDate.HasValue)
@@ -51,12 +62,13 @@ namespace Reservation.Controllers
                 CreateReserveViewModel = new CreateReserveViewModel
                 {
                     RoomId = room.RoomId,
-                    UserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                    UserId = userID,
                 },
                 Reservations = reservations,
                 SelectedDate = selectedDate
             };
 
+          
 
             return View(model);
         }
