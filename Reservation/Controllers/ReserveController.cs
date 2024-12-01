@@ -128,9 +128,9 @@ namespace Reservation.Controllers
                 return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
             }
 
-           
-             float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
-                roomDetail.CreateReserveViewModel.RentPrice);
+
+            float totalPriceByHours = _reserveService.CalculatePriceByHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd,
+               roomDetail.CreateReserveViewModel.RentPrice);
 
             // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
 
@@ -138,10 +138,15 @@ namespace Reservation.Controllers
 
 
 
+            // Serializa o objeto roomDetail em uma string JSON
             var serializedModel = System.Text.Json.JsonSerializer.Serialize(roomDetail);
+
+            // Adiciona a string JSON serializada como um cookie chamado "ReserveData" na resposta HTTP
             Response.Cookies.Append("ReserveData", serializedModel);
 
+            // Redireciona para a página de confirmação
             return RedirectToAction("Confirmation", "Reserve");
+        }
 
 
         public IActionResult Confirmation()
@@ -162,7 +167,7 @@ namespace Reservation.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Certifique-se de que os detalhes da sala estão preenchidos
+            // Ele não serializa o objeto Room, então precisamos buscar no banco de dados
             if (reserveVM.Room == null)
             {
                 reserveVM.Room = _roomRepository.GetByIdAsync(reserveVM.CreateReserveViewModel.RoomId).Result;
@@ -172,7 +177,7 @@ namespace Reservation.Controllers
                     return View("Error");
                 }
             }
-
+            // Carrega a view de confirmação
             return View(reserveVM);
         }
 

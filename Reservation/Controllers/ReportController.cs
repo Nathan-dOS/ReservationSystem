@@ -22,12 +22,12 @@ namespace Reservation.Controllers
         [Authorize] // Precisa esta logado para acessar Report
         public async Task<IActionResult> Index()
         {
-            if (User.IsInRole("general")) // Se for general
+            if (User.IsInRole("general")) // Se for Gerente Geral exibe todos os relatórios
             {
                 IEnumerable<Report> reports = await _reportRepository.GetAllReports();
                 return View(reports);
             }
-            if (User.IsInRole("admin")) // Se for admin
+            if (User.IsInRole("admin")) // Se for Gerente Adminstrativo exibe apenas seus relatórios
             {
                 var userId = _userManager.GetUserId(User);// Obtém o ID do usuário logado
 
@@ -62,7 +62,7 @@ namespace Reservation.Controllers
 
             var report = new Report
             {
-                UserId = userId, // Set the required UserId property
+                UserId = userId,
                 ReportTitle = reportVM.ReportTitle,
                 ReportObservation = reportVM.ReportObservation,
                 ReportDate = DateOnly.FromDateTime(DateTime.Now),
@@ -70,16 +70,16 @@ namespace Reservation.Controllers
                 ReportBanStatus = reportVM.ReportBanStatus
             };
 
-            if (reportVM.ReportFiles != null && reportVM.ReportFiles.Any()) // if there are images, add them to the table
+            if (reportVM.ReportFiles != null && reportVM.ReportFiles.Any()) // Se houver arquivos adiciona ao relatório
             {
                 foreach (var file in reportVM.ReportFiles)
                 {
                     if (file.Length > 0)
                     {
-                        using var ms = new MemoryStream(); // create a new MemoryStream
-                        await file.CopyToAsync(ms); // copy the file to the MemoryStream
-                        var archive = new ReportFile { ReportFileData = ms.ToArray(), ReportFileName = file.FileName }; // create a new ReportImage object and store the byte array
-                        report.ReportArchives.Add(archive); // add the image to the report's photo album
+                        using var ms = new MemoryStream(); // Cria um MemoryStream
+                        await file.CopyToAsync(ms); // Copia o arquivo para o MemoryStream
+                        var archive = new ReportFile { ReportFileData = ms.ToArray(), ReportFileName = file.FileName }; // Cria um novo arquivo com os dados do MemoryStream
+                        report.ReportArchives.Add(archive); // Adiciona o arquivo ao relatório
                     }
                 }
             }
@@ -89,7 +89,7 @@ namespace Reservation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)// Esse método é tratado como se fosse um Detail
         {
             var report = await _reportRepository.GetByIdAsync(id);
             if (report == null)
@@ -97,13 +97,13 @@ namespace Reservation.Controllers
                 return View("Error");
             }
 
-            var reportVM = new EditReportViewModel
+            var reportVM = new EditReportViewModel // Ele recebe essas informações para serem exibidas na View
             {
                 ReportTitle = report.ReportTitle,
                 ReportObservation = report.ReportObservation,
                 ReportDate = DateOnly.FromDateTime(DateTime.Now),
                 ReportCreatedBy = report.ReportCreatedBy,
-                ReportBanStatus = !report.ReportBanStatus,
+                ReportBanStatus = !report.ReportBanStatus,// Inverte o status do relatório, por conta do botão de Resolvido
                 ReportId = report.ReportId,
                 ExistingFiles = report.ReportArchives.ToList() // Lista de arquivos armazenados
             };

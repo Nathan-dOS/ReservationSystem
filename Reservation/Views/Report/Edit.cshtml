@@ -1,11 +1,11 @@
 ﻿@using Reservation.ViewModel
 @model EditReportViewModel
 
-<h2>@Model.ReportTitle</h2>
+<h2>@Model.ReportTitle</h2> <!-- Exibe o título do relatório -->
 
-<h6>@Model.ReportDate</h6>
+<h6>@Model.ReportDate</h6> <!-- Exibe a data do relatório -->
 
-<h5>Autor: @Model.ReportCreatedBy</h5>
+<h5>Autor: @Model.ReportCreatedBy</h5> <!-- Exibe o nome do autor do relatório -->
 
 
 
@@ -14,7 +14,7 @@
 
     <div>
         <h4>Arquivos:</h4>
-        @foreach (var file in Model.ExistingFiles)
+        @foreach (var file in Model.ExistingFiles)// Carrega os Arquivos junto com os nomes
         {
             <div style="display: flex; justify-content: left">
 
@@ -31,9 +31,10 @@
 
     <p>@Model.ReportObservation</p>
 
-    @if (User.IsInRole("general")){
+    @if (User.IsInRole("general")){ // Exibe apenas para o Gerente Geral
 
-        @if (!Model.ReportBanStatus){
+        @if (!Model.ReportBanStatus) //Se o status do relatório não for resolvido, exibe o botão de banir
+        { 
             <div class="form-check form-switch">
                 <input asp-for="ReportBanStatus" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label asp-for="ReportBanStatus" class="form-check-label" for="flexSwitchCheckDefault">Resolvido</label>
