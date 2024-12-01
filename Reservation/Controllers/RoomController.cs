@@ -50,6 +50,12 @@ namespace Reservation.Controllers
                 return RedirectToAction("Index", "Room");
             }
 
+            if (room.RoomType == Data.Enum.EnumRoomType.MedicalOffice && (!User.HasClaim(c => c.Type == "CRMNumber")))
+            {
+                TempData["ErrorMessage"] = "Você não tem permissão para acessar escritórios médicos.";
+                return RedirectToAction("Index", "Room");
+            }
+
             var reservations = await _reserveRepository.GetReservesByRoomIdAsync(id); // Busca todas as reservas daquela sala
 
             if (selectedDate.HasValue)
