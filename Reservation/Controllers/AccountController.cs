@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Reservation.Data;
 using Reservation.Models;
 using Reservation.ViewModel;
+using System.Security.Claims;
 
 namespace Reservation.Controllers
 {
@@ -74,6 +75,9 @@ namespace Reservation.Controllers
                 return View(registerViewModel);
             }
 
+            var isMedico = !string.IsNullOrEmpty(registerViewModel.CRMNumber);
+            var isAdvogado = !string.IsNullOrEmpty(registerViewModel.OABNumber);
+
             var newUser = new User() // Caso contrario, cria user
             {
                 Email = registerViewModel.EmailAddress,
@@ -82,6 +86,8 @@ namespace Reservation.Controllers
                 Address = registerViewModel.Address,
                 PhoneNumber = registerViewModel.PhoneNumber,
                 CPF = registerViewModel.CPF,
+                OABNumber = isAdvogado ? registerViewModel.OABNumber : null,
+                CRMNumber = isMedico ? registerViewModel.CRMNumber : null,
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
@@ -91,8 +97,24 @@ namespace Reservation.Controllers
                 await _roleManager.CreateAsync(new IdentityRole(registerViewModel.UserType.ToString()));
             }
 
+             
+
             if (newUserResponse.Succeeded) // Se der certo, add role ao usuario
                 await _userManager.AddToRoleAsync(newUser, registerViewModel.UserType.ToString()); 
+
+            // Se for medico, cadastra na claim 
+            if(isMedico)
+            {
+                await _userManager.AddClaimAsync(newUser, new Claim("IsMedico", "true"));
+                await _userManager.AddClaimAsync(newUser, new Claim("CRMNumber", registerViewModel.CRMNumber));
+            }
+
+            // Se for advogado cadastra na claim
+            if(isAdvogado)
+            {
+                await _userManager.AddClaimAsync(newUser, new Claim("IsAdvogado", "true"));
+                await _userManager.AddClaimAsync(newUser, new Claim("OABNumber", registerViewModel.OABNumber));
+            }
 
             return RedirectToAction("Index", "Room");
         }

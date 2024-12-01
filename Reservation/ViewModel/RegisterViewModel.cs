@@ -36,6 +36,11 @@ namespace Reservation.ViewModel
         [StringLength(100)]
         public string Address { get; set; }
 
+        [StringLength(10)]
+        public string? CRMNumber { get; set; }
+        [StringLength(10)]
+        public string? OABNumber { get; set; }
+
         [Required]
         public EnumUserType UserType { get; set; }
 
