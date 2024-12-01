@@ -28,14 +28,14 @@ namespace Reservation.Controllers
             return View(rooms);
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Detail(int id, DateOnly? selectedDate)
+        public async Task<IActionResult> Detail(int id, DateOnly? selectedDate)// Esse parâmetro é para filtrar pela data selecionada
         {
             var room = await _roomRepository.GetByIdAsync(id);
             if (room == null)
             {
                 return View("Error");
             }
-            var reservations = await _reserveRepository.GetReservesByRoomIdAsync(id);
+            var reservations = await _reserveRepository.GetReservesByRoomIdAsync(id); // Busca todas as reservas daquela sala
 
             if (selectedDate.HasValue)
             {
