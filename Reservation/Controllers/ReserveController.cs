@@ -14,11 +14,13 @@ namespace Reservation.Controllers
         private readonly IReserveRepository _reserveRepository;
         private readonly IRoomRepository _roomRepository;
         private readonly IReserveService _reserveService;
-        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository, IReserveService reserveService)
+        private readonly IEquipmentRepository _equipmentRepository;
+        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository, IReserveService reserveService, IEquipmentRepository equipmentRepository)
         {
             _reserveRepository = reserveRepository;
             _roomRepository = roomRepository;
             _reserveService = reserveService;
+            _equipmentRepository = equipmentRepository;
 
         }
 
@@ -137,6 +139,10 @@ namespace Reservation.Controllers
 
             var selectedEquipments = roomDetail.RoomEquipments.Where(e => e.IsSelected && e.EquipmentQuantity > 0).ToList();
 
+            await _reserveRepository.ProcessExpiredReservations();
+
+            await _equipmentRepository.BuyingEquipments(selectedEquipments);
+
 
             // Inicialize a variável totalRentPriceEquipments fora do foreach
             float totalRentPriceEquipments = 0;
@@ -159,6 +165,8 @@ namespace Reservation.Controllers
             roomDetail.CreateReserveViewModel.RentPrice = totalPrice;
 
             roomDetail.RoomEquipments = selectedEquipments;
+
+
 
 
 

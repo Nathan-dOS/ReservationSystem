@@ -7,6 +7,7 @@ namespace Reservation.Interfaces
     {
         Task<IEnumerable<Equipment>> GetAllEquipments();
         Task<Equipment> GetEquipmentById(int id);
+        Task BuyingEquipments(List<EquipmentViewModel> equipments);
         bool Save();
         bool Update(Equipment equipment);
         bool Add(Equipment equipment);

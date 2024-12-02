@@ -229,6 +229,9 @@ namespace Reservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Processed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("RentPrice")
                         .HasColumnType("REAL");
 

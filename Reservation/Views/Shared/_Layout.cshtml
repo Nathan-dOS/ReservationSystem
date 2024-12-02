@@ -14,13 +14,13 @@
     <header>
 
     </header>
-    <div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
-        <div class="offcanvas-header">
+    <div class="offcanvas offcanvas-start w-auto" tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
+        <div class="offcanvas-header ">
             <h6 class="offcanvas-title d-none d-sm-block" id="offcanvasTitle">Reserva de Salas</h6>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
         </div>
         <div class="offcanvas-body px-0">
-            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu" style="padding-left: 50px; padding-right: 50px">
                 <!-- Home -->
                 <li class="nav-item" style="justify-content: center">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -30,7 +30,7 @@
                 </li>
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item d-flex justify-content-around align-items-center">
+                    <li class="nav-item d-flex justify-content-center align-items-center">
                         <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                         <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                     </li>
@@ -40,8 +40,8 @@
                 {
                     <!-- Dashboard -->
                     <li class="nav-item">
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-truncate">
-                            <i class="fs-5 bi-speedometer2"></i>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-truncate ">
+                            <i class="fs-5 bi-speedometer2    "></i>
                             <span class="ms-1 d-none d-sm-inline">Conta</span>
                         </a>
                         <!-- Conta -->

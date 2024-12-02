@@ -25,7 +25,33 @@ namespace Reservation.Repository
             return await _context.Reserves.Where(c => c.UserId == userId).ToListAsync();
         }
 
+        public async Task ProcessExpiredReservations()
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
 
+            // Busca todas as reservas expiradas e não processadas
+            var expiredReservations = await _context.Reserves.Include(r => r.ReserveEquipments).ThenInclude(re => re.Equipment).Where(r => r.ReserveDate < today && !r.Processed).ToListAsync();
+
+            foreach (var reservation in expiredReservations)
+            {
+                foreach (var resEquip in reservation.ReserveEquipments)
+                {
+                    // Atualiza a quantidade disponível do equipamento
+                    var dbEquipment = await _context.Equipments.FirstOrDefaultAsync(e => e.EquipmentId == resEquip.EquipmentId);
+
+                    if (dbEquipment != null)
+                    {
+                        dbEquipment.QuantityAvailable += resEquip.Quantity;
+                    }
+                }
+
+                // Marca a reserva como processada
+                reservation.Processed = true;
+            }
+
+            // Salva todas as alterações no banco de dados
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<Reserve> GetReserveByRoomAndDateAsync(int roomId, DateOnly reserveDate, TimeOnly reserveStart, TimeOnly reserveEnd)
 
