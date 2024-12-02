@@ -7,6 +7,82 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.cta {
+    width: 100%;
+    margin: 0;
+}
+
+.cta-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.no-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+
+.container-fluid {
+    
+    flex: 1;
+    padding-bottom: 2.5rem;
+}
+
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 2.5rem; /* altura do rodapé */
+}
+
+#footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem; /* altura do rodapé */
+}
+
+
+
+
+
+
+    .footer h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .footer a:hover {
+        color: #000; /* Destacar ao passar o mouse */
+        text-decoration: underline;
+    }
+
+    .footer p, .footer ul {
+        margin: 0;
+    }
+
+    .footer ul {
+        padding: 0;
+    }
+
+        .footer ul li {
+            list-style: none;
+            margin-bottom: 5px;
+        }
+
 
 .menu-button {
     position: fixed;
