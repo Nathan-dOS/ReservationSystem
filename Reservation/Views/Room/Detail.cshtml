@@ -52,49 +52,258 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">Informações da Sala</h3>
-            <p>Preço: @Model.Room.RoomPrice</p>
-            <p>Tipo: @Model.Room.RoomType</p>
-            <h3 class="my-3">Características</h3>
-            <ul>
-                <li>Status: @Model.Room.RoomStatus</li>
-                <li>Capacidade: @Model.Room.Capacity</li>
-                <li>Internet: @(Model.Room.HasInternet ? "Sim" : "Não")</li>
-                <li>Ar Condicionado: @(Model.Room.HasAirConditioning ? "Sim" : "Não")</li>
-                <li>Câmera de Segurança: @(Model.Room.HasSecurityCamera ? "Sim" : "Não")</li>
-                <li>Tamanho: @Model.Room.SizeInSquareMeters m²</li>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Informações da Sala -->
+                    <h3 class="card-title text-center my-3">Informações da Sala</h3>
+                    <p><strong>Preço:</strong> @Model.Room.RoomPrice</p>
+                    <p><strong>Tipo:</strong> @Model.Room.RoomType</p>
 
-
-
-            </ul>
-            <a asp-controller="Reserve" asp-action="Create" asp-route-id="@Model.Room.RoomId">Reservar</a>
-
-
-
-
+                    <!-- Características -->
+                    <h4 class="card-subtitle my-3">Características</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Status:</strong> @Model.Room.RoomStatus</li>
+                        <li class="list-group-item"><strong>Capacidade:</strong> @Model.Room.Capacity</li>
+                        <li class="list-group-item"><strong>Internet:</strong> @(Model.Room.HasInternet ? "Sim" : "Não")</li>
+                        <li class="list-group-item"><strong>Ar Condicionado:</strong> @(Model.Room.HasAirConditioning ? "Sim" : "Não")</li>
+                        <li class="list-group-item"><strong>Câmera de Segurança:</strong> @(Model.Room.HasSecurityCamera ? "Sim" : "Não")</li>
+                        <li class="list-group-item"><strong>Tamanho:</strong> @Model.Room.SizeInSquareMeters m²</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 
 
-<!-- Formulário de reserva -->
-<h3 class="my-3">Fazer Reserva</h3>
 
+<div class="container my-4">
+    <h3 class="text-center mb-4">Fazer Reserva</h3>
+
+    <!-- Mensagem de Erro -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Formulário para Filtrar Reservas -->
+    <div class="mb-5">
+        <form asp-action="Detail" asp-controller="Room" method="get" class="p-3 border rounded">
+            <input type="hidden" name="id" value="@Model.Room.RoomId" />
+
+            <h4 class="mb-3">Filtrar datas Disponíveis</h4>
+
+            <div class="mb-3">
+                <label for="SelectedDate" class="form-label">Data:</label>
+                <input type="date" id="SelectedDate" name="selectedDate" class="form-control"
+                       value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-secondary">Filtrar</button>
+            </div>
+        </form>
+
+        <!-- Horários Disponíveis -->
+        @{
+            if (Model.SelectedDate.HasValue)
+            {
+                var startOfDay = new DateTime(Model.SelectedDate.Value.Year, Model.SelectedDate.Value.Month, Model.SelectedDate.Value.Day, 8, 0, 0);
+                var endOfDay = new DateTime(Model.SelectedDate.Value.Year, Model.SelectedDate.Value.Month, Model.SelectedDate.Value.Day, 22, 0, 0);
+
+                var unavailableIntervals = Model.Reservations
+                .Select(r => new
+                {
+                    Start = new DateTime(Model.SelectedDate.Value.Year, Model.SelectedDate.Value.Month, Model.SelectedDate.Value.Day, r.ReserveStart.Hour, r.ReserveStart.Minute, r.ReserveStart.Second),
+                    End = new DateTime(Model.SelectedDate.Value.Year, Model.SelectedDate.Value.Month, Model.SelectedDate.Value.Day, r.ReserveEnd.Hour, r.ReserveEnd.Minute, r.ReserveEnd.Second)
+                })
+                .OrderBy(r => r.Start)
+                .ToList();
+
+                var availableStart = startOfDay;
+
+                <div class="mt-4">
+                    <h4>Horários disponíveis para @Model.SelectedDate?.ToString("dd/MM/yyyy"):</h4>
+                    <ul class="list-group">
+
+                        @foreach (var interval in unavailableIntervals)
+                        {
+                            // Adicionar os horários disponíveis antes do próximo horário reservado
+                            @if (availableStart < interval.Start)
+                            {
+                                var availableEnd = interval.Start;
+
+                                @while (availableStart < availableEnd)
+                                {
+                                    // Declarar nextHour aqui, no escopo do while
+                                    DateTime nextHour = availableStart.AddHours(1);
+                                    @if (nextHour > availableEnd)
+                                    {
+                                        nextHour = availableEnd;
+                                    }
+
+                                    <li class="list-group-item">
+                                        @availableStart.ToString("HH:mm") até @nextHour.ToString("HH:mm")
+                                    </li>
+
+                                    availableStart = nextHour;
+                                }
+                            }
+
+                            // Avançar o início disponível para o fim da reserva atual
+                            @if (availableStart < interval.End)
+                            {
+                                availableStart = interval.End;
+                            }
+                        }
+
+                        @* Adicionar os horários disponíveis após o último horário reservado*@
+                        @while (availableStart < endOfDay)
+                        {
+                        // Declarar nextHour aqui também
+                        DateTime nextHour = availableStart.AddHours(1);
+                        @if (nextHour > endOfDay)
+                        {
+                        nextHour = endOfDay;
+                        }
+
+                        <li class="list-group-item">
+                                @availableStart.ToString("HH:mm") até @nextHour.ToString("HH:mm")
+                        </li>
+
+                        availableStart = nextHour;
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted mt-3">Selecione uma data para visualizar os horários disponíveis.</p>
+            }
+        }
+    </div>
+    
+
+    <!-- Formulário para Criar Reserva -->
+    <div>
+        <form asp-action="Create" asp-controller="Reserve" method="post" class="p-3 border rounded">
+            <input type="hidden" asp-for="CreateReserveViewModel.RoomId" value="@Model.Room.RoomId" />
+            <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
+
+            <h4 class="mb-3">Realizar Reserva</h4>
+
+            <div class="mb-3">
+                <label for="ReserveDate" class="form-label">Data da Reserva:</label>
+                <input type="date" asp-for="CreateReserveViewModel.ReserveDate" class="form-control"
+                       onkeydown="return false;" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="CreateReserveViewModel.ReserveDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="ReserveStart" class="form-label">Hora de Início:</label>
+                <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" class="form-control"
+                       value="08:00" required />
+                <span asp-validation-for="CreateReserveViewModel.ReserveStart" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="ReserveEnd" class="form-label">Hora de Término:</label>
+                <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" class="form-control"
+                       value="09:00" required />
+                <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
+            </div>
+
+            @{
+                var equipments = Model.Equipments.ToList();
+            }
+
+            <!-- Equipamentos -->
+            <div class="mt-4">
+                <h4>Equipamentos</h4>
+                <div class="row">
+                    @for (int i = 0; i < equipments.Count; i++)
+                    {
+                        var equipment = equipments[i];
+                        var roomEquipment = Model.RoomEquipments.FirstOrDefault(re => re.EquipmentId == equipment.EquipmentId);
+                        bool isRoomEquipment = roomEquipment != null;
+
+                        <div class="col-md-4 col-sm-6 col-12 mb-4">
+                            <div class="equipment-item border p-3 rounded">
+                                <!-- Checkbox -->
+                                <div class="form-check">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="equipment-@equipment.EquipmentId"
+                                           name="RoomEquipments[@i].IsSelected"
+                                           value="true"
+                                    @(isRoomEquipment ? "checked" : "") />
+                                    <input type="hidden" name="RoomEquipments[@i].IsSelected" value="false" />
+                                    <input type="hidden" name="RoomEquipments[@i].EquipmentId" value="@equipment.EquipmentId" />
+                                    <input type="hidden" name="RoomEquipments[@i].EquipmentName" value="@equipment.EquipmentName" />
+                                    <input type="hidden" name="RoomEquipments[@i].EquipmentPrice" value="@equipment.EquipmentPrice" />
+                                    <label class="form-check-label" for="equipment-@equipment.EquipmentId">
+                                        @equipment.EquipmentName (Preço: @equipment.EquipmentPrice)
+                                    </label>
+                                </div>
+
+                                <!-- Quantidade -->
+                                <div class="mt-2">
+                                    <label for="quantity-@equipment.EquipmentId" class="form-label">Quantidade:</label>
+                                    <input type="number"
+                                           id="quantity-@equipment.EquipmentId"
+                                           name="RoomEquipments[@i].EquipmentQuantity"
+                                           value="@(isRoomEquipment ? roomEquipment.EquipmentQuantity.ToString() : "0")"
+                                           min="0"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Preço do Aluguel -->
+            <div class="mt-4">
+                <label for="RentPrice" class="form-label">Preço do Aluguel:</label>
+                <input type="number" id="RentPrice" step="0.01" value="@Model.Room.RoomPrice"
+                       asp-for="CreateReserveViewModel.RentPrice" class="form-control" readonly required />
+                <span asp-validation-for="CreateReserveViewModel.RentPrice" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-primary">Reservar Sala</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+   @*
+    
+<!-- Formulário de reserva -->
+
+<h3 class="my-3">Fazer Reserva</h3>
+        
 @if (TempData["ErrorMessage"] != null) // Exibe a mensagem de erro, se houver
 {
     <div class="alert alert-danger">
         @TempData["ErrorMessage"]
     </div>
 }
-
-@*
-*@
-<form asp-action="Detail" asp-controller="Room" method="get">
+        <div class="row" style="margin-top:10px">
+        
+        <div class="col-6">
+    <form asp-action="Detail" asp-controller="Room" method="get" >
     <input type="hidden" name="id" value="@Model.Room.RoomId" />
 
     <div>
         <label for="SelectedDate">Filtrar por data:</label>
-        <input type="date" id="SelectedDate" name="selectedDate"
+        <input type="date" id="SelectedDate" name="selectedDate" style="width: 25%"
         value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
     </div>
 
@@ -105,8 +314,11 @@
 
     <button type="submit" class="btn btn-secondary mt-2">Filtrar</button>
 </form>
+<div class="col-3"></div>
+        </div>
+    </div>
 <hr />
-<form asp-action="Create" asp-controller="Reserve" method="post">
+<form asp-action="Create" asp-controller="Reserve" method="post" class="d-grid" >
     <input type="hidden" asp-for="CreateReserveViewModel.RoomId" value="@Model.Room.RoomId" />
     <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
 
@@ -147,43 +359,51 @@
     @{
         var equipments = Model.Equipments.ToList();
     }
+    
 
     <h4>Equipamentos</h4>
     <div>
-        @for (int i = 0; i < equipments.Count; i++)
-        {
-            var equipment = equipments[i];
-            var roomEquipment = Model.RoomEquipments.FirstOrDefault(re => re.EquipmentId == equipment.EquipmentId);
-            bool isRoomEquipment = roomEquipment != null;
+            <div class="row">
+                @for (int i = 0; i < equipments.Count; i++)
+                {
+                    var equipment = equipments[i];
+                    var roomEquipment = Model.RoomEquipments.FirstOrDefault(re => re.EquipmentId == equipment.EquipmentId);
+                    bool isRoomEquipment = roomEquipment != null;
 
-            <div class="equipment-item">
-                <!-- Checkbox para selecionar o equipamento -->
-                <input type="checkbox"
-                       id="equipment-@equipment.EquipmentId"
-                       name="RoomEquipments[@i].IsSelected"
-                       value="true"
-                @(isRoomEquipment ? "checked" : "") />
-                <input type="hidden" name="RoomEquipments[@i].IsSelected" value="false" />
+                    <div class="col-md-4 col-sm-6 col-12 mb-4">
+                        <div class="equipment-item border p-3 rounded">
+                            <!-- Checkbox para selecionar o equipamento -->
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="equipment-@equipment.EquipmentId"
+                                       name="RoomEquipments[@i].IsSelected"
+                                       value="true"
+                                @(isRoomEquipment ? "checked" : "") />
+                                <input type="hidden" name="RoomEquipments[@i].IsSelected" value="false" />
+                                <input type="hidden" name="RoomEquipments[@i].EquipmentId" value="@equipment.EquipmentId" />
+                                <input type="hidden" name="RoomEquipments[@i].EquipmentName" value="@equipment.EquipmentName" />
+                                <input type="hidden" name="RoomEquipments[@i].EquipmentPrice" value="@equipment.EquipmentPrice" />
+                                <label class="form-check-label" for="equipment-@equipment.EquipmentId">
+                                    @equipment.EquipmentName (Preço: @equipment.EquipmentPrice)
+                                </label>
+                            </div>
 
-                <input type="hidden" name="RoomEquipments[@i].EquipmentId" value="@equipment.EquipmentId" />
-                <input type="hidden" name="RoomEquipments[@i].EquipmentName" value="@equipment.EquipmentName" />
-                <input type="hidden" name="RoomEquipments[@i].EquipmentPrice" value="@equipment.EquipmentPrice" />
-
-                <label for="equipment-@equipment.EquipmentId">@equipment.EquipmentName (Preço por unidade: @equipment.EquipmentPrice)</label>
-
-                <!-- Campo para editar a quantidade -->
-                <div class="quantity-control">
-                    <label for="quantity-@equipment.EquipmentId">Quantidade: </label>
-                    <input type="number"
-                           id="quantity-@equipment.EquipmentId"
-                           name="RoomEquipments[@i].EquipmentQuantity"
-                           value="@(isRoomEquipment ? roomEquipment.EquipmentQuantity.ToString() : "0")"
-                           min="0"
-                           class="form-control" />
-                </div>
+                            <!-- Campo para editar a quantidade -->
+                            <div class="mt-2">
+                                <label for="quantity-@equipment.EquipmentId" class="form-label">Quantidade:</label>
+                                <input type="number"
+                                       id="quantity-@equipment.EquipmentId"
+                                       name="RoomEquipments[@i].EquipmentQuantity"
+                                       value="@(isRoomEquipment ? roomEquipment.EquipmentQuantity.ToString() : "0")"
+                                       min="0"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
-            <hr />
-        }
+
     </div>
 
 
@@ -201,7 +421,7 @@
 
 
 
-
+*@
 
 
 
