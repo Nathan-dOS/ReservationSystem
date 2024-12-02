@@ -8,6 +8,9 @@ namespace Reservation.Interfaces
         bool IsValidBusinessHours(TimeOnly start, TimeOnly end);
         bool IsValidReserveTime(TimeOnly start, TimeOnly end);
         bool IsValidReserveDate(DateOnly reserveDate);
+
+        bool IsReserveTimeOneHourAhead(TimeOnly start, DateOnly reserveDate);
+
         Task<Reserve?> CheckExistingReservation(CreateReserveViewModel reserveModel);
         bool CreateReservation(RoomDetailViewModel reserveVM);
         Task<bool> IsUserBanned(string UserID);

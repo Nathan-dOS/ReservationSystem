@@ -331,14 +331,14 @@
 
     <div>
         <label for="ReserveStart">Hora de Início:</label>
-        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" value="08:00" class="form-control" required />
+        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" min="08:00" value="08:00".ToString("HH:mm")";" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveStart" class="text-danger"></span>
     </div>
 
 
     <div>
         <label for="ReserveEnd">Hora de Término:</label>
-        <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" value="09:00" class="form-control" required />
+        <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" value="09:00".ToString("HH:mm")" max="22:00" class="form-control" required />
         <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
     </div>
 
