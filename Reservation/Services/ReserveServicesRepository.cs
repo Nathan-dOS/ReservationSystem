@@ -72,12 +72,31 @@ namespace Reservation.Services
         // Calculo de preço por hora
         public float CalculatePriceByHours(TimeOnly start, TimeOnly end, float rentPrice)
         {
+            // Calcula o total de horas
             double totalTime = (end - start).TotalHours;
 
-            return (float)Math.Round(totalTime * rentPrice, 2);
+            // Verifica se o total de horas é válido
+            if (totalTime <= 0)
+                throw new ArgumentException("O horário de término deve ser maior que o horário de início.");
 
+            // Define os descontos baseados nas faixas de horas
+            float discount = 0;
+            if (totalTime > 8)        // Mais de 8 horas
+                discount = 0.20f;     // 20% de desconto
+            else if (totalTime > 5)   // Entre 5 e 8 horas
+                discount = 0.10f;     // 10% de desconto
+            else if (totalTime > 3)   // Entre 3 e 5 horas
+                discount = 0.05f;     // 5% de desconto
 
+            // Calcula o preço sem desconto
+            float basePrice = (float)Math.Round(totalTime * rentPrice, 2);
+
+            // Aplica o desconto
+            float finalPrice = basePrice * (1 - discount);
+
+            return (float)Math.Round(finalPrice, 2);
         }
+
 
 
         public bool CreateReservation(RoomDetailViewModel reserveVM)
