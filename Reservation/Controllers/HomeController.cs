@@ -15,6 +15,7 @@ namespace Reservation.Controllers
 
         public IActionResult Index()
         {
+            ViewData["RemovePadding"] = true;
             return View();
         }
 
