@@ -10,7 +10,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     
 </head>
-<body style="flex: 1">
+@{
+    var BodyClass = ViewData["RemovePadding"] != null && (bool)ViewData["RemovePadding"] ? "sem-padding" : "com-padding";
+}
+<body >
     <div id="page-container">
     <div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
         <div class="offcanvas-header ">
@@ -113,15 +116,15 @@
     </div>
 
         <!-- Conteúdo principal -->
-        <div class="container-fluid">
+        <div class="container-fluid" id="content-wrap">
             <div class="row">
-                <div class="col min-vh-100 no-padding">
+                <div class="col min-vh-10 no-padding ">
                     <button class="menu-button" onclick="toggleMenu()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" role="button" style="margin-top: 20px; margin-left: 20px">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
-                    <main role="main">
+                    <main role="main" class="@BodyClass">
                         @RenderBody()
                     </main>
                 </div>
@@ -137,16 +140,16 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
+    
         <!-- Footer -->
-        <footer class="footer ">
+        <footer class="footer bg-dark text-muted">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 pt-3">
                         <h5>Sobre Nós</h5>
                         <p>Nosso sistema de reservas foi projetado para facilitar a organização e gestão de salas de forma eficiente e prática.</p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 pt-3">
                         <h5>Links Úteis</h5>
                         <ul class="list-unstyled">
                             <li><a href="@Url.Action("Index", "Room")" class="text-decoration-none">Reservar Salas</a></li>
@@ -154,7 +157,7 @@
                             <li><a href="@Url.Action("Privacy", "Home")" class="text-decoration-none">Política de Privacidade</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 pt-3">
                         <h5>Contato</h5>
                         <p>
                             <i class="bi bi-envelope"></i> contato@reservas.com<br />
@@ -168,6 +171,7 @@
                 </div>
             </div>
         </footer>
+        
 
     </div>
     
