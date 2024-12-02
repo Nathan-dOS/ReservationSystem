@@ -5,36 +5,134 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="row">
-    <div class="col-md-6 offset-3">
-        <h4>Login to your account</h4>
+<style>
+    /* Corpo */
+    body {
+        background: linear-gradient(to right, #ffffff, #2575fc); /* Branco e Azul */
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        
+    }
 
-        @if (TempData["Error"] != null)
-        {
-            <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"] </span>
-            </div>
+    main.com-padding{
+        display:flex;
+        justify-content: center;
+        height: 100%;
+        margin-top: 10%;
+    }
+    div.row{
+        height: 100%;
+    }
+
+    /* Container do Login */
+    .login-container {
+        background: #ffffff;
+        color: #333;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        height: 10.5cm;
+    }
+
+        /* Título */
+        .login-container h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: #2575fc; /* Azul */
         }
 
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        /* Formulário */
+        .login-container .form-group {
+            margin-bottom: 1rem;
+        }
 
-            <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-            </div>
+        .login-container .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem;
+            width: 100%;
+        }
 
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+        /* Botão principal */
+        .login-container .btn-primary {
+            background-color: #2575fc; /* Azul */
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
 
-            <div class="form-group">
-                <input class="btn btn-primary" type="submit" value="Login" />
-                <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
-            </div>
-        </form>
-    </div>
+            .login-container .btn-primary:hover {
+                background-color: #0056b3; /* Azul mais escuro */
+            }
+
+        /* Botão de cancelar */
+        .login-container .btn-outline-secondary {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #2575fc; /* Azul */
+            color: #2575fc;
+            border-radius: 4px;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .login-container .btn-outline-secondary:hover {
+                background-color: #2575fc;
+                color: #fff;
+            }
+
+    /* Alerta de erro */
+    .alert-danger {
+        margin-bottom: 1rem;
+        color: #fff;
+        background-color: #f44336;
+        border-radius: 4px;
+        padding: 0.5rem;
+    }
+
+    input#Password.form-control{
+        margin-bottom: 40px;
+    }
+</style>
+
+<div class="login-container">
+    <h4>Login to your account</h4>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            <span><b>Sorry!</b> - @TempData["Error"] </span>
+        </div>
+    }
+
+    <form asp-action="Login">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="EmailAddress" class="control-label"></label>
+            <input asp-for="EmailAddress" class="form-control" placeholder="Enter your email" />
+            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Login" />
+            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+        </div>
+    </form>
 </div>

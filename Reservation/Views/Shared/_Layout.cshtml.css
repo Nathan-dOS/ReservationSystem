@@ -25,6 +25,10 @@ a.navbar-brand {
 
 
 
+body {
+    background: linear-gradient(to right, #ffffff, #2575fc) !important;
+}
+
 
 #page-container {
     display: flex;
@@ -49,9 +53,12 @@ footer {
     display: block;
 }
 
+li.nav-item{
+    margin-bottom: 2rem;
+}
 
 .com-padding {
-    padding: 40px 10px 10px 4rem;
+    padding: 40px 4rem 10px 4rem;
 }
 
 .sem-padding {
