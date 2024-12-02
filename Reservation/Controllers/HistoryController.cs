@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Reservation.Interfaces;
 using Reservation.Models;
 using Reservation.Repository;
@@ -26,11 +27,26 @@ namespace Reservation.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Pega historico pelo ID do usuario
-            var history = await _historyRepository.GetHistoryByUserIDAsync(userId);
 
-           
-            return View(history);
+            if (User.IsInRole("general")) // Se for Gerente Geral exibe todos os relatórios
+            {
+                var history = await _historyRepository.GetAllHistoryAsync();
+                if (history.Any())
+                {
+                    foreach (var item in history)
+                    {
+                        Console.WriteLine($"Reserva: {item.ReserveId}, Sala: {item.Room?.RoomNumber}");
+                    }
+                }
+
+                return View(history);
+            }
+            else  // Se for 
+            {
+                var history = await _historyRepository.GetHistoryByUserIDAsync(userId);
+                return View(history);
+            }
+            
 
         }
     }

@@ -29,6 +29,11 @@ namespace Reservation.Repository
            return await _dbContext.ReserveHistories.Where(r => r.UserId ==  userID).Include(r => r.Room).ToListAsync();
         }
 
+        public async Task<IEnumerable<ReserveHistory>> GetAllHistoryAsync()
+        {
+            return await _dbContext.ReserveHistories.Include(r => r.Room).ToListAsync();
+        }
+
         public async Task<ReserveHistory> GetHistoryByReserveIDAsync(int reserveID)
         {
             return await _dbContext.ReserveHistories.FirstOrDefaultAsync(r => r.ReserveId == reserveID);
