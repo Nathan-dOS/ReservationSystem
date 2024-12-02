@@ -122,6 +122,15 @@ namespace Reservation.Controllers
 
             }
 
+            if (!_reserveService.IsReserveTimeOneHourAhead(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveDate))
+            {
+                TempData["ErrorMessage"] = "Reserva precisa ter 1 hora de antecedencia";
+                return RedirectToAction("Detail", "Room", new { id = roomDetail.CreateReserveViewModel.RoomId });
+
+            }
+
+            
+
 
             var existingReserve = await _reserveService.CheckExistingReservation(roomDetail.CreateReserveViewModel);
 

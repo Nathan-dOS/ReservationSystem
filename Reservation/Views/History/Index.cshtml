@@ -18,7 +18,10 @@ else
                 <th>Término</th>
                 <th>Preço</th>
                 <th>Status</th>
+                @if (User.IsInRole("general"))
+                {
                 <th>User ID</th>
+                }
             </tr>
         </thead>
         <tbody>

@@ -43,7 +43,7 @@ namespace Reservation.Services
         public bool IsValidBusinessHours(TimeOnly start, TimeOnly end)
         { // 08:00 e 20:00
             var openingTime = new TimeOnly(8, 0);
-            var closingTime = new TimeOnly(20, 0);
+            var closingTime = new TimeOnly(22, 0);
             // Verifica se o horario nao ultrapassa o horario comercial
             return start >= openingTime && end <= closingTime;
         }
@@ -55,9 +55,28 @@ namespace Reservation.Services
 
         public bool IsValidReserveTime(TimeOnly start, TimeOnly end)
         { // Horario inicial precisa ser menor que horario final
+
             return start < end;
         }
 
+
+        public bool IsReserveTimeOneHourAhead(TimeOnly start, DateOnly reserveDate)
+        {
+            DateOnly now = DateOnly.FromDateTime(DateTime.Now);
+            var TimeNow = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
+
+
+            if (now == reserveDate)
+            {
+                return (start >= TimeNow);
+
+            }
+            else
+            {
+                return true;
+            }
+
+        }
 
         public async Task<Reserve?> CheckExistingReservation(CreateReserveViewModel reserveModel)
         {
