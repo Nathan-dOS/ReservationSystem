@@ -48,6 +48,34 @@ namespace Reservation.Repository
         {
             return await _context.Equipments.FirstOrDefaultAsync(c => c.EquipmentId == id);
         }
+
+        public async Task BuyingEquipments(List<EquipmentViewModel> equipments)
+        {
+            foreach (var equipment in equipments)
+            {
+                // Busca o equipamento no banco de dados
+                var dbEquipment = await _context.Equipments.FirstOrDefaultAsync(e => e.EquipmentId == equipment.EquipmentId);
+
+                if (dbEquipment == null)
+                {
+                    throw new Exception($"Equipamento com ID {equipment.EquipmentId} não encontrado.");
+                }
+
+                // Verifica se há quantidade suficiente disponível
+                if (dbEquipment.QuantityAvailable < equipment.EquipmentQuantity)
+                {
+                    throw new Exception($"Quantidade insuficiente para o equipamento {dbEquipment.EquipmentName}. Disponível: {dbEquipment.QuantityAvailable}, Solicitado: {equipment.EquipmentQuantity}.");
+                }
+
+                // Subtrai a quantidade solicitada do banco
+                dbEquipment.QuantityAvailable -= equipment?.EquipmentQuantity?? 0;
+            }
+
+            // Salva as alterações no banco de dados
+            await _context.SaveChangesAsync();
+        }
+
+
         public bool Save()
         {
            var saved = _context.SaveChanges();

@@ -18,6 +18,7 @@ namespace Reservation.Models
         public required TimeOnly ReserveEnd { get; set; }
         public required EnumReserveStatus ReserveStatus { get; set; }
         public required float RentPrice { get; set; }
+        public bool Processed { get; set; } = false;
         public Room Room { get; set; } // Relação de 1 para muitos com a tabela de salas
         public ICollection<ReserveEquipment> ReserveEquipments { get; set; } // Relação muitos-para-muitos com Equipment através de ReserveEquipment
     }

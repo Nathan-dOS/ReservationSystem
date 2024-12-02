@@ -29,6 +29,7 @@ namespace Reservation.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Room> rooms = await _roomRepository.GetAllRooms();
+            await _reserveRepository.ProcessExpiredReservations();
             return View(rooms);
         }
 
@@ -38,6 +39,8 @@ namespace Reservation.Controllers
         {
             var room = await _roomRepository.GetByIdAsync(id);
             var userID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            await _reserveRepository.ProcessExpiredReservations();
 
             if (room == null)
             {
