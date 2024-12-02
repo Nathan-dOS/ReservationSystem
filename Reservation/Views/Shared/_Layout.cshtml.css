@@ -7,6 +7,82 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.cta {
+    width: 100%;
+    margin: 0;
+}
+
+.cta-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.no-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+
+
+#page-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh; /* Define que o contêiner ocupa toda a altura */
+}
+
+#content-wrap {
+    flex: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+}
+
+footer {
+    background-color: #212529; /* Cor do rodapé */
+    color: #ccc;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: relative; 
+    bottom: 0;
+    clear: both;
+    display: block;
+}
+
+
+.com-padding {
+    padding: 40px 10px 10px 4rem;
+}
+
+.sem-padding {
+    padding: 0 ;
+}
+
+
+.footer h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.footer p,
+.footer ul {
+    margin: 0;
+}
+
+.footer ul {
+    padding: 0;
+}
+
+    .footer ul li {
+        list-style: none;
+        margin-bottom: 5px;
+    }
+
 
 .menu-button {
     position: fixed;
@@ -62,10 +138,4 @@ button.accept-policy {
   line-height: inherit;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
-}
+
