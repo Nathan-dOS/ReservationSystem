@@ -32,13 +32,15 @@
 
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item text-center mb-3">
+                    <li class="nav-item text-center w-100 mb-3 ">
+                        <div class="px-5 mx-5">
                         <a asp-area="" asp-controller="Account" asp-action="Login">
                             <button type="button" class="btn btn-outline-secondary btn-sm mb-2 w-100">Login</button>
                         </a>
                         <a asp-area="" asp-controller="Account" asp-action="Register">
                             <button type="button" class="btn btn-primary btn-sm w-100">Sign Up</button>
                         </a>
+                            </div>
                     </li>
                 }
                 @if (User.Identity.IsAuthenticated)
