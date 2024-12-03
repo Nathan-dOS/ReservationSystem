@@ -21,12 +21,12 @@ namespace Reservation.Services
                     var now = DateTime.Now;
 
                     var usersToUnban = dbContext.Users
-                        .Where(u => u.IsBanned && u.BannedUntil.HasValue && u.BannedUntil.Value <= now)
-                        .ToList();
+                       .Where(u => !string.IsNullOrEmpty(u.BanReason) && u.BannedUntil.HasValue && u.BannedUntil.Value <= now)
+                       .ToList();
 
                     foreach (var user in usersToUnban)
                     {
-                        user.IsBanned = false;
+                        user.BanReason = null;
                         user.BannedUntil = null;
                     }
 

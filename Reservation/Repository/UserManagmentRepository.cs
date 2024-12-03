@@ -27,8 +27,19 @@ namespace Reservation.Repository
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == UserID);
         }
 
-     
 
+        public void BanUser(string userId, string reason, DateTime? bannedUntil)
+        {
+            var user = _dbContext.Users.Find(userId);
+
+            if (user == null)
+                throw new Exception("Usuário não encontrado.");
+
+            user.BanReason = reason;
+            user.BannedUntil = bannedUntil;
+
+            _dbContext.SaveChanges();
+        }
 
         public async Task<List<User>> GetAllUsersWithRolesAsync()
         {
