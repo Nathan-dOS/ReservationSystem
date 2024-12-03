@@ -21,7 +21,7 @@ namespace Reservation.Controllers
             _userRepository = userRepository;
             _userManager = userManager;
         }
-        [Authorize(Roles = "admin, general")]
+        [Authorize(Roles = " general")]
         public async Task<IActionResult> Index()
         {
             var users = await _userRepository.GetAllUsersWithRolesAsync();

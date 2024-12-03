@@ -13,9 +13,9 @@
 @{
     var BodyClass = ViewData["RemovePadding"] != null && (bool)ViewData["RemovePadding"] ? "sem-padding" : "com-padding";
 }
-<body >
+<body style="background: linear-gradient(to right, #ffffff, #c7e3fc) ;">
     <div id="page-container">
-        <div class="offcanvas offcanvas-start " tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
+        <div class="offcanvas offcanvas-start " tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true" >
             <div class="offcanvas-header ">
                 <h6 class="offcanvas-title d-none d-sm-block" id="offcanvasTitle">Reserva de Salas</h6>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
@@ -23,7 +23,7 @@
             <div class="offcanvas-body px-10 mx-10">
                 <ul class="nav nav-pills flex-column mb-sm-auto ml-5 align-items-start" id="menu" >
                     <!-- Home -->
-                    <li class="nav-item w-100" style="justify-content: center; padding-left: 3.5rem !important">
+                    <li class="nav-item w-100 mb-2" style="justify-content: center; padding-left: 3.5rem !important">
                         <div class=" mb-3">
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                             <i class="fs-5 bi-house"></i>
@@ -97,14 +97,18 @@
                                 </a>
                             </li><!-- Relatórios -->
 
+                            @if(!User.IsInRole("admin")){
+                                <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
+                                    <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
+                                        <i class="fs-5 bi-people"></i>
+                                        <span class="ms-1 d-none d-sm-inline">Usuários</span>
+                                    </a>
 
-                            <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
-                                    <i class="fs-5 bi-people"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Usuários</span>
-                                </a>
+                                </li>
 
-                            </li><!-- Usuários -->
+                                <!-- Usuários -->
+                            }
+                            
 
                             <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
                                 <a class="nav-link text-truncate" asp-area="" asp-controller="Equipment" asp-action="Index">
@@ -114,6 +118,7 @@
                             </li><!-- Equipamentos -->
                         }
                     }
+
 
                 </ul>
             </div>

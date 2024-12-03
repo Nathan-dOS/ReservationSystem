@@ -153,7 +153,6 @@ namespace Reservation.Controllers
             await _equipmentRepository.BuyingEquipments(selectedEquipments);
 
 
-            // Inicialize a variável totalRentPriceEquipments fora do foreach
             float totalRentPriceEquipments = 0;
 
             // Itere pelos equipamentos selecionados
@@ -168,8 +167,9 @@ namespace Reservation.Controllers
             // Calcule o preço total incluindo o aluguel base
             float totalPrice = RentPriceByHours + totalRentPriceEquipments;
 
+            roomDetail.RoomPrice = RentPriceByHours;
 
-            // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
+            roomDetail.EquipmentPrice = totalRentPriceEquipments;
 
             roomDetail.CreateReserveViewModel.RentPrice = totalPrice;
 
