@@ -54,24 +54,7 @@
                 <input type="hidden" asp-for="CreateReserveViewModel.RentPrice" />
                 <input type="hidden" asp-for="RoomEquipments" />
 
-<<<<<<< HEAD
-<form asp-action="Confirm" asp-controller="Reserve" method="post">
-    <input type="hidden" asp-for="CreateReserveViewModel.RoomId" />
-    <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
-    <input type="hidden" asp-for="CreateReserveViewModel.ReserveDate" />
-    <input type="hidden" asp-for="CreateReserveViewModel.ReserveStart" />
-    <input type="hidden" asp-for="CreateReserveViewModel.ReserveEnd" />
-    <input type="hidden" asp-for="CreateReserveViewModel.RentPrice" />
-    <input type="hidden" asp-for="RoomEquipments" />
-    
 
-    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
-    <a asp-action="Detail" asp-controller="Room" asp-route-id="@Model.Room.RoomId" class="btn btn-secondary">Voltar</a>
-    <a asp-controller="History" asp-action="Index" class="btn btn-secondary">
-        <span>Histórico</span><!-- Histórico -->
-    </a>
-</form>
-=======
                 <button type="submit" class="btn btn-primary me-2">Confirmar Reserva</button>
             </form>
             <a asp-action="Detail" asp-controller="Room" asp-route-id="@Model.Room.RoomId" class="btn btn-secondary me-2">Voltar</a>
@@ -81,4 +64,3 @@
         </div>
     </div>
 </div>
->>>>>>> a9ae488035855f8f4e155e09df86accbe13f6210

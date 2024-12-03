@@ -36,8 +36,8 @@ namespace Reservation.Services
                     }
                 }
 
-                // Intervalo entre verificações (ex.: a cada 2 minutos)
-                await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
+                // Intervalo entre verificações (ex.: a cada 1 hora)
+                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }
         }
     }
