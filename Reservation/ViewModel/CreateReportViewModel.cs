@@ -5,6 +5,7 @@ namespace Reservation.ViewModel
     public class CreateReportViewModel
     {
         public int ReportId { get; set; }
+        public int ReserveId { get; set; }
 
         public string ReportTitle { get; set; }
         public string ReportObservation { get; set; }
