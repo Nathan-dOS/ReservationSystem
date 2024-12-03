@@ -34,6 +34,8 @@
                         <tbody>
                             @foreach (var reserve in Model)
                             {
+                                @if (reserve.ReserveDate <= DateOnly.FromDateTime(DateTime.Now))
+                                {
                                 <tr>
                                     <td>@reserve.ReserveId</td>
                                     <td>@reserve.Room.RoomNumber</td>
@@ -60,6 +62,7 @@
                                         <td>@reserve.UserId</td>
                                     }
                                 </tr>
+                                }
                             }
                         </tbody>
                     </table>
