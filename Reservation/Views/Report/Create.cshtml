@@ -1,8 +1,9 @@
 ﻿@using Reservation.ViewModel
 @model CreateReportViewModel
+<div style="padding: 0 30rem">
 <div class="bg-white rounded-3 shadow-lg">
 <div class="container mt-4">
-    <h2 class="text-center mb-4 pt-3">Criar Relatório</h2>
+    <h2 class="text-center pt-3">Criar Relatório</h2>
 
     <form method="post" asp-action="Create" enctype="multipart/form-data" class="needs-validation">
         <!-- Título do Relatório -->
@@ -10,6 +11,13 @@
             <label asp-for="ReportTitle" class="form-label">Título</label>
             <input asp-for="ReportTitle" type="text" class="form-control" id="ReportTitle" maxlength="50" placeholder="Digite o título do relatório" required>
             <span asp-validation-for="ReportTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Id da Reserva -->
+        <div class="form-group mb-3">
+             <label asp-for="ReserveId" class="form-label">Id da Reserva</label>
+             <input asp-for="ReserveId" type="number" class="form-control" id="ReserveId" maxlength="11" placeholder="Digite o número da reserva" required>
+             <span asp-validation-for="ReserveId" class="text-danger"></span>
         </div>
 
         <!-- Upload de Imagens -->
@@ -37,5 +45,6 @@
             <button type="submit" class="btn btn-primary">Criar Relatório</button>
         </div>
     </form>
+</div>
 </div>
 </div>

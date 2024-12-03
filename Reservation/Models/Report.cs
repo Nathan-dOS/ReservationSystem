@@ -10,6 +10,8 @@ namespace Reservation.Models
         public int ReportId { get; set; }
         [ForeignKey("User")]
         public required string UserId { get; set; }
+        [ForeignKey("ReserveId")]
+        public int ReserveId { get; set; }
         public string ReportTitle { get; set; }
         public string? ReportObservation { get; set; }
         public List<ReportFile> ReportArchives { get; set; } = new List<ReportFile>();

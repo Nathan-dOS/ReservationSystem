@@ -67,7 +67,8 @@ namespace Reservation.Controllers
                 ReportObservation = reportVM.ReportObservation,
                 ReportDate = DateOnly.FromDateTime(DateTime.Now),
                 ReportCreatedBy = userEmail,
-                ReportBanStatus = reportVM.ReportBanStatus
+                ReportBanStatus = reportVM.ReportBanStatus,
+                ReserveId = reportVM.ReserveId
             };
 
             if (reportVM.ReportFiles != null && reportVM.ReportFiles.Any()) // Se houver arquivos adiciona ao relatório
@@ -105,7 +106,8 @@ namespace Reservation.Controllers
                 ReportCreatedBy = report.ReportCreatedBy,
                 ReportBanStatus = !report.ReportBanStatus,// Inverte o status do relatório, por conta do botão de Resolvido
                 ReportId = report.ReportId,
-                ExistingFiles = report.ReportArchives.ToList() // Lista de arquivos armazenados
+                ExistingFiles = report.ReportArchives.ToList(), // Lista de arquivos armazenados
+                ReserveId = report.ReserveId
             };
 
             return View(reportVM);
