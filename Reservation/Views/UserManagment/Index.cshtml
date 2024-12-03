@@ -1,81 +1,81 @@
 ﻿@model List<Reservation.ViewModel.UserManagmentViewModel>
 
-<h1>User Management</h1>
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
+<div class="container mt-4">
+    <!-- Título da Página -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">Gerenciamento de Usuários</h1>
     </div>
-}
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["SuccessMessage"]
-    </div>
-    
-}
+    <!-- Mensagens de Feedback -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
-<table class="table">
-    <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">CPF</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Email</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Opções</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            int index = 1;
-            foreach (var user in Model)
-            {
-                <tr>
-                    <th scope="row">@index</th>
-                    <td>@user.CPF</td>
-                    <td>@user.Name</td>
-                    <td>@user.Email</td>
-                    <td>@string.Join(", ", user.Roles)</td>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
-                    @if (user.IsBanned == false && !user.Roles.Contains("general") && !user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general"))
-                    {
-                        <td>
-                            <a class="btn btn-danger" asp-action="BanUser" asp-route-userId="@user.UserId">Banir</a>
-
-                        </td>
-                    }
-
-                    @if(!user.Roles.Contains("general") && !user.Roles.Contains("admin")  && (user.RolesUserLogged.Contains("general") || user.RolesUserLogged.Contains("admin")))
-                        {
-                            <td>
-                                <a class="btn btn-danger" asp-action="PromoteToAdmin" asp-route-userId="@user.UserId">Promover</a>
-
-                            </td>
-                  
-                        }
-
-                    @if (user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general") )
-                    {
-                        <td>
-                            <a class="btn btn-danger" asp-action="RemoveAdmin" asp-route-userId="@user.UserId">Demitir</a>
-                        </td>
-                    }
-
+    <!-- Tabela de Usuários -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Cargos</th>
+                    <th scope="col">Opções</th>
                 </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="text-center">@index</th>
+                            <td class="text-center">@user.CPF</td>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                            <td>@string.Join(", ", user.Roles)</td>
+                            <td class="text-center">
+                                <!-- Botões de Ação -->
+                                <div class="d-flex justify-content-center gap-2">
+                                    @if (user.IsBanned == false && !user.Roles.Contains("general") && !user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general"))
+                                    {
+                                        <a class="btn btn-danger btn-sm" asp-action="BanUser" asp-route-userId="@user.UserId">Banir</a>
+                                    }
 
-                   
-                index++;
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="5" class="text-center">Nenhum usuário encontrado</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                    @if (!user.Roles.Contains("general") && !user.Roles.Contains("admin") && (user.RolesUserLogged.Contains("general") || user.RolesUserLogged.Contains("admin")))
+                                    {
+                                        <a class="btn btn-success btn-sm" asp-action="PromoteToAdmin" asp-route-userId="@user.UserId">Promover</a>
+                                    }
+
+                                    @if (user.Roles.Contains("admin") && user.RolesUserLogged.Contains("general"))
+                                    {
+                                        <a class="btn btn-secondary btn-sm" asp-action="RemoveAdmin" asp-route-userId="@user.UserId">Demitir</a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Nenhum usuário encontrado</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

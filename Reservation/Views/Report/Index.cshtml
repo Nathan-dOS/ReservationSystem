@@ -1,36 +1,40 @@
 ﻿@model IEnumerable<Report>
 
-@if (User.IsInRole("admin"))
-{
-    <a asp-controller="Report" asp-action="Create" class="btn btn-primary my-2 " style="justify-self: center">Criar Relatório</a> <!-- Apenas o Adminstrativo pode criar Relatórios -->
-
-    <h2>Seus Relatórios</h2>
-}
-
-    @if(Model.Count() == 0)
+<div class="container mt-4">
+    @if (User.IsInRole("admin"))
     {
-        <p>Não existe nenhum relatório</p>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Seus Relatórios</h2>
+            <a asp-controller="Report" asp-action="Create" class="btn btn-primary">Criar Relatório</a>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Não existe nenhum relatório disponível.
+        </div>
     }
     else
     {
         <div class="list-group">
             @foreach (var report in Model)
             {
-            <div style="border: 1px solid; cursor: pointer; margin-bottom: 5px">
-                <!-- Se os Existir algum relatório passível de Ban, ficará em lightcoral(vermelho claro) -->
-                    <a class="list-group-item list-group-item-action" aria-current="true" asp-controller="Report" asp-action="Edit" asp-route-id="@report.ReportId" style="@(report.ReportBanStatus ? "background-color: lightcoral;" : "")">
-                        <div class="d-flex w-100 justify-content-between" >
+                <div class="list-group-item border rounded mb-2 p-3"
+                     style="cursor: pointer; @(report.ReportBanStatus ? "background-color: lightcoral;" : "")">
+                    <a class="text-decoration-none text-dark" asp-controller="Report" asp-action="Edit" asp-route-id="@report.ReportId">
+                        <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-1">@report.ReportTitle</h5>
-                            <small>@report.ReportDate.ToString("dd/MM/yyyy")</small>
-                            
+                            <small class="text-muted">@report.ReportDate.ToString("dd/MM/yyyy")</small>
                         </div>
-                    <!-- Limita observação do relatório em 50 caracteres -->
-                    <p class="mb-1">@(report.ReportObservation?.Length > 50 ? report.ReportObservation.Substring(0, 25) + "..." : report.ReportObservation)</p>
-                    <small>@(User.IsInRole("general") ? report.ReportCreatedBy : "")</small> <!-- Se for Gerente Geral exibe autor do relatório -->
+                        <p class="mb-2 text-truncate">@report.ReportObservation</p>
+                        @if (User.IsInRole("general"))
+                        {
+                            <small class="text-muted">Criado por: @report.ReportCreatedBy</small>
+                        }
                     </a>
                 </div>
             }
         </div>
-
     }
-
+</div>
