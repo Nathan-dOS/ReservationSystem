@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reservation.Interfaces;
 using Reservation.Models;
 using Reservation.Repository;
@@ -15,12 +16,14 @@ namespace Reservation.Controllers
         private readonly IRoomRepository _roomRepository;
         private readonly IReserveService _reserveService;
         private readonly IEquipmentRepository _equipmentRepository;
-        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository, IReserveService reserveService, IEquipmentRepository equipmentRepository)
+        private readonly IUserManagmenteRepository _userRepository;
+        public ReserveController(IReserveRepository reserveRepository, IRoomRepository roomRepository, IReserveService reserveService, IEquipmentRepository equipmentRepository, IUserManagmenteRepository userRepository)
         {
             _reserveRepository = reserveRepository;
             _roomRepository = roomRepository;
             _reserveService = reserveService;
             _equipmentRepository = equipmentRepository;
+            _userRepository = userRepository;
 
         }
 
@@ -79,7 +82,7 @@ namespace Reservation.Controllers
                     CreateReserveViewModel = roomDetail.CreateReserveViewModel,
                     Reservations = await _reserveRepository.GetReservesByRoomIdAsync(roomDetail.CreateReserveViewModel.RoomId),
                     RoomEquipments = roomDetail.RoomEquipments,
-                    
+
 
                 };
 
@@ -90,12 +93,16 @@ namespace Reservation.Controllers
 
             // Criei um reserveService para lidar com possíveis calculos/erros/validações que nao exigem buscar no banco de dados (No qual apenas o ReserveRepository faz essa função).
             // Para fazer, implementei uma interface e criei um reserveService onde contem todos as operaçõeos
+            var userId = roomDetail.CreateReserveViewModel.UserId;
 
-
-            if (await _reserveService.IsUserBanned(roomDetail.CreateReserveViewModel.UserId))
+            if (await _reserveService.IsUserBanned(userId))
             {
-                TempData["ErrorMessage"] = "Você está banido de fazer reserva por enquanto";
-                return RedirectToAction("BanView", "UserManagment");
+                // Pegando o motivo do banimento para exibição
+                var user = await _userRepository.GetUserByIdAsync(userId);
+
+                TempData["ErrorMessage"] = "Você está banido por: " + (user.BanReason ?? "Motivo não informado.") + " Você será desbanido em: " + (user.BannedUntil);
+
+                return RedirectToAction("Index", "Room");
             }
 
             if (!_reserveService.IsValidBusinessHours(roomDetail.CreateReserveViewModel.ReserveStart, roomDetail.CreateReserveViewModel.ReserveEnd))
@@ -129,7 +136,7 @@ namespace Reservation.Controllers
 
             }
 
-            
+
 
 
             var existingReserve = await _reserveService.CheckExistingReservation(roomDetail.CreateReserveViewModel);
@@ -153,7 +160,6 @@ namespace Reservation.Controllers
             await _equipmentRepository.BuyingEquipments(selectedEquipments);
 
 
-            // Inicialize a variável totalRentPriceEquipments fora do foreach
             float totalRentPriceEquipments = 0;
 
             // Itere pelos equipamentos selecionados
@@ -168,8 +174,9 @@ namespace Reservation.Controllers
             // Calcule o preço total incluindo o aluguel base
             float totalPrice = RentPriceByHours + totalRentPriceEquipments;
 
+            roomDetail.RoomPrice = RentPriceByHours;
 
-            // CHEIRO DE GAMBIARRA ESSE TotalPriceByHours, DEPOIS ALTERAR
+            roomDetail.EquipmentPrice = totalRentPriceEquipments;
 
             roomDetail.CreateReserveViewModel.RentPrice = totalPrice;
 
@@ -189,7 +196,7 @@ namespace Reservation.Controllers
             return RedirectToAction("Confirmation", "Reserve");
         }
 
-     
+
 
 
         public IActionResult Confirmation()
@@ -238,11 +245,31 @@ namespace Reservation.Controllers
             }
 
             // Validações finais antes de salvar
-            if (await _reserveService.IsUserBanned(reserveVM.CreateReserveViewModel.UserId) ||
-                !_reserveService.IsValidReserveTime(reserveVM.CreateReserveViewModel.ReserveStart, reserveVM.CreateReserveViewModel.ReserveEnd))
+            var userId = reserveVM.CreateReserveViewModel.UserId;
+
+            if (await _reserveService.IsUserBanned(userId))
             {
-                TempData["ErrorMessage"] = "Não foi possível confirmar a reserva.";
-                return RedirectToAction("Confirmation", "Reserve", reserveVM);
+                // Pegando o motivo do banimento para exibição
+                var user = await _userRepository.GetUserByIdAsync(userId);
+
+                TempData["ErrorMessage"] = "Você está banido por: " + (user.BanReason ?? "Motivo não informado.") + " Você será desbanido em: " + (user.BannedUntil);
+                return RedirectToAction("Index", "Room");
+
+            }
+
+            if (!_reserveService.IsValidBusinessHours(reserveVM.CreateReserveViewModel.ReserveStart, reserveVM.CreateReserveViewModel.ReserveEnd))
+            {
+                TempData["ErrorMessage"] = "Os horários de reserva devem estar entre 08:00 e 20:00.";
+                return RedirectToAction("Detail", "Room", new { id = reserveVM.CreateReserveViewModel.RoomId });
+
+            }
+
+
+            if (!_reserveService.IsValidReserveTime(reserveVM.CreateReserveViewModel.ReserveStart, reserveVM.CreateReserveViewModel.ReserveEnd))
+            {
+                TempData["ErrorMessage"] = "O horario de inicio deve ser anterior ao horario do final. ";
+                return RedirectToAction("Detail", "Room", new { id = reserveVM.CreateReserveViewModel.RoomId });
+
             }
 
             // Calcula o preço total e salva a reserva
@@ -293,14 +320,14 @@ namespace Reservation.Controllers
             var reserveByUser = await _reserveRepository.GetReserveWhereStatusIsValidAsync(userID);
 
             return View(reserveByUser);
-           
+
 
 
         }
 
 
 
- 
+
     }
 
 }

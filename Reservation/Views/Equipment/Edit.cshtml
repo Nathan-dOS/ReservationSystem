@@ -2,24 +2,100 @@
 @using Reservation.ViewModel
 @model EditEquipmentViewModel
 
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Editar Equipamento</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="Create">
+                        <div class="form-group mb-3">
+                            <label asp-for="EquipmentName" class="form-label">Nome do Equipamento</label>
+                            <input asp-for="EquipmentName"
+                                   value="@Model.EquipmentName"
+                                   type="text"
+                                   class="form-control"
+                                   id="equipmentName"
+                                   maxlength="100"
+                                   required
+                                   readonly>
+                        </div>
 
-<form method="post" asp-action="Create">
-    <div class="form-group">
-        <label asp-for="EquipmentName">Equipment Name</label>
-        <input asp-for="EquipmentName" value="@Model.EquipmentName" type="text" class="form-control" id="equipmentName" maxlength="100" required readonly>
+                        <div class="form-group mb-3">
+                            <label asp-for="EquipmentPrice" class="form-label">Preço</label>
+                            <input asp-for="EquipmentPrice"
+                                   value="@Model.EquipmentPrice"
+                                   type="number"
+                                   class="form-control"
+                                   id="price"
+                                   step="0.01"
+                                   required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="QuantityAvailable" class="form-label">Quantidade Disponível</label>
+                            <input asp-for="QuantityAvailable"
+                                   value="@Model.QuantityAvailable"
+                                   type="number"
+                                   class="form-control"
+                                   id="quantityAvailable"
+                                   required>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
+<style>
+    .card {
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    .card-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
 
-    <div class="form-group">
-        <label asp-for="EquipmentPrice">Price</label>
-        <input asp-for="EquipmentPrice" value="@Model.EquipmentPrice" type="number" class="form-control" id="price" step="0.01"  required>
-    </div>
+    .form-label {
+        font-weight: 500;
+    }
 
-    <div class="form-group">
-        <label asp-for="QuantityAvailable">Quantity Available</label>
-        <input asp-for="QuantityAvailable" value="@Model.QuantityAvailable" type="number" class="form-control" id="quantityAvailable" required >
-    </div>
+    .form-control {
+        border-radius: 0.25rem;
+    }
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .container {
+        padding-top: 2rem;
+    }
+</style>

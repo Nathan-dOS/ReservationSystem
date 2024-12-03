@@ -26,6 +26,7 @@ a.navbar-brand {
 
 
 
+
 #page-container {
     display: flex;
     flex-direction: column;
@@ -49,9 +50,12 @@ footer {
     display: block;
 }
 
+li.nav-item{
+    margin-bottom: 2rem;
+}
 
 .com-padding {
-    padding: 40px 10px 10px 4rem;
+    padding: 40px 13rem 10px 18rem;
 }
 
 .sem-padding {

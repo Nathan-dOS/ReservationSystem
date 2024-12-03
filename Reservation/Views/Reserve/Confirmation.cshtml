@@ -1,25 +1,60 @@
 ﻿@using Reservation.ViewModel
 @model RoomDetailViewModel
 
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Confirmação de Reserva</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead">Confirme os detalhes da sua reserva:</p>
 
-<h2>Confirmação de Reserva</h2>
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    <strong>Sala:</strong> @Model.Room.RoomNumber
+                </li>
+                <li class="list-group-item">
+                    <strong>Data:</strong> @Model.CreateReserveViewModel.ReserveDate.ToString("dd/MM/yyyy")
+                </li>
+                <li class="list-group-item">
+                    <strong>Horário:</strong> @Model.CreateReserveViewModel.ReserveStart - @Model.CreateReserveViewModel.ReserveEnd
+                </li>
+                <li class="list-group-item">
+                    <strong>Preço do Aluguel da Sala:</strong> R$ @Model.RoomPrice
+                </li>
+                <li class="list-group-item">
+                    <strong>Preço do Aluguel dos Equipamentos:</strong> R$ @Model.EquipmentPrice
+                </li>
+                <li class="list-group-item">
+                    <strong>Preço Total:</strong> R$ @Model.CreateReserveViewModel.RentPrice
+                </li>
+            </ul>
 
-<p>Confirme os detalhes da sua reserva:</p>
+            <h5 class="mb-3">Equipamentos Reservados:</h5>
+            <ul class="list-group">
+                @foreach (var equipment in Model.RoomEquipments)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@equipment.EquipmentName:</strong> @equipment.EquipmentQuantity unidade(s)
+                        </div>
+                        <span class="badge bg-secondary">@equipment.EquipmentPrice cada</span>
+                    </li>
+                }
+            </ul>
+        </div>
 
-<ul>
-    <li><strong>Sala:</strong> @Model.Room.RoomNumber</li>
-    <li><strong>Data:</strong> @Model.CreateReserveViewModel.ReserveDate.ToString("dd/MM/yyyy")</li>
-    <li><strong>Horário:</strong> @Model.CreateReserveViewModel.ReserveStart - @Model.CreateReserveViewModel.ReserveEnd</li>
-    <li><strong>Preço Total:</strong> @Model.CreateReserveViewModel.RentPrice</li>
-</ul>
-<ul>
-    @foreach (var equipment in Model.RoomEquipments)
-    {
-        <li><strong>@equipment.EquipmentName :</strong> @equipment.EquipmentQuantity | @equipment.EquipmentPrice cada</li>
-        
-    }
-</ul>
+        <div class="card-footer text-center">
+            <form asp-action="Confirm" asp-controller="Reserve" method="post" class="d-inline-block">
+                <input type="hidden" asp-for="CreateReserveViewModel.RoomId" />
+                <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
+                <input type="hidden" asp-for="CreateReserveViewModel.ReserveDate" />
+                <input type="hidden" asp-for="CreateReserveViewModel.ReserveStart" />
+                <input type="hidden" asp-for="CreateReserveViewModel.ReserveEnd" />
+                <input type="hidden" asp-for="CreateReserveViewModel.RentPrice" />
+                <input type="hidden" asp-for="RoomEquipments" />
 
+<<<<<<< HEAD
 <form asp-action="Confirm" asp-controller="Reserve" method="post">
     <input type="hidden" asp-for="CreateReserveViewModel.RoomId" />
     <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
@@ -36,3 +71,14 @@
         <span>Histórico</span><!-- Histórico -->
     </a>
 </form>
+=======
+                <button type="submit" class="btn btn-primary me-2">Confirmar Reserva</button>
+            </form>
+            <a asp-action="Detail" asp-controller="Room" asp-route-id="@Model.Room.RoomId" class="btn btn-secondary me-2">Voltar</a>
+            <a asp-controller="History" asp-action="Index" class="btn btn-secondary">
+                <span>Histórico</span>
+            </a>
+        </div>
+    </div>
+</div>
+>>>>>>> a9ae488035855f8f4e155e09df86accbe13f6210

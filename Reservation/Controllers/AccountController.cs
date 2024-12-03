@@ -24,6 +24,7 @@ namespace Reservation.Controllers
         public IActionResult Login()
         {
             var response = new LoginViewModel();
+            ViewData["HideFooter"] = true;
             return View(response);
         }
         [HttpPost]
@@ -60,6 +61,7 @@ namespace Reservation.Controllers
         public IActionResult Register()
         {
             var response = new RegisterViewModel();
+            ViewData["HideFooter"] = true;
             return View(response);
         }
 

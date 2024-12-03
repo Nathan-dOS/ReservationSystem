@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Reservation.Data.Enum;
 using Reservation.Interfaces;
 using Reservation.Models;
@@ -28,8 +29,16 @@ namespace Reservation.Services
         public async Task<bool> IsUserBanned(string UserID)
         {
             var user = await _userManagment.FindByIdAsync(UserID);
+            var now = DateTime.UtcNow;
+
+            Console.WriteLine(user.BanReason);
+
             // Verifica a flag banned
-            if (user.IsBanned == true)
+            Console.WriteLine(string.IsNullOrEmpty(user.BanReason));
+            Console.WriteLine(user.BannedUntil.HasValue);
+            Console.WriteLine(user.BannedUntil.Value >= now);
+
+            if (!string.IsNullOrEmpty(user.BanReason) && user.BannedUntil.HasValue && user.BannedUntil.Value >= now)
             {
                 return true;
             }
@@ -39,7 +48,7 @@ namespace Reservation.Services
 
         }
 
-        
+
         public bool IsValidBusinessHours(TimeOnly start, TimeOnly end)
         { // 08:00 e 20:00
             var openingTime = new TimeOnly(8, 0);
@@ -166,7 +175,7 @@ namespace Reservation.Services
                     ReserveStatus = reserve.ReserveStatus,
                     RentPrice = reserve.RentPrice,
                     ModifiedAt = DateTime.UtcNow
-                    
+
                 };
 
                 return _reserveHistory.AddHistory(history);
@@ -198,7 +207,7 @@ namespace Reservation.Services
             };
 
             return _reserveHistory.AddHistory(history);
-            
+
         }
 
         // Atualiza o historico
@@ -210,7 +219,7 @@ namespace Reservation.Services
             if (HistoryByReserveID != null)
             {
                 HistoryByReserveID.ReserveStatus = EnumReserveStatus.Canceled; // Muda seu status
-                _reserveHistory.Update(HistoryByReserveID); 
+                _reserveHistory.Update(HistoryByReserveID);
 
                 return true;
             }

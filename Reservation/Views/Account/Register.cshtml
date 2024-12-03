@@ -6,91 +6,210 @@
     ViewData["Title"] = "Sign up";
 }
 
-<div class="row">
-    <div class="col-md-6 offset-3">
-        <p>
-            <h4>Sign up for a new account</h4>
-        </p>
+<style>
+    body {
+        background: linear-gradient(to right, #ffffff, #87CEFA) !important; /* Gradiente branco para azul */
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+        
+    }
 
-        @if (TempData["Error"] != null)
-        {
-            <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"] </span>
-            </div>
+    main.com-padding{
+        display: flex;
+        justify-content: center;
+        margin-top: 2%;
+    }
+
+    .login-container {
+        background: #fff;
+        color: #333;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 900px;
+        width: 100%;
+        text-align: center;
+    }
+
+        .login-container h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: #2575fc; 
         }
 
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="Register">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        
+    }
 
-                    <div class="form-group">
-                        <label asp-for="EmailAddress" class="control-label"></label>
-                        <input asp-for="EmailAddress" class="form-control" />
-                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                    </div>
+ 
+    
 
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
+    .form-group {
+        margin-bottom: 1rem;
+        width: 48%;
+    }
 
-                    <div class="form-group">
-                        <label asp-for="CPF" class="control-label"></label>
-                        <input asp-for="CPF" class="form-control" />
-                        <span asp-validation-for="CPF" class="text-danger"></span>
-                    </div>
+        .form-group label {
+            font-weight: bold;
+        }
 
-                    <div class="form-group">
-                        <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5rem;
+        width: 100%;
+    }
 
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
+    .passwords{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 48%;
 
-                    <div class="form-group">
-                            <label asp-for="OABNumber" class="control-label"></label>
-                            <input asp-for="OABNumber" class="form-control" />
-                            <span asp-validation-for="OABNumber" class="text-danger"></span>
-                    </div>
+    }
 
-                    <div class="form-group">
-                        <label asp-for="CRMNumber" class="control-label"></label>
-                        <input asp-for="CRMNumber" class="form-control" />
-                        <span asp-validation-for="CRMNumber" class="text-danger"></span>
-                    </div>
+    #samePassword{
+        width: 100%;
+    }
 
+    
 
-                    <div class="form-group">
-                        <label asp-for="UserType" class="control-label"></label>
-                        <select asp-for="UserType" class="form-control" asp-items="Html.GetEnumSelectList<EnumUserType>()"></select>
-                        <span asp-validation-for="UserType" class="text-danger"></span>
-                    </div>
+    .login-container .btn-primary {
+        background-color: #2575fc;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+    }
 
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+        .login-container .btn-primary:hover {
+            background-color: #6a11cb;
+        }
 
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
+    .login-container .btn-outline-secondary {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid #2575fc;
+        color: #2575fc;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-                    <div class="form-group">
-                        <input class="btn btn-outline-success float-right" type="submit" value="Sign up" />
-                        <a class="btn btn-outline-secondary" asp-controller="Room" asp-action="Index">Cancel</a>
-                    </div>
-                </form>
+        .login-container .btn-outline-secondary:hover {
+            background-color: #2575fc;
+            color: #fff;
+        }
+
+    .alert-danger {
+        margin-bottom: 1rem;
+        color: #fff;
+        background-color: #f44336;
+        border-radius: 4px;
+        padding: 0.5rem;
+    }
+
+    .form-group.buttons {
+        display: flex;
+        justify-self: center;
+        flex-direction: column; /* Empilha os botões verticalmente */
+        align-items: center; /* Centraliza os botões horizontalmente */
+        gap: 20px; /* Espaçamento entre os botões */
+        margin-top: 20px;
+    }
+
+        .form-group.buttons .btn {
+            width: 100%; /* Faz com que os botões ocupem toda a largura do contêiner */
+        }
+</style>
+
+<div class="login-container">
+    <h4>Sign up for a new account</h4>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            <span><b>Sorry!</b> - @TempData["Error"] </span>
+        </div>
+    }
+
+    <form asp-action="Register">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" placeholder="Enter your email" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CPF" class="control-label"></label>
+                <input asp-for="CPF" class="form-control" placeholder="Enter your CPF" />
+                <span asp-validation-for="CPF" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
         </div>
-    </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="OABNumber" class="control-label"></label>
+                <input asp-for="OABNumber" class="form-control" placeholder="Enter your OAB number" />
+                <span asp-validation-for="OABNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CRMNumber" class="control-label"></label>
+                <input asp-for="CRMNumber" class="form-control" placeholder="Enter your CRM number" />
+                <span asp-validation-for="CRMNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserType" class="control-label"></label>
+                <select asp-for="UserType" class="form-control" asp-items="Html.GetEnumSelectList<EnumUserType>()"></select>
+                <span asp-validation-for="UserType" class="text-danger"></span>
+            </div>
+            <div class="passwords">
+                <div class="form-group" id="samePassword">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Create a password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="samePassword">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            </div>
+        </div>
+
+        <!-- Botões centralizados -->
+        <div class="form-group buttons">
+            <input class="btn btn-primary" type="submit" value="Sign up" />
+            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+        </div>
+    </form>
 </div>
