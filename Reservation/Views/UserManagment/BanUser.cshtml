@@ -1,0 +1,66 @@
+﻿@using Reservation.ViewModel
+@model UserManagmentViewModel
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            @* Mensagem de erro exibida se o usuário estiver banido *@
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger text-center">
+                    <h4><i class="bi bi-exclamation-circle"></i> Atenção</h4>
+                    <p>@TempData["ErrorMessage"]</p>
+                    @if (TempData["BanReason"] != null)
+                    {
+                        <p><strong>Motivo:</strong> @TempData["BanReason"]</p>
+                    }
+                </div>
+            }
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title">Banir Usuário</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="BanUser" method="post">
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="Name" />
+                        <input type="hidden" asp-for="Email" />
+                        <input type="hidden" asp-for="CPF" />
+                        <input type="hidden" asp-for="PhoneNumber" />
+                        <input type="hidden" asp-for="Roles" />
+
+                        <div class="mb-3">
+                            <p><strong>Nome:</strong> @Model.Name</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
+                            <p><strong>CPF:</strong> @Model.CPF</p>
+                            <p><strong>Telefone:</strong> @Model.PhoneNumber</p>
+                            <p><strong>Número OAB:</strong> @Model.OABNumber</p>
+                            <p><strong>Número CRM:</strong> @Model.CRMNumber</p>
+                            <p><strong>Função:</strong> @Model.Roles</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="BanReason" class="form-label">Motivo do Banimento</label>
+                            <textarea asp-for="BanReason" class="form-control" rows="3" placeholder="Descreva o motivo do banimento"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="BannedUntil" class="form-label">Data e Hora do Desbanimento</label>
+                            <input asp-for="BannedUntil" type="datetime-local" class="form-control" />
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-person-x"></i> Banir
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@using Reservation.ViewModel
+@model CreateReserveViewModel
+
+
+<h2>Confirmar Reserva</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="RoomId" />
+    <input type="hidden" asp-for="UserId" />
+
+    <div>
+        <label for="ReserveDate">Data da Reserva:</label>
+        <input type="date" asp-for="ReserveDate" class="form-control" required />
+    </div>
+
+    <div>
+        <label for="ReserveStart">Hora de Início:</label>
+        <input type="time" asp-for="ReserveStart" class="form-control" required />
+    </div>
+
+    <div>
+        <label for="ReserveEnd">Hora de Término:</label>
+        <input type="time" asp-for="ReserveEnd" class="form-control" required />
+    </div>
+
+    <div>
+        <label for="ReserveStatus">Status da Reserva:</label>
+        <input type="text" asp-for="ReserveStatus" class="form-control" required />
+    </div>
+
+    <div>
+        <label for="RentPrice">Preço do Aluguel:</label>
+        <input type="number" step="0.01" asp-for="RentPrice" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+</form>
+
+<script>
+    // Define a data mínima como a data de hoje
+    document.getElementById('ReserveDate').setAttribute('min', new Date().toISOString().split('T')[0]);
+</script>

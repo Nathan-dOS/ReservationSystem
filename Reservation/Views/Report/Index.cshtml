@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Report>
+
+<div class="container mt-4">
+    @if (User.IsInRole("admin"))
+    {
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Seus Relatórios</h2>
+            <a asp-controller="Report" asp-action="Create" class="btn btn-primary">Criar Relatório</a>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Não existe nenhum relatório disponível.
+        </div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var report in Model)
+            {
+                <div class="list-group-item border rounded mb-2 p-3"
+                     style="cursor: pointer; @(report.ReportBanStatus ? "background-color: lightcoral;" : "")">
+                    <a class="text-decoration-none text-dark" asp-controller="Report" asp-action="Edit" asp-route-id="@report.ReportId">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-1">@report.ReportTitle</h5>
+                            <small class="text-muted">@report.ReportDate.ToString("dd/MM/yyyy")</small>
+                        </div>
+                        <p class="mb-2 text-truncate">@report.ReportObservation</p>
+                        @if (User.IsInRole("general"))
+                        {
+                            <small class="text-muted">Criado por: @report.ReportCreatedBy</small>
+                        }
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>

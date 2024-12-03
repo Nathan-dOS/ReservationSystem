@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Room>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if (TempData["ErrorMessage"] != null) // Exibe a mensagem de erro, se houver
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["SuccessMessage"]
+    </div>
+}
+    
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Salas</h1>
+        <p>
+            @* Verificação se ta logado e é admin ou generald*@
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("general") || User.IsInRole("admin")))
+            {
+                <a asp-controller="Room" asp-action="Create" class="btn btn-primary my-2">Criar Sala</a>
+            }
+            
+        </p>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+        @foreach(var item in Model)
+        {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div>
+                            <a asp-controller="Room" asp-action="Detail" asp-route-id="@item.RoomId"><!-- details direto ao clicar na imagem -->
+                                <img class="card-img-top" 
+                                    src="@(item.PhotoAlbum.Any() ? $"data:image;base64,{Convert.ToBase64String(item.PhotoAlbum.First().ImageData)}" : "https://via.placeholder.com/150")"
+                                    alt="Imagem da sala">
+                            </a>
+                        </div>
+                        
+                        <div class="card-body">
+                            <p class="card-text"> Numero: @item.RoomNumber</p>
+                            <p class="card-text"> Status: @item.RoomStatus</p>
+                            <p class="card-text"> Preço: @item.RoomPrice</p>
+                            <p class="card-text"> Tipo: @item.RoomType</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                @* Verificação se ta logado e é admin ou general*@
+                                @if (User.Identity.IsAuthenticated && (User.IsInRole("general") || User.IsInRole("admin")))
+                                {
+                                    <div class="btn-group">
+                                        <a asp-controller="Room" asp-action="Edit" asp-route-id="@item.RoomId" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    </div>
+                                }
+                                <small class="text-muted"> Tamanho: @item.SizeInSquareMeters</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           }
+        </div>
+
+        
+    </div>
+</div>

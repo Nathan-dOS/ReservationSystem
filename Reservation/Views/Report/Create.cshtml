@@ -1,0 +1,50 @@
+﻿@using Reservation.ViewModel
+@model CreateReportViewModel
+<div style="padding: 0 30rem">
+<div class="bg-white rounded-3 shadow-lg">
+<div class="container mt-4">
+    <h2 class="text-center pt-3">Criar Relatório</h2>
+
+    <form method="post" asp-action="Create" enctype="multipart/form-data" class="needs-validation">
+        <!-- Título do Relatório -->
+        <div class="form-group mb-3">
+            <label asp-for="ReportTitle" class="form-label">Título</label>
+            <input asp-for="ReportTitle" type="text" class="form-control" id="ReportTitle" maxlength="50" placeholder="Digite o título do relatório" required>
+            <span asp-validation-for="ReportTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Id da Reserva -->
+        <div class="form-group mb-3">
+             <label asp-for="ReserveId" class="form-label">Id da Reserva</label>
+             <input asp-for="ReserveId" type="number" class="form-control" id="ReserveId" maxlength="11" placeholder="Digite o número da reserva" required>
+             <span asp-validation-for="ReserveId" class="text-danger"></span>
+        </div>
+
+        <!-- Upload de Imagens -->
+        <div class="form-group mb-3">
+            <label for="files" class="form-label">Upload de Imagens</label>
+            <input asp-for="ReportFiles" type="file" class="form-control" id="files" multiple>
+            <small class="form-text text-muted">Você pode carregar várias imagens.</small>
+        </div>
+
+        <!-- Observações -->
+        <div class="form-group mb-3">
+            <label asp-for="ReportObservation" class="form-label">Observações</label>
+            <textarea asp-for="ReportObservation" class="form-control" id="Observation" rows="4" placeholder="Adicione suas observações"></textarea>
+            <span asp-validation-for="ReportObservation" class="text-danger"></span>
+        </div>
+
+        <!-- Passível de Ban -->
+        <div class="form-check form-switch mb-3">
+            <input asp-for="ReportBanStatus" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+            <label asp-for="ReportBanStatus" class="form-check-label" for="flexSwitchCheckDefault">Passível de BAN</label>
+        </div>
+
+        <!-- Botão de Envio -->
+        <div class="text-center pb-3">
+            <button type="submit" class="btn btn-primary">Criar Relatório</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
