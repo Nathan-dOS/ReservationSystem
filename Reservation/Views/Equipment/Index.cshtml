@@ -1,49 +1,91 @@
 ﻿@model IEnumerable<Equipment>
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Ajuste caso tenha um layout compartilhado
 }
-@if (User.Identity.IsAuthenticated){
-                    @if (User.IsInRole("general") || User.IsInRole("admin")){
-<section class="jumbotron text-center">
-    <div class="container">
-        <h1 class="jumbotron-heading">Equipamentos</h1>
-        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-        <p>
-            <a asp-controller="Equipment" asp-action="Create" class="btn btn-primary my-2">Criar Equipamento</a>
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("general") || User.IsInRole("admin"))
+    {
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Equipamentos</h1>
+                <p>
+                    <a asp-controller="Equipment" asp-action="Create" class="btn btn-primary my-2">Criar Equipamento</a>
+                </p>
             
-        </p>
-    </div>
-</section>
+        
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-md-4">
-                            <a asp-controller="Equipment" asp-action="Edit" asp-route-id="@item.EquipmentId" style="text-decoration: none">
-                    <div class="card mb-4 box-shadow">
-                        
-                        <div class="card-body">
-                            <p class="card-text"> Equipamento: @item.EquipmentName</p>
-                            <p class="card-text"> Preço: @item.EquipmentPrice</p>
-                            <p class="card-text"> Quantidade: @item.QuantityAvailable</p>
-
-                            
-                            
-                        </div>
-                    </div>
+        <div class="album py-5 bg-light rounded-3 shadow-lg">
+            <div class="container">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4">
+                            <a asp-controller="Equipment" asp-action="Edit" asp-route-id="@item.EquipmentId" class="text-decoration-none">
+                                <div class="card mb-4 box-shadow">
+                                    <div class="card-header text-center bg-primary text-white">
+                                        <strong>@item.EquipmentName</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>Preço:</strong> @item.EquipmentPrice.ToString("C")</p>
+                                        <p class="card-text"><strong>Quantidade:</strong> @item.QuantityAvailable</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <span class="text-muted">Clique para editar</span>
+                                    </div>
+                                </div>
                             </a>
+                        </div>
+                    }
                 </div>
-                        
-            }
+            </div>
         </div>
-
-
-    </div>
-</div>
+        </div>
+        </section>
+    }
 }
-}
+
+<style>
+    .jumbotron {
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .jumbotron h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+    .card {
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-header {
+        font-size: 1.2rem;
+    }
+
+    .card-body p {
+        margin: 0.5rem 0;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+</style>

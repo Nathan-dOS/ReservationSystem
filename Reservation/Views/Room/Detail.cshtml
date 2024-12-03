@@ -1,6 +1,6 @@
 ﻿@using Reservation.ViewModel
 @model RoomDetailViewModel
-
+<div class="bg-light rounded-3 pt-3 shadow-lg">
 <div class="container">
     <h1 class="my-4">
         Sala @Model.Room.RoomNumber
@@ -274,7 +274,7 @@
             </div>
 
             <div class="d-grid mt-3">
-                <button type="submit" class="btn btn-primary">Reservar Sala</button>
+                <button type="submit" class="btn btn-outline-primary">Reservar Sala</button>
             </div>
         </form>
     </div>
@@ -283,146 +283,7 @@
 
 
 
-   @*
-    
-<!-- Formulário de reserva -->
-
-<h3 class="my-3">Fazer Reserva</h3>
-        
-@if (TempData["ErrorMessage"] != null) // Exibe a mensagem de erro, se houver
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-        <div class="row" style="margin-top:10px">
-        
-        <div class="col-6">
-    <form asp-action="Detail" asp-controller="Room" method="get" >
-    <input type="hidden" name="id" value="@Model.Room.RoomId" />
-
-    <div>
-        <label for="SelectedDate">Filtrar por data:</label>
-        <input type="date" id="SelectedDate" name="selectedDate" style="width: 25%"
-        value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
-    </div>
-
-    @if (!(Model.Reservations.Any() && Model.SelectedDate.HasValue ))
-    {
-        <p>Não há horários reservados para esta sala na data selecionada.</p>
-    }
-
-    <button type="submit" class="btn btn-secondary mt-2">Filtrar</button>
-</form>
-<div class="col-3"></div>
-        </div>
-    </div>
-<hr />
-<form asp-action="Create" asp-controller="Reserve" method="post" class="d-grid" >
-    <input type="hidden" asp-for="CreateReserveViewModel.RoomId" value="@Model.Room.RoomId" />
-    <input type="hidden" asp-for="CreateReserveViewModel.UserId" />
-
-    <div>
-        <label for="ReserveDate">Data da Reserva:</label>
-        <input type="date" asp-for="CreateReserveViewModel.ReserveDate" class="form-control" onkeydown="return false;" min="@DateTime.Now.ToString("yyyy-MM-dd")" required />
-
-        <span asp-validation-for="CreateReserveViewModel.ReserveDate" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label for="ReserveStart">Hora de Início:</label>
-        <input type="time" id="ReserveStart" asp-for="CreateReserveViewModel.ReserveStart" min="08:00" value="08:00".ToString("HH:mm")";" class="form-control" required />
-        <span asp-validation-for="CreateReserveViewModel.ReserveStart" class="text-danger"></span>
-    </div>
-
-
-    <div>
-        <label for="ReserveEnd">Hora de Término:</label>
-        <input type="time" id="ReserveEnd" asp-for="CreateReserveViewModel.ReserveEnd" value="09:00".ToString("HH:mm")" max="22:00" class="form-control" required />
-        <span asp-validation-for="CreateReserveViewModel.ReserveEnd" class="text-danger"></span>
-    </div>
-
-    @if (Model.Reservations.Any() && Model.SelectedDate.HasValue) // Se houver reservas para a data selecionada, exibe os horários reservados
-    {
-        <h4>Horários reservados para @Model.SelectedDate?.ToString("dd/MM/yyyy"):</h4>
-        <ul>
-            @foreach (var reservation in Model.Reservations)
-            {
-                <li>
-                    @reservation.ReserveStart.ToString("HH:mm") até
-                    @reservation.ReserveEnd.ToString("HH:mm")
-                </li>
-            }
-        </ul>
-    }
-
-    @{
-        var equipments = Model.Equipments.ToList();
-    }
-    
-
-    <h4>Equipamentos</h4>
-    <div>
-            <div class="row">
-                @for (int i = 0; i < equipments.Count; i++)
-                {
-                    var equipment = equipments[i];
-                    var roomEquipment = Model.RoomEquipments.FirstOrDefault(re => re.EquipmentId == equipment.EquipmentId);
-                    bool isRoomEquipment = roomEquipment != null;
-
-                    <div class="col-md-4 col-sm-6 col-12 mb-4">
-                        <div class="equipment-item border p-3 rounded">
-                            <!-- Checkbox para selecionar o equipamento -->
-                            <div class="form-check">
-                                <input type="checkbox"
-                                       class="form-check-input"
-                                       id="equipment-@equipment.EquipmentId"
-                                       name="RoomEquipments[@i].IsSelected"
-                                       value="true"
-                                @(isRoomEquipment ? "checked" : "") />
-                                <input type="hidden" name="RoomEquipments[@i].IsSelected" value="false" />
-                                <input type="hidden" name="RoomEquipments[@i].EquipmentId" value="@equipment.EquipmentId" />
-                                <input type="hidden" name="RoomEquipments[@i].EquipmentName" value="@equipment.EquipmentName" />
-                                <input type="hidden" name="RoomEquipments[@i].EquipmentPrice" value="@equipment.EquipmentPrice" />
-                                <label class="form-check-label" for="equipment-@equipment.EquipmentId">
-                                    @equipment.EquipmentName (Preço: @equipment.EquipmentPrice)
-                                </label>
-                            </div>
-
-                            <!-- Campo para editar a quantidade -->
-                            <div class="mt-2">
-                                <label for="quantity-@equipment.EquipmentId" class="form-label">Quantidade:</label>
-                                <input type="number"
-                                       id="quantity-@equipment.EquipmentId"
-                                       name="RoomEquipments[@i].EquipmentQuantity"
-                                       value="@(isRoomEquipment ? roomEquipment.EquipmentQuantity.ToString() : "0")"
-                                       min="0"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-
-    </div>
-
-
-
-
-    <div>
-        <label for="RentPrice">Preço do Aluguel:</label>
-        <input type="number" id="RentPrice" step="0.01" value="@Model.Room.RoomPrice" asp-for="CreateReserveViewModel.RentPrice" class="form-control" required readonly />
-        <span asp-validation-for="CreateReserveViewModel.RentPrice" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Reservar Sala</button>
-</form>
-
-
-
-
-*@
-
+   
 
 
 @section Scripts {
@@ -480,3 +341,4 @@
     }); *@
  
     </script>
+</div>
