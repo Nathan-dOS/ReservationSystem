@@ -15,114 +15,99 @@
 }
 <body style="background: linear-gradient(to right, #ffffff, #c7e3fc) ;">
     <div id="page-container">
-        <div class="offcanvas offcanvas-start " tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true" >
-            <div class="offcanvas-header ">
-                <h6 class="offcanvas-title d-none d-sm-block" id="offcanvasTitle">Reserva de Salas</h6>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
-            </div>
-            <div class="offcanvas-body px-10 mx-10">
-                <ul class="nav nav-pills flex-column mb-sm-auto ml-5 align-items-start" id="menu" >
-                    <!-- Home -->
-                    <li class="nav-item w-100 mb-2" style="justify-content: center; padding-left: 3.5rem !important">
-                        <div class=" mb-3">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="fs-5 bi-house"></i>
-                            <span class="ms-1 d-none d-sm-inline" style="justify-content: center">Home</span>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" data-bs-keyboard="false" data-bs-backdrop="true">
+        <div class="offcanvas-header bg-primary text-white">
+            <h6 class="offcanvas-title d-none d-sm-block" id="offcanvasTitle">Reserva de Salas</h6>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+        </div>
+        <div class="offcanvas-body px-3">
+            <ul class="nav nav-pills flex-column mb-0 align-items-start" id="menu">
+                <!-- Home -->
+                <li class="nav-item mb-3">
+                    <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fs-5 bi-house me-2"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item text-center mb-3">
+                        <a asp-area="" asp-controller="Account" asp-action="Login">
+                            <button type="button" class="btn btn-outline-secondary btn-sm mb-2 w-100">Login</button>
                         </a>
+                        <a asp-area="" asp-controller="Account" asp-action="Register">
+                            <button type="button" class="btn btn-primary btn-sm w-100">Sign Up</button>
+                        </a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- Conta -->
+                    <li class="nav-item mb-3">
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link d-flex align-items-center">
+                            <i class="fs-5 bi-speedometer2 me-2"></i>
+                            <span>Conta</span>
+                        </a>
+                        <div class="collapse" id="submenu1">
+                            <ul class="nav flex-column ps-4">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="History" asp-action="Index">Histórico</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Reserve" asp-action="UserReserves">Minhas Reservas</a>
+                                </li>
+                            </ul>
                         </div>
                     </li>
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                            <li class="nav-item d-flex justify-content-center align-items-center w-100" >
-                                <div>
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Login"><button type="button" class="btn btn-outline-secondary btn-sm" style="font-size: 1.2rem">Login</button></a>
-                            </div>
-                            <div>
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Register"><button type="button" class="btn btn-primary btn-sm" style="font-size: 1.2rem">Sign up</button></a>
-                            </div>
-                            </li>
+                }
 
-                    }
-                    @if (User.Identity.IsAuthenticated)
+                <!-- Salas -->
+                <li class="nav-item mb-3">
+                    <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="Room" asp-action="Index">
+                        <i class="fs-5 bi-table me-2"></i>
+                        <span>Salas</span>
+                    </a>
+                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("general") || User.IsInRole("admin"))
                     {
-                        <!-- Dashboard -->
-                        <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                            <a href="#submenu1" data-bs-toggle="collapse" class="nav-link text-truncate ">
-                                <i class="fs-5 bi-speedometer2    "></i>
-                                <span class="ms-1 d-none d-sm-inline" >Conta</span>
+                        <!-- Relatórios -->
+                        <li class="nav-item mb-3">
+                            <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="Report" asp-action="Index">
+                                <i class="fs-5 bi-grid me-2"></i>
+                                <span>Relatórios</span>
                             </a>
-                            <!-- Conta -->
+                        </li>
 
-                            <div class="collapse w-100" id="submenu1">
-                                <ul class="nav flex-column ms-7 ">
+                        @if (!User.IsInRole("admin"))
+                        {
+                            <!-- Usuários -->
+                            <li class="nav-item mb-3">
+                                <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="UserManagment" asp-action="Index">
+                                    <i class="fs-5 bi-people me-2"></i>
+                                    <span>Usuários</span>
+                                </a>
+                            </li>
+                        }
 
-
-                                    <li class="nav-item">
-                                        <a class="nav-link text-truncate" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                                    </li><!-- Log out -->
-
-                                    <li class="nav-item">
-                                        <a asp-controller="History" asp-action="Index" class="nav-link text-truncate" >
-                                            <span>Histórico</span><!-- Histórico -->
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a asp-controller="Reserve" asp-action="UserReserves" class="nav-link text-truncate">
-                                            <span>Minhas Reservas</span><!-- Histórico -->
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </div>
-
+                        <!-- Equipamentos -->
+                        <li class="nav-item mb-3">
+                            <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="Equipment" asp-action="Index">
+                                <i class="fs-5 bi-tools me-2"></i>
+                                <span>Equipamentos</span>
+                            </a>
                         </li>
                     }
-
-                    <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                        <a class="nav-link text-truncate" asp-area="" asp-controller="Room" asp-action="Index">
-                            <i class="fs-5 bi-table"></i>
-                            <span class="ms-1 d-none d-sm-inline">Salas</span>
-                        </a>
-                    </li><!-- Salas -->
-
-
-                    @if (User.Identity.IsAuthenticated){
-                        @if (User.IsInRole("general") || User.IsInRole("admin"))
-                        {
-                            <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="Report" asp-action="Index">
-                                    <i class="fs-5 bi-grid"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Relatórios</span>
-                                </a>
-                            </li><!-- Relatórios -->
-
-                            @if(!User.IsInRole("admin")){
-                                <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                                    <a class="nav-link text-truncate" asp-area="" asp-controller="UserManagment" asp-action="Index">
-                                        <i class="fs-5 bi-people"></i>
-                                        <span class="ms-1 d-none d-sm-inline">Usuários</span>
-                                    </a>
-
-                                </li>
-
-                                <!-- Usuários -->
-                            }
-                            
-
-                            <li class="nav-item" style="justify-content: center; padding-left: 4.5rem !important">
-                                <a class="nav-link text-truncate" asp-area="" asp-controller="Equipment" asp-action="Index">
-                                    <i class="fs-5 bi-table"></i>
-                                    <span class="ms-1 d-none d-sm-inline">Equipamentos</span>
-                                </a>
-                            </li><!-- Equipamentos -->
-                        }
-                    }
-
-
-                </ul>
-            </div>
+                }
+            </ul>
         </div>
+    </div>
 
         <!-- Conteúdo principal -->
         <div class="container-fluid" id="content-wrap">
@@ -187,3 +172,45 @@
     
 </body>
 </html>
+
+
+<style>
+    .offcanvas-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+    }
+
+    .offcanvas-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        color: #333;
+        font-size: 1rem;
+        transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+        .nav-link:hover {
+            color: #0056b3;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 0.375rem;
+        }
+
+        .nav-link .bi {
+            font-size: 1.25rem;
+        }
+
+    .btn {
+        font-size: 0.9rem;
+        transition: transform 0.2s ease;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+    .collapse ul {
+        padding-left: 1.5rem;
+    }
+</style>
