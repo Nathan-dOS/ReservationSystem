@@ -12,7 +12,7 @@ namespace Reservation.Models
         [Required]
         public string CPF { get; set; }
         [Required]
-        public override string Email {get; set; }
+        public override string Email { get; set; }
 
         [StringLength(10)]
         public string? CRMNumber { get; set; } // Opcional, controle externo de formato
@@ -33,7 +33,7 @@ namespace Reservation.Models
         public string Address { get; set; }
 
         public string? AssignedBuilding { get; set; }
-        public bool IsBanned { get; set; } = false;
+        public string? BanReason { get; set; }
         public DateTime? BannedUntil { get; set; }
 
         public DateOnly? EntryDate { get; set; }

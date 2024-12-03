@@ -402,6 +402,9 @@ namespace Reservation.Migrations
                     b.Property<string>("AssignedBuilding")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BanReason")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("BannedUntil")
                         .HasColumnType("TEXT");
 
@@ -428,9 +431,6 @@ namespace Reservation.Migrations
 
                     b.Property<DateOnly?>("EntryDate")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
