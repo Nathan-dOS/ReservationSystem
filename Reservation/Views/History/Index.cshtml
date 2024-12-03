@@ -34,7 +34,7 @@
                         <tbody>
                             @foreach (var reserve in Model)
                             {
-                                @if (reserve.ReserveDate <= DateOnly.FromDateTime(DateTime.Now))
+                                @if (reserve.ReserveDate <= DateOnly.FromDateTime(DateTime.Now) || reserve.ReserveStatus.ToString() == "Canceled")
                                 {
                                 <tr>
                                     <td>@reserve.ReserveId</td>
