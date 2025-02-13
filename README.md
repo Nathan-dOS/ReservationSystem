@@ -3,6 +3,9 @@
 ## 📌 Sobre o Projeto
 O **Sistema de Reservas de Salas** é uma aplicação desenvolvida em **ASP.NET Core** que permite o gerenciamento de reservas de salas para diferentes tipos de usuários. O sistema controla o acesso com base em permissões, gerencia equipamentos associados às salas e permite que usuários realizem reservas conforme disponibilidade e regras de negócio estabelecidas.
 
+![image](https://github.com/user-attachments/assets/0b3adfdc-282e-43b4-9631-77b515f25a33)
+
+
 ## 🎯 Objetivo
 Facilitar a gestão de reservas de salas dentro de uma empresa ou instituição, garantindo eficiência e organização no uso dos espaços disponíveis.
 
