@@ -18,9 +18,10 @@ Facilitar a gestão de reservas de salas dentro de uma empresa ou instituição,
 ## ⚙️ Funcionalidades Implementadas
 ✅ Cadastro e login de usuários (com diferentes papéis como administrador, gerente e usuário comum).  
 ✅ Reserva de salas, com verificação de disponibilidade.  
-✅ Gerenciamento de equipamentos disponíveis nas salas. 
+✅ Banimento de usuários.
+
 ✅ Relatórios de reservas realizadas.  
-✅ Banimento de usuários
+✅ Gerenciamento de equipamentos disponíveis nas salas.
 
 ## 🚧 Funcionalidades Não Implementadas
 🚫 Criação de classes separadas para cada tipo de sala (foi considerado inviável devido ao tempo e impacto na arquitetura do sistema).  
