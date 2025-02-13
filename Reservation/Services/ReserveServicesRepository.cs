@@ -31,12 +31,6 @@ namespace Reservation.Services
             var user = await _userManagment.FindByIdAsync(UserID);
             var now = DateTime.UtcNow;
 
-<<<<<<< HEAD
-=======
-            // Verifica a flag banned
-           
-
->>>>>>> 37180d6a2cbdec1fff6d7616db696bc77bfe4efb
             if (!string.IsNullOrEmpty(user.BanReason) && user.BannedUntil.HasValue && user.BannedUntil.Value >= now)
             {
                 return true;
