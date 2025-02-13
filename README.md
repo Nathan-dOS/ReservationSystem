@@ -18,10 +18,9 @@ Facilitar a gestão de reservas de salas dentro de uma empresa ou instituição,
 ## ⚙️ Funcionalidades Implementadas
 ✅ Cadastro e login de usuários (com diferentes papéis como administrador, gerente e usuário comum).  
 ✅ Reserva de salas, com verificação de disponibilidade.  
-✅ Gerenciamento de equipamentos disponíveis nas salas.  
-✅ Notificações e controle de status das reservas.  
+✅ Gerenciamento de equipamentos disponíveis nas salas. 
 ✅ Relatórios de reservas realizadas.  
-✅ Sistema de permissões baseado em papéis.
+✅ Banimento de usuários
 
 ## 🚧 Funcionalidades Não Implementadas
 🚫 Criação de classes separadas para cada tipo de sala (foi considerado inviável devido ao tempo e impacto na arquitetura do sistema).  
@@ -46,10 +45,11 @@ Se quiser contribuir com o projeto, siga os passos:
 5. Abra um **pull request**.
 
 
-## Veja o projeto!
+## 🎥 Demonstração do Projeto
 
-https://www.youtube.com/watch?v=cNGCpSLf9pM&ab_channel=GabrieldeAlmeida
-
+Confira vídeo do projeto no Youtube
+[https://www.youtube.com/watch?v=cNGCpSLf9pM&ab_channel=GabrieldeAlmeida
+](https://youtu.be/cNGCpSLf9pM?si=xQguZR-2IlHB7yr7)
 
 ## ✨ Agradecimentos
 Este sistema foi desenvolvido como parte de um projeto acadêmico, proporcionando aprendizado sobre **ASP.NET Core, C#, e boas práticas de desenvolvimento**. A experiência adquirida foi fundamental para o crescimento profissional e técnico. Colaborador: @Nathan-dOS
