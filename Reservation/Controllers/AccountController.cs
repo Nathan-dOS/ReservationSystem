@@ -28,36 +28,52 @@ namespace Reservation.Controllers
             return View(response);
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginVM)
+public async Task<IActionResult> Login(LoginViewModel loginVM)
+{
+    if (!ModelState.IsValid)
+        return View(loginVM);
+
+    var user = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
+
+    if (user == null)
+    {
+        // usuário não encontrado
+        ModelState.AddModelError(string.Empty, "Usuário ou senha inválidos.");
+        return View(loginVM);
+    }
+
+    // usuário existe, verifica senha
+    var passwordCheck = await _userManager.CheckPasswordAsync(user, loginVM.Password);
+    if (passwordCheck)
+    {
+        // senha correta, faz login
+        var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+        if (result.Succeeded)
+            return RedirectToAction("Index", "Home");
+
+        // se deu algum outro problema no sign-in
+        ModelState.AddModelError(string.Empty, "Não foi possível efetuar o login.");
+        return View(loginVM);
+    }
+    else
+    {
+        // senha incorreta, reseta para "123Abc!"
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var resetResult = await _userManager.ResetPasswordAsync(user, token, "123Abc!");
+        if (resetResult.Succeeded)
         {
-            if(!ModelState.IsValid)
-            {
-                return View(loginVM);
-            }
-
-            var user = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
-
-            if (user != null)
-            { // User is found, check password
-                var passwordCheck = await _userManager.CheckPasswordAsync(user, loginVM.Password);
-                if (passwordCheck)
-                {
-                    // Pass correct, sign in
-                    var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                // Password is incorrect
-                TempData["Error"] = "Wrong Credentials. Please, try again";
-                return View(loginVM);
-
-            }
-            // User not found
-            TempData["Error"] = "Wrong credentials. Please try again";
-            return View(loginVM);
+            TempData["Error"] = "Credenciais incorretas. Senha resetada para '123Abc!'. Tente novamente.";
         }
+        else
+        {
+            var erros = string.Join(", ", resetResult.Errors.Select(e => e.Description));
+            TempData["Error"] = $"Credenciais incorretas. Falha ao resetar a senha: {erros}";
+        }
+
+        return View(loginVM);
+    }
+}
+
         public IActionResult Register()
         {
             var response = new RegisterViewModel();
