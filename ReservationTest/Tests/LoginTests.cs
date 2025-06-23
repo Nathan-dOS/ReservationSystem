@@ -9,7 +9,7 @@ namespace Reservation.Tests.Unit
     {
         private readonly IWebDriver driver;
         private readonly WebDriverWait wait;
-
+        
         // ATENÇÃO: Atualizei a URL para a que você informou!
         private readonly string baseUrl = "https://localhost:7105";
 
