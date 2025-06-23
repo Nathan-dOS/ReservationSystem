@@ -20,35 +20,40 @@ builder.Services.AddScoped<IReserveService, ReserveServicesRepository>();
 builder.Services.AddScoped<IUserManagmenteRepository, UserManagmentRepository>();
 builder.Services.AddScoped<IReserveHistoryRepository, ReserveHistoryRepository>();
 
-
 builder.Services.AddHostedService<BanCleanupService>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+
+// Configure Identity with default token providers
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    // Identity options configuration
+    options.User.RequireUniqueEmail = true;
+    // You can configure other options here
+})
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
-
-
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-});
-
+    .AddCookie(options =>
+    {
+        // Cookie authentication options (optional)
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
