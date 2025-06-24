@@ -67,7 +67,10 @@ namespace Reservation.Tests.Ui
 
             // Clica em reservar
             var submit = driver.FindElement(By.CssSelector("button[type='submit'], input[type='submit']"));
-            submit.Click();
+
+            // A SOLUÇÃO: Usar o clique via JavaScript, que ignora sobreposições.
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].click();", submit);
 
             // Aguarda e verifica o alerta de erro
             var alert = wait.Until(d => d.FindElement(By.ClassName("alert-danger")));

@@ -3,15 +3,22 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI; // Essencial para o WebDriverWait
 using Xunit;
 
-namespace Reservation.Tests.Unit
+namespace ReservationTeste.Tests
 {
     public class LoginTests : IDisposable
     {
         private readonly IWebDriver driver;
         private readonly WebDriverWait wait;
-        
+
         // ATENÇÃO: Atualizei a URL para a que você informou!
         private readonly string baseUrl = "https://localhost:7105";
+
+        private void OpenOffcanvasMenu()
+        {
+            // Abre o menu lateral (offcanvas) clicando no botão de menu
+            wait.Until(d => d.FindElement(By.ClassName("menu-button"))).Click();
+            wait.Until(d => d.FindElement(By.Id("offcanvasMenu")).GetAttribute("class").Contains("show"));
+        }
 
         public LoginTests()
         {
@@ -23,27 +30,40 @@ namespace Reservation.Tests.Unit
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
-        //[Fact]
-        //public void Login_With_Valid_Credentials()
-        //{
-        //    // Arrange: Navega para a página de login
-        //    driver.Navigate().GoToUrl($"{baseUrl}/account/login");
+        [Fact]
+        public void Login_With_Valid_Credentials()
+        {
+            // --- FASE 1: LOGIN ---
+            driver.Navigate().GoToUrl($"{baseUrl}/account/login");
+            wait.Until(d => d.FindElement(By.Id("EmailAddress"))).SendKeys("teste@teste.com");
+            driver.FindElement(By.Id("Password")).SendKeys("Teste123!");
+            driver.FindElement(By.CssSelector("input.btn-primary[type='submit']")).Click();
 
-        //    // Act: Preenche o formulário e clica em login
-        //    // Usamos 'wait.Until' para garantir que o campo existe antes de interagir com ele.
-        //    wait.Until(d => d.FindElement(By.Id("EmailAddress"))).SendKeys("teste@teste.com");
-        //    driver.FindElement(By.Id("Password")).SendKeys("Teste123!");
-        //    driver.FindElement(By.CssSelector("input.btn-primary[type='submit']")).Click();
+            // Confirma que o login foi bem sucedido esperando a URL mudar para a home
+            wait.Until(d => d.Url == $"{baseUrl}/");
 
-        //    // Assert: Verifica se foi redirecionado para a página principal (Home)
-        //    // A melhor forma de verificar um login bem-sucedido é checar a URL final.
-        //    // Ajuste "/Home" se a sua página principal tiver outra URL.
+            // --- FASE 2: LOGOUT ---
+            // Abre o menu lateral agora como um usuário logado
+            OpenOffcanvasMenu();
 
-        //    var logoutElement = wait.Until(d => d.FindElement(By.LinkTex("Logout")));
+            // Clica no menu "Conta" para expandi-lo
+            var contaMenu = wait.Until(d => d.FindElement(By.CssSelector("a[href='#submenu1']")));
+            contaMenu.Click();
 
-        //    wait.Until(d => d.Url.Contains("/home/index"));
-        //    Assert.Contains("/home/index", driver.Url);
-        //}
+            // Clica no link de "Logout" que agora está visível
+            var logoutLink = wait.Until(d => d.FindElement(By.LinkText("Logout")));
+            logoutLink.Click();
+
+            // --- FASE 3: ASSERT FINAL ---
+            // Após o logout, devemos voltar para a home page.
+            wait.Until(d => d.Url == $"{baseUrl}/");
+
+            // E para confirmar, vamos abrir o menu de novo e ver se o botão de Login voltou a aparecer.
+            OpenOffcanvasMenu();
+            var loginButton = driver.FindElement(By.XPath("//a[contains(@href, '/Account/Login')]/button"));
+            Assert.True(loginButton.Displayed, "O botão de Login não apareceu após o logout.");
+        }
+
 
         [Fact]
         public void Login_With_Invalid_Credentials()
@@ -65,22 +85,22 @@ namespace Reservation.Tests.Unit
             Assert.Contains("Sorry!", errorMessageDiv.Text);
         }
 
-        //[Fact]
-        //public void Cancel_Button_Should_()
-        //{
-        //    // Arrange
-        //    driver.Navigate().GoToUrl($"{baseUrl}/account/login");
+        [Fact]
+        public void Cancel_Button_Login_()
+        {
+            // Arrange
+            driver.Navigate().GoToUrl($"{baseUrl}/account/login");
 
-        //    // Act
-        //    // Usando By.LinkText por ser mais legível para pegar o <a>Cancel</a>
-        //    wait.Until(d => d.FindElement(By.LinkText("Cancel"))).Click();
+            // Act
+            // Usando By.LinkText por ser mais legível para pegar o <a>Cancel</a>
+            wait.Until(d => d.FindElement(By.LinkText("Cancel"))).Click();
 
-        //    // Assert
-        //    // Verifica se voltou para a raiz do site ou para a Home.
-        //    // A URL pode ser exatamente a base URL ou conter /Home.
-        //    wait.Until(d => d.Url != $"{baseUrl}/account/login"); // Espera sair da página de login
-        //    Assert.Equal($"{baseUrl}/", driver.Url, ignoreCase: true); // Verifica se voltou para a raiz
-        //}
+            // Assert
+            // Verifica se voltou para a raiz do site ou para a Home.
+            // A URL pode ser exatamente a base URL ou conter /Home.
+            wait.Until(d => d.Url != $"{baseUrl}/account/login"); // Espera sair da página de login
+            Assert.Equal($"{baseUrl}/", driver.Url, ignoreCase: true); // Verifica se voltou para a raiz
+        }
 
 
         // O Dispose é chamado pelo xUnit após cada teste na classe, garantindo que o navegador feche.

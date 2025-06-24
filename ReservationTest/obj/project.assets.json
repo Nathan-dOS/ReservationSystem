@@ -570,6 +570,22 @@
           "build/Selenium.Firefox.WebDriver.targets": {}
         }
       },
+      "Selenium.Support/4.33.0": {
+        "type": "package",
+        "dependencies": {
+          "Selenium.WebDriver": "4.33.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/WebDriver.Support.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/WebDriver.Support.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Selenium.WebDriver/4.33.0": {
         "type": "package",
         "compile": {
@@ -590,6 +606,18 @@
         "type": "package",
         "build": {
           "build/Selenium.WebDriver.ChromeDriver.targets": {}
+        }
+      },
+      "SeleniumExtras.WaitHelpers/1.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Selenium.WebDriver": "4.0.0-beta2"
+        },
+        "compile": {
+          "lib/netstandard2.1/SeleniumExtras.WaitHelpers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/SeleniumExtras.WaitHelpers.dll": {}
         }
       },
       "System.AppContext/4.3.0": {
@@ -2412,6 +2440,20 @@
         "selenium.firefox.webdriver.nuspec"
       ]
     },
+    "Selenium.Support/4.33.0": {
+      "sha512": "AsjM8PqJkueDBzw9StEHLLUq6bT7au9IY9mMLlwMxOdNYfu7PMJOqpHCMg2xVtLrUHGd6mADqrbFxcs9QWe6JA==",
+      "type": "package",
+      "path": "selenium.support/4.33.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/WebDriver.Support.dll",
+        "lib/netstandard2.0/WebDriver.Support.xml",
+        "selenium.support.4.33.0.nupkg.sha512",
+        "selenium.support.nuspec"
+      ]
+    },
     "Selenium.WebDriver/4.33.0": {
       "sha512": "5dzwA1cMorwYWudX46zyeUqyZn48TZeCHbSERxbpKezGxZ8hMBpcL12XwG4RGUuQKGH8FiEOJOFK4eCE//uNpQ==",
       "type": "package",
@@ -2456,6 +2498,19 @@
         "nupkg-icon.png",
         "selenium.webdriver.chromedriver.137.0.7151.11900.nupkg.sha512",
         "selenium.webdriver.chromedriver.nuspec"
+      ]
+    },
+    "SeleniumExtras.WaitHelpers/1.0.2": {
+      "sha512": "de7m30nkZZLkfCncYBdluUpM27AR/Vkk4kiA4HRQbV+fZI3ps4qGIeJCuj8TAMXdMfQik5Rno8xPnFBIod+ebg==",
+      "type": "package",
+      "path": "seleniumextras.waithelpers/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/netstandard2.1/SeleniumExtras.WaitHelpers.dll",
+        "seleniumextras.waithelpers.1.0.2.nupkg.sha512",
+        "seleniumextras.waithelpers.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -5590,32 +5645,42 @@
     "net8.0": [
       "Microsoft.NET.Test.Sdk >= 17.8.0",
       "Selenium.Firefox.WebDriver >= 0.27.0",
+      "Selenium.Support >= 4.33.0",
       "Selenium.WebDriver >= 4.33.0",
       "Selenium.WebDriver.ChromeDriver >= 137.0.7151.11900",
+      "SeleniumExtras.WaitHelpers >= 1.0.2",
       "coverlet.collector >= 6.0.0",
       "xunit >= 2.5.3",
       "xunit.runner.visualstudio >= 2.5.3"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jmarcos\\.nuget\\packages\\": {}
+    "C:\\Users\\gvalm\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+      "projectUniqueName": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
       "projectName": "ReservationTest",
-      "projectPath": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
-      "packagesPath": "C:\\Users\\jmarcos\\.nuget\\packages\\",
-      "outputPath": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\obj\\",
+      "projectPath": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+      "packagesPath": "C:\\Users\\gvalm\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\jmarcos\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\gvalm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5633,8 +5698,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.300"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -5648,6 +5712,10 @@
             "target": "Package",
             "version": "[0.27.0, )"
           },
+          "Selenium.Support": {
+            "target": "Package",
+            "version": "[4.33.0, )"
+          },
           "Selenium.WebDriver": {
             "target": "Package",
             "version": "[4.33.0, )"
@@ -5655,6 +5723,10 @@
           "Selenium.WebDriver.ChromeDriver": {
             "target": "Package",
             "version": "[137.0.7151.11900, )"
+          },
+          "SeleniumExtras.WaitHelpers": {
+            "target": "Package",
+            "version": "[1.0.2, )"
           },
           "coverlet.collector": {
             "target": "Package",
@@ -5685,7 +5757,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
