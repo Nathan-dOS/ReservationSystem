@@ -51,6 +51,9 @@ ReservationSystem/Reservation/obj/
 **/bin/
 **/obj/
 
+[Bb]in/
+[Oo]bj/
+
 *.bd
 *.bd-shm
 *.bd-wal"*.bd*" 

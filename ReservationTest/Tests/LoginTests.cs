@@ -101,7 +101,21 @@ namespace ReservationTeste.Tests
             wait.Until(d => d.Url != $"{baseUrl}/account/login"); // Espera sair da página de login
             Assert.Equal($"{baseUrl}/", driver.Url, ignoreCase: true); // Verifica se voltou para a raiz
         }
+        [Fact]
+        public void Access_RestrictedPage()
+        {
+            // Começa deslogado
+            driver.Manage().Cookies.DeleteAllCookies();
 
+            // Tenta acessar uma página protegida
+            string restrictedUrl = $"{baseUrl}/Room/Create";
+            driver.Navigate().GoToUrl(restrictedUrl);
+
+            // Espera redirecionamento para login
+            wait.Until(d => d.Url.Contains("/Account/Login"));
+
+            Assert.Contains("/Account/Login", driver.Url, StringComparison.OrdinalIgnoreCase);
+        }
 
         // O Dispose é chamado pelo xUnit após cada teste na classe, garantindo que o navegador feche.
         public void Dispose()
