@@ -5655,31 +5655,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\maria\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\jmarcos\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maria\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+      "projectUniqueName": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
       "projectName": "ReservationTest",
-      "projectPath": "C:\\Users\\maria\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
-      "packagesPath": "C:\\Users\\maria\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\maria\\source\\repos\\ReservationSystem\\ReservationTest\\obj\\",
+      "projectPath": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+      "packagesPath": "C:\\Users\\jmarcos\\.nuget\\packages\\",
+      "outputPath": "D:\\estudos\\TesteDeSoftware\\ReservationSystem\\ReservationTest\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\maria\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\jmarcos\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

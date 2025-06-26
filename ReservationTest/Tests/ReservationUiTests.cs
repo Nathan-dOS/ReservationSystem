@@ -12,7 +12,7 @@ namespace Reservation.Tests.Ui
     {
         private readonly IWebDriver driver;
         private readonly WebDriverWait wait;
-        private readonly string baseUrl = "https://localhost:7105";
+        private readonly string baseUrl = "http://localhost:5139";
 
         public ReservationUiTests()
         {
@@ -25,10 +25,10 @@ namespace Reservation.Tests.Ui
             // options.BinaryLocation = @"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe";
             // options.AddArgument("--ignore-certificate-errors");
             // options.AcceptInsecureCertificates = true;
-            // // options.AddArgument("--headless=new");
+            // options.AddArgument("--headless=new");
 
             // driver = new ChromeDriver(options);
-            // wait   = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait  = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             // 1) Login
             driver.Navigate().GoToUrl($"{baseUrl}/account/login");
@@ -49,7 +49,7 @@ namespace Reservation.Tests.Ui
         }
 
         [Fact]
-        public void CreateReservation_InvalidBusinessHours_ShowsErrorMessage()
+        public void CreateReservation_InvalidBusinessHours()
         {
             // Navega para detalhe da sala
             driver.Navigate().GoToUrl($"{baseUrl}/Room/Detail/1");
@@ -76,6 +76,56 @@ namespace Reservation.Tests.Ui
             var alert = wait.Until(d => d.FindElement(By.ClassName("alert-danger")));
             Assert.True(alert.Displayed);
             Assert.Contains("08:00", alert.Text, StringComparison.OrdinalIgnoreCase);
+        }
+        [Fact]
+        public void CreateReservation_With_ValidTimes()
+        {
+            driver.Navigate().GoToUrl($"{baseUrl}/Room/Detail/1");
+
+            var dateField = wait.Until(d => d.FindElement(By.Id("ReserveDate")));
+            dateField.Clear();
+            dateField.SendKeys(DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"));
+
+            driver.FindElement(By.Id("ReserveStart")).Clear();
+            driver.FindElement(By.Id("ReserveStart")).SendKeys("10:00");
+
+            driver.FindElement(By.Id("ReserveEnd")).Clear();
+            driver.FindElement(By.Id("ReserveEnd")).SendKeys("12:00");
+
+            var submit = driver.FindElement(By.CssSelector("button[type='submit'], input[type='submit']"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].click();", submit);
+
+            // Espera até que a URL mude para a página de confirmação
+            wait.Until(d => d.Url.Contains("/Reserve/Confirmation", StringComparison.OrdinalIgnoreCase));
+
+            // Verifica que a URL final está correta
+            Assert.Contains("/Reserve/Confirmation", driver.Url, StringComparison.OrdinalIgnoreCase);
+        }
+
+
+        [Fact]
+        public void CreateReservation_With_PastDate()
+        {
+            driver.Navigate().GoToUrl($"{baseUrl}/Room/Detail/1");
+
+            var dateField = wait.Until(d => d.FindElement(By.Id("ReserveDate")));
+            dateField.Clear();
+            dateField.SendKeys(DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd")); // data passada
+
+            driver.FindElement(By.Id("ReserveStart")).Clear();
+            driver.FindElement(By.Id("ReserveStart")).SendKeys("10:00");
+
+            driver.FindElement(By.Id("ReserveEnd")).Clear();
+            driver.FindElement(By.Id("ReserveEnd")).SendKeys("12:00");
+
+            var submit = driver.FindElement(By.CssSelector("button[type='submit'], input[type='submit']"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].click();", submit);
+
+            var errorAlert = wait.Until(d => d.FindElement(By.ClassName("alert-danger")));
+            Assert.True(errorAlert.Displayed);
+            Assert.Contains("invalid", errorAlert.Text, StringComparison.OrdinalIgnoreCase);
         }
 
         public void Dispose()
