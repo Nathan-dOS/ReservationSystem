@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj": {}
+    "C:\\Users\\natha\\Documents\\GitHub\\ReservationSystem\\ReservationTest\\ReservationTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj": {
+    "C:\\Users\\natha\\Documents\\GitHub\\ReservationSystem\\ReservationTest\\ReservationTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+        "projectUniqueName": "C:\\Users\\natha\\Documents\\GitHub\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
         "projectName": "ReservationTest",
-        "projectPath": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
-        "packagesPath": "C:\\Users\\gvalm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gvalm\\source\\repos\\ReservationSystem\\ReservationTest\\obj\\",
+        "projectPath": "C:\\Users\\natha\\Documents\\GitHub\\ReservationSystem\\ReservationTest\\ReservationTest.csproj",
+        "packagesPath": "C:\\Users\\natha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\natha\\Documents\\GitHub\\ReservationSystem\\ReservationTest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gvalm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\natha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -95,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
