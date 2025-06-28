@@ -46,4 +46,14 @@ ReservationSystem/Reservation/obj/
 /Reservation/obj/Debug/net8.0/staticwebassets
 /Reservation/obj/Debug/net8.0
 /Reservation/obj
-/ReservationTest/obj
+
+
+**/bin/
+**/obj/
+
+[Bb]in/
+[Oo]bj/
+
+*.bd
+*.bd-shm
+*.bd-wal"*.bd*" 
